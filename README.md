@@ -41,8 +41,8 @@ credit spread). Those variables enter through interactions, or in a separate ind
 
 ## Results (current)
 
-**H1/H2: not supported.** The interaction is correctly signed but economically negligible and nowhere
-near significance (β₂ = −0.011, SE 0.138, p = 0.94). The leverage slope is +0.124 in low-rate years and
+**H1/H2: not supported.** The interaction is close to zero and nowhere near significance
+(β₂ = −0.011, SE 0.138, p = 0.94). The leverage slope is +0.124 in low-rate years and
 +0.113 in high-rate years. The null holds in every specification:
 
 | Specification | Term | Coef. | SE | p | N |
@@ -57,6 +57,14 @@ near significance (β₂ = −0.011, SE 0.138, p = 0.94). The leverage slope is 
 | Lagged leverage | lev(t−1) × high | −0.024 | 0.147 | 0.871 | 1881 |
 | Industry FE + macro controls | lev × high | −0.090 | 0.144 | 0.534 | 2015 |
 | Backward elimination of controls | lev × high | −0.003 | 0.138 | 0.984 | 2015 |
+
+**How large an effect can we rule out?** A null result is only informative if the test could have found a
+meaningful effect. In the main specification the 95% interval for β₂ is [−0.282, +0.259]. Scaled by the
+standard deviation of leverage (0.138), this rules out regime effects larger than 0.039 in the payout ratio per
+1 SD of leverage (11% of the mean payout of 0.35); an equivalence test (TOST) rejects effects above 0.033 at the
+5% level. The test has 80% power only for effects of about 0.053 (15% of the mean), so smaller effects cannot be
+excluded. Across the other specifications the bound is 0.038–0.053, except the post-2022 dummy (0.098), which
+uses the least regime variation ([table](outputs/tab_power_bounds.csv)).
 
 **H3: not supported.** The triple interaction is −0.054 (SE 0.143, p = 0.70). It is not robust across
 tangibility proxies: one proxy (capital/sales) gives a *significantly negative* term (p = 0.007), the

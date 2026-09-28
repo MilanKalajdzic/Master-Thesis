@@ -1,5 +1,6 @@
 H1/H2  beta2 = -0.0112 (p=0.935) -> NOT supported at 5%
         slope: low-rate +0.124 | high-rate +0.113  (H2 expects more negative when high)
+        95% CI [-0.282, +0.259]: rules out effects above 0.039 payout per 1-SD leverage; MDE(80%) = 0.387
 
 H3     triple = -0.0542 (p=0.704) -> NOT supported at 5%
         (H3 expects a POSITIVE triple term)
