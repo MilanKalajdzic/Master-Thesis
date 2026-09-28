@@ -2,5 +2,6 @@ H1/H2  beta2 = -0.0406 (p=0.774) -> NOT supported at 5%
         slope: low-rate +0.314 | high-rate +0.274  (H2 expects more negative when high)
         95% CI [-0.317, +0.236]: rules out effects above 0.044 payout per 1-SD leverage; MDE(80%) = 0.395
 
-H3     triple = -0.1744 (p=0.296) -> NOT supported at 5%
+H3     triple = -1.0934 (p=0.027) -> REJECTED: significant with the opposite sign
         (H3 expects a POSITIVE triple term)
+        high-rate change in the leverage slope: low tangibility (p10) +0.466 (p=0.038) | high tangibility (p90) -0.414 (p=0.118)

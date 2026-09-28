@@ -11,8 +11,11 @@ Lagged leverage,lev_lag_x_high,-0.0431,0.1604,0.7885,1764
 Industry FE + macro controls,lev_x_high,-0.1444,0.1564,0.3561,1894
 Without ROE,lev_x_high,-0.0919,0.1548,0.5529,1908
 Backward elimination,lev_x_high,-0.0424,0.1429,0.767,1894
-"H3 triple term, stable core",lev_x_high_x_tang,0.0151,0.2235,0.946,961
+"H3 triple term, stable core",lev_x_high_x_tang,-0.6006,0.6108,0.3257,1089
 Payout incl. non-positive earnings,lev_x_high,-0.0184,0.1379,0.8937,2004
 Driscoll-Kraay SE,lev_x_high,-0.0406,0.1419,0.7747,1894
 First differences,d_lev_x_high,-0.06,0.1328,0.6516,1640
 Weighted by number of firms,lev_x_high,-0.033,0.1472,0.8226,1894
+Leverage without leases,m_x_high,-0.0502,0.149,0.7359,1894
+Book leverage,m_x_high,-0.0106,0.0862,0.9017,1892
+"Debt/EBITDA (per unit, not per SD)",m_x_high,-0.0107,0.0175,0.5421,1891

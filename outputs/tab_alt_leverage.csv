@@ -1,0 +1,7 @@
+dependent,leverage measure,regime,sd_measure,lev_coef,lev_p,interaction,int_se,int_p,interaction_per_sd,ci95_bound_per_sd,N
+payout,"Market D/(D+E), main (leases from 2013)",high-rate,0.1386,0.2991,0.0331,-0.0406,0.1411,0.7735,-0.0056,0.044,1894
+payout,"Market D/(D+E), without leases",high-rate,0.1353,0.326,0.0167,-0.0502,0.149,0.7359,-0.0068,0.0463,1894
+payout,Book D/(D+E),high-rate,0.1609,0.6192,0.0,-0.0106,0.0862,0.9017,-0.0017,0.0289,1892
+payout,Debt / EBITDA,high-rate,1.4957,0.0491,0.0034,-0.0107,0.0175,0.5421,-0.0159,0.0672,1891
+payout,Debt / EBITDA,fed funds rate (per pp),1.4957,0.0491,0.0034,0.0001,0.0037,0.9729,0.0002,0.0111,1891
+div_yield,Debt / EBITDA,high-rate,1.4957,-0.0,0.8903,0.0001,0.0005,0.8365,0.0002,0.0017,2073

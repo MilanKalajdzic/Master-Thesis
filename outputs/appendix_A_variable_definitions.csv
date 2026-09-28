@@ -5,7 +5,10 @@ totpayout_ni,Dependent (alt),(Dividends+Buybacks)/Net Income; missing when NI <=
 div_yield,Dependent (ROE check),Dividends / market cap (no earnings in it),divfcfe + divfund
 n_firms,Weight (robustness),Number of firms in the industry,divfund
 lev,Key independent,Market debt ratio D/(D+E),wacc
-tangibility,Moderator (H3),Proxy = capex_deprec; missing in 2013-2015,capex
+lev_unadj,Alt. leverage (§9d),Market D/(D+E) without capitalised leases,dbtfund
+lev_book,Alt. leverage (§9d),Book D/(D+E); missing when book equity <= 0,dbtfund
+debt_ebitda,Alt. leverage (§9d),D/(D+E) / (EBITDA/EV) = Debt / EBITDA; missing when EBITDA <= 0,wacc + dbtfund
+tangibility,Moderator (H3),"PP&E / total assets, percentile rank within year (Fixed Assets/BV of Capital to 2012, Fixed Assets/Total Assets 2013-16, Net PP&E/Total Assets 2017+)",dbtfund
 roe,Control,Return on equity,divfund
 tax,Control,Effective tax rate,wacc
 size,Control,log(Market Cap),divfund

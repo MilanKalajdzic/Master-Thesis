@@ -10,7 +10,7 @@ Five US industry datasets from Aswath Damodaran's archive (NYU Stern), one file 
 | `divfcfe` | Dividends, FCFE, (dividends + buybacks), net income | `divfcfe24.xls` |
 | `wacc` | Market debt ratio D/(D+E), effective tax rate | `wacc24.xls` |
 | `capex` | Cap Ex / Depreciation, Net Cap Ex / Sales, Sales / Capital | `capex24.xls` |
-| `dbtfund` | Interest coverage, Debt / EBITDA, book debt to capital, net PP&E / total assets | `dbtfund24.xls` |
+| `dbtfund` | PP&E / total assets, book and lease-free market debt ratios, EBITDA / EV | `dbtfund24.xls` |
 
 Download with:
 

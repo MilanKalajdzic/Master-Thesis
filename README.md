@@ -27,8 +27,11 @@ high or low?
 - **Panel:** 143 non-financial, non-utility US industries × 27 years (1999–2025), 2,116 industry-years;
   a *stable core* of 46 industries present ≥ 20 years is used as a robustness sample.
 - **Sources:** Damodaran industry files `divfund` (payout, ROE, market cap), `divfcfe` (dividends, FCFE),
-  `wacc` (market leverage D/(D+E), tax rate), `capex` (tangibility proxy); FRED (fed funds rate,
-  10y Treasury, BAA–AAA spread, real GDP).
+  `wacc` (market leverage D/(D+E), tax rate), `dbtfund` (PP&E / total assets, book and lease-free leverage,
+  EBITDA/EV), `capex` (capex-based tangibility proxies); FRED (fed funds rate, 10y Treasury, BAA–AAA spread,
+  real GDP).
+- **Tangibility (H3):** PP&E / total assets, as the industry's percentile rank within each year (the variable's
+  definition changes in 2013 and 2017, see the data-quality notes).
 - **Rate regime:** a year is *high-rate* if the annual-average fed funds rate is ≥ 3%, which gives three
   separate episodes (1999–2001, 2005–2007, 2023–2025). A post-2022 dummy and the continuous rate are
   reported as alternatives.
@@ -90,10 +93,36 @@ standard deviation of leverage (0.139), this rules out regime effects larger tha
 excluded. Across the other specifications the bound is 0.040–0.063, except the post-2022 dummy (0.095), which
 uses the least regime variation ([table](outputs/tab_power_bounds.csv)).
 
-**H3: not supported.** With the primary tangibility proxy the triple interaction is −0.174 (SE 0.167,
-p = 0.30). The two alternative proxies give *significantly negative* terms (Net Cap Ex/Sales p = 0.027,
-Capital/Sales p = 0.039), the opposite of H3's prediction: if anything, the payout–leverage link weakens more in
-high-rate years for capital-intensive industries.
+**Other leverage measures.** H1 is about debt *service*, and market D/(D+E) is only a rough gauge of it: it moves
+with share prices and includes capitalised leases from 2013 on. Interest coverage is only reported from 2022, so
+the closest panel measure is Debt/EBITDA (debt relative to operating cash flow), built as D/(D+E) ÷ (EBITDA/EV)
+and checked against Damodaran's own figure where he reports it. The positive leverage–payout relation holds for
+every measure, and the regime interaction is null for every measure, including Debt/EBITDA × the fed funds
+rate, the nearest thing to an interest-burden test ([table](outputs/tab_alt_leverage.csv)):
+
+| Leverage measure | Leverage coef. | p | × high-rate | p | per 1 SD | 95% bound per SD | N |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| Market D/(D+E), main (leases from 2013) | +0.299 | 0.033 | −0.041 | 0.774 | −0.006 | 0.044 | 1894 |
+| Market D/(D+E), without leases | +0.326 | 0.017 | −0.050 | 0.736 | −0.007 | 0.046 | 1894 |
+| Book D/(D+E) | +0.619 | < 0.001 | −0.011 | 0.902 | −0.002 | 0.029 | 1892 |
+| Debt / EBITDA | +0.049 | 0.003 | −0.011 | 0.542 | −0.016 | 0.067 | 1891 |
+| Debt / EBITDA × fed funds rate (per pp) | | | +0.000 | 0.973 | +0.000 | 0.011 | 1891 |
+
+Two caveats. Debt/EBITDA and the payout ratio both have earnings in the denominator; with the dividend yield as
+the dependent variable the Debt/EBITDA coefficient is zero (p = 0.89), so its positive link with payout may be
+partly mechanical. Book leverage rises mechanically when payouts shrink book equity, and it is missing where book
+equity is negative (restaurants and tobacco in recent years).
+
+**H3: rejected, and the evidence points the other way.** With tangibility measured as PP&E / total assets, the
+triple interaction is −1.09 (SE 0.49, p = 0.027). In high-rate years the leverage–payout slope *rises* by 0.47
+(p = 0.04) for the least tangible industries (10th percentile) and *falls* by 0.41 (p = 0.12) for the most
+tangible (90th percentile). H3 expected tangible industries to be the stable ones. The sign survives
+Driscoll–Kraay and two-way clustered errors, dropping 2020–21, weighting by firms, the continuous rate, a
+time-invariant tangibility (−1.01, p = 0.043) and two of the three capex-based proxies (Net Cap Ex/Sales
+p = 0.027, Capital/Sales p = 0.039; Cap Ex/Depreciation −0.17, p = 0.30). It is not significant in the stable
+core (−0.60, p = 0.33) ([sensitivity](outputs/tab_H3_robustness.csv), [proxies](outputs/tab_H3_proxy_robustness.csv)).
+With this many specifications a p-value near 0.03 is suggestive rather than conclusive, but it does mean the H2
+null may average out opposite responses of asset-heavy and asset-light industries.
 
 **Other findings.**
 - The strong negative ROE coefficient is mechanical. ROE is negatively related to the payout ratio
@@ -103,8 +132,9 @@ high-rate years for capital-intensive industries.
   ([table](outputs/tab_roe_check.csv)). The leverage coefficient in the yield regression is not interpreted,
   because yield and D/(D+E) both contain market equity.
 - The effective tax rate is negatively related to payout (−0.48, p = 0.004).
-- More capital-intensive industries pay out less (tangibility main effect −0.075, p = 0.010), and pay out
-  relatively more in high-rate years (tangibility × high-rate +0.065, p = 0.040).
+- Tangibility itself is not related to payout once industry effects are in (PP&E rank +0.15, p = 0.28). With
+  the Cap Ex/Depreciation proxy it was negative (−0.075, p = 0.010), which mostly reflects investment intensity
+  rather than asset tangibility.
 
 **Dividend smoothing (Lintner, 1956).** Industry dividends adjust slowly toward a target payout: the speed of
 adjustment is between 0.09 and 0.36 per year (pooled vs within estimates, which bracket the true value), with a
@@ -122,8 +152,9 @@ dividends jump by a median 42% that year vs 10–20% otherwise):
 | lev(t−1) × high-rate year, stable core | +0.0022 | 0.0030 | 0.465 | 1026 |
 
 Interpretation: over three full rate cycles, more levered industries pay out more, industry dividends are
-smoothed, and neither the payout–leverage link nor the smoothing re-rates with the cost of debt beyond the bounds
-above. Any regime dependence most plausibly lives at the firm level and averages out across industries.
+smoothed, and on average neither the payout–leverage link nor the smoothing re-rates with the cost of debt beyond
+the bounds above, whichever leverage measure is used. The exception is the split by tangibility (H3), where
+asset-heavy and asset-light industries appear to move in opposite directions.
 All results are associational.
 
 <p align="center"><img src="outputs/fig_coefficient_forest.png" width="620"></p>
@@ -132,12 +163,25 @@ All results are associational.
 
 - **Capex depreciation break (2013–2015).** In Damodaran's 2013–2015 capex files, industry depreciation
   roughly halves while capex does not (Total Market: $908bn in 2012 → $368bn in 2013 → $719bn in 2016).
-  This inflates Cap Ex/Depreciation and scrambles the industry ranking, so depreciation-based tangibility
-  is set to missing in those years ([figure](outputs/fig_data_check_tangibility.png),
+  This inflates Cap Ex/Depreciation and scrambles the industry ranking, so the depreciation-based proxies
+  (robustness checks for H3) are set to missing in those years ([figure](outputs/fig_data_check_tangibility.png),
   [table](outputs/tab_data_check_yearly_medians.csv)).
 - **Industry reclassification (2012→2013).** Damodaran moved to a new industry scheme. Names are
   reconciled with a conservative rename map ([Appendix B](outputs/appendix_B_rename_map.csv)), and the
   stable-core sample checks that nothing hinges on it.
+- **Leverage and leases (2013).** From 2013 on, `wacc`'s D/(D+E) capitalises operating leases (it equals
+  `dbtfund`'s lease-adjusted ratio exactly); before 2013 it equals the unadjusted ratio. The main leverage measure
+  therefore changes definition in 2013, most for lease-heavy industries. Since 2019 (ASC 842) leases are on the
+  balance sheet and the two ratios almost coincide. The lease-free ratio gives the same results (table above).
+- **PP&E / assets (2013, 2016, 2017).** `dbtfund` reports Fixed Assets / BV of Capital (1999–2012), Fixed Assets /
+  Total Assets (2013–2016) and Net PP&E / Total Assets (2017+). The median drifts down over time and the industry
+  ordering reshuffles in 2013 and 2016 (rank correlation with the previous year 0.78 and 0.83, against 0.96–0.99
+  otherwise, [table](outputs/tab_data_check_ppe_rank_stability.csv)). Tangibility is therefore used as a
+  within-year percentile rank, and the time-invariant H3 variant averages over the reshuffles.
+- **Debt / EBITDA.** Damodaran reports it only in 2018 and 2022+, so it is built from D/(D+E) and EBITDA/EV. In
+  the years where both exist the two rank industries alike (rank correlation 0.87–0.96); the constructed level is
+  about 10–20% lower because EV nets out cash ([table](outputs/tab_data_check_debt_ebitda.csv)). Interest
+  coverage, the direct measure of debt-service burden, exists only from 2022 on and is not used.
 - **Row alignment (1999).** An industry has the same number of firms in every file of a year, so matching
   firm counts across files confirm that each row belongs to its name. They match everywhere except in
   `wacc99`, where 17 industries (Aluminum to Chemical (Specialty)) are shifted by one row: Auto & Truck, for
@@ -187,7 +231,8 @@ outputs/                     regression tables (CSV + LaTeX), robustness tables,
 ## Limitations
 
 Industry aggregation hides firm heterogeneity. The data are a repeated cross-section of industry
-averages, not a firm panel. Tangibility is a flow-based proxy. Payout ratios are noisy when earnings are
+averages, not a firm panel. Tangibility (PP&E / assets) changes definition over time, so only its within-year
+ranking is used. Payout ratios are noisy when earnings are
 near zero (winsorised at 1%/99%). Identification is associational, not causal.
 
 ## License

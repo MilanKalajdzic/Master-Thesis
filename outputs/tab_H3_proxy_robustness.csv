@@ -1,4 +1,5 @@
-proxy,years,triple_coef,se,p_value,N
-capex_deprec,1999-2025 (24),-0.1744,0.1667,0.296,1680
-netcapex_sales,1999-2025 (24),-6.9967,3.1642,0.027,1680
-invcap_sales,2001-2025 (25),-0.6024,0.291,0.039,1762
+proxy,measure,years,tang_coef,tang_p,high_x_tang,high_x_tang_p,triple_coef,se,p_value,N
+ppe_assets,PP&E / assets (within-year rank),1999-2025 (27),0.1516,0.28,0.1723,0.117,-1.0934,0.4948,0.027,1894
+capex_deprec,Cap Ex / Depreciation,1999-2025 (24),-0.0754,0.01,0.0647,0.04,-0.1744,0.1667,0.296,1680
+netcapex_sales,Net Cap Ex / Sales,1999-2025 (24),-0.6569,0.156,1.5038,0.013,-6.9967,3.1642,0.027,1680
+invcap_sales,Invested capital / Sales,2001-2025 (25),-0.0873,0.264,0.0974,0.164,-0.6024,0.291,0.039,1762
