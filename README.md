@@ -46,7 +46,19 @@ payout-ratio models (1,905 observations; see the data-quality notes).
 
 **Leverage and payout.** Leverage is *positively* related to payout: +0.300 (SE 0.137, p = 0.028) with
 industry and year fixed effects. More levered industries pay out more, the opposite of the substitution
-(free-cash-flow) story behind H1 and in line with the complementarity view.
+(free-cash-flow) story behind H1 and in line with the complementarity view. The estimate survives
+standard errors robust to common shocks and weighting by the number of firms, but not first differences,
+where it is small and imprecise (its interval still contains +0.30). It is best read as a slow-moving,
+medium-run association, consistent with smoothed dividends, rather than a year-to-year response
+([stress test](outputs/tab_stress_leverage.csv)):
+
+| Stress test | Leverage coef. | SE | p | β₂ (lev × high) | p | N |
+|---|---:|---:|---:|---:|---:|---:|
+| Industry-clustered SE (main) | +0.300 | 0.137 | 0.028 | −0.036 | 0.801 | 1905 |
+| Two-way clustered SE | +0.300 | 0.148 | 0.042 | −0.036 | 0.796 | 1905 |
+| Driscoll–Kraay SE (3 lags) | +0.300 | 0.110 | 0.006 | −0.036 | 0.801 | 1905 |
+| First differences (+ year FE) | +0.109 | 0.315 | 0.729 | −0.058 | 0.660 | 1650 |
+| Weighted by number of firms | +0.328 | 0.161 | 0.042 | −0.027 | 0.856 | 1905 |
 
 **H2: not supported.** The regime interaction is close to zero and nowhere near significance
 (β₂ = −0.036, SE 0.141, p = 0.80); the leverage slope is +0.314 in low-rate years and +0.278 in high-rate
@@ -66,6 +78,9 @@ years. The null holds in every specification:
 | Industry FE + macro controls | lev × high | −0.143 | 0.157 | 0.363 | 1905 |
 | Backward elimination of controls | lev × high | −0.037 | 0.143 | 0.794 | 1905 |
 | Payout as reported (incl. ROE ≤ 0) | lev × high | −0.011 | 0.138 | 0.935 | 2015 |
+| Driscoll–Kraay SE | lev × high | −0.036 | 0.141 | 0.801 | 1905 |
+| First differences | Δ(lev × high) | −0.058 | 0.131 | 0.660 | 1650 |
+| Weighted by number of firms | lev × high | −0.027 | 0.148 | 0.856 | 1905 |
 
 **How large an effect can we rule out?** A null result is only informative if the test could have found a
 meaningful effect. In the main specification the 95% interval for β₂ is [−0.312, +0.241]. Scaled by the
