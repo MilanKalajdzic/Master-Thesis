@@ -1,0 +1,17 @@
+# Exact versions that produced the committed outputs (Python 3.11.15).
+#   pip install -r requirements-lock.txt
+pandas==3.0.2
+numpy==2.4.4
+scipy==1.17.1
+statsmodels==0.15.0
+linearmodels==7.0
+matplotlib==3.10.9
+xlrd==2.0.2
+openpyxl==3.1.5
+requests==2.33.1
+pandas-datareader==0.11.1
+nbformat==5.11.1
+nbconvert==7.17.1
+nbclient==0.11.0
+ipykernel==7.3.0
+jupyter==1.1.1

@@ -221,7 +221,7 @@ All results are associational.
 ```bash
 git clone https://github.com/MilanKalajdzic/Master-Thesis.git
 cd Master-Thesis
-pip install -r requirements.txt
+pip install -r requirements.txt           # or requirements-lock.txt for the exact tested versions
 python scripts/download_damodaran.py      # 135 files -> data/raw/  (see data/README.md)
 jupyter nbconvert --to notebook --execute --inplace thesis_analysis.ipynb
 ```

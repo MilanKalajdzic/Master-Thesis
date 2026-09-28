@@ -1,8 +1,9 @@
-# Tested with Python 3.11 (pandas 2.3 and 3.0)
+# Minimum versions. The exact versions behind the committed outputs are in requirements-lock.txt.
 pandas>=2.2
 numpy>=1.26
 matplotlib>=3.8
 statsmodels>=0.14
+scipy>=1.11          # t/normal quantiles, power bounds (§9b), multiple testing (§10b)
 linearmodels>=6.0
 xlrd>=2.0.1          # reads Damodaran's legacy .xls files
 openpyxl>=3.1
