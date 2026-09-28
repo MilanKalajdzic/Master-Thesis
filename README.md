@@ -54,9 +54,11 @@ payout-ratio models (1,894 observations; see the data-quality notes).
 **Leverage and payout.** Leverage is *positively* related to payout: +0.299 (SE 0.140, p = 0.033) with
 industry and year fixed effects. More levered industries pay out more, the opposite of the substitution
 (free-cash-flow) story behind H1 and in line with the complementarity view. The estimate survives
-standard errors robust to common shocks and weighting by the number of firms, but not first differences,
-where it is small and imprecise (its interval still contains +0.30). It is best read as a slow-moving,
-medium-run association, consistent with smoothed dividends, rather than a year-to-year response
+standard errors robust to common shocks, weighting by the number of firms and dropping the financial crisis,
+but not first differences, where it is small and imprecise (its interval still contains +0.30). Holding
+investment intensity fixed (capital spending / assets) lowers it to +0.25 and p to 0.09, so part of the link
+runs through how much industries invest. It is best read as a slow-moving, medium-run association,
+consistent with smoothed dividends, rather than a year-to-year response
 ([stress test](outputs/tab_stress_leverage.csv)):
 
 | Stress test | Leverage coef. | SE | p | β₂ (lev × high) | p | N |
@@ -66,6 +68,8 @@ medium-run association, consistent with smoothed dividends, rather than a year-t
 | Driscoll–Kraay SE (3 lags) | +0.299 | 0.111 | 0.007 | −0.041 | 0.775 | 1894 |
 | First differences (+ year FE) | +0.109 | 0.335 | 0.744 | −0.060 | 0.652 | 1640 |
 | Weighted by number of firms | +0.328 | 0.163 | 0.044 | −0.033 | 0.823 | 1894 |
+| Excluding 2008–09 | +0.338 | 0.157 | 0.031 | −0.047 | 0.748 | 1747 |
+| Growth control (capex intensity) | +0.255 | 0.150 | 0.090 | −0.067 | 0.640 | 1894 |
 
 **H2: not supported.** The regime interaction is close to zero and nowhere near significance
 (β₂ = −0.041, SE 0.141, p = 0.77); the leverage slope is +0.314 in low-rate years and +0.274 in high-rate
@@ -81,6 +85,8 @@ years. The null holds in every specification:
 | DV = Dividend yield (D/MC) | lev × high | +0.007 | 0.004 | 0.118 | 2087 |
 | Two-way clustered SE | lev × high | −0.041 | 0.137 | 0.768 | 1894 |
 | Excluding 2020–21 | lev × high | −0.068 | 0.149 | 0.646 | 1771 |
+| Excluding 2008–09 | lev × high | −0.047 | 0.147 | 0.748 | 1747 |
+| Growth control (capex intensity) | lev × high | −0.067 | 0.143 | 0.640 | 1894 |
 | Lagged leverage | lev(t−1) × high | −0.043 | 0.160 | 0.789 | 1764 |
 | Industry FE + macro controls | lev × high | −0.144 | 0.156 | 0.356 | 1894 |
 | Backward elimination of controls | lev × high | −0.042 | 0.143 | 0.767 | 1894 |
@@ -123,8 +129,10 @@ triple interaction is −1.09 (SE 0.49, p = 0.027). In high-rate years the lever
 tangible (90th percentile). H3 expected tangible industries to be the stable ones. The sign survives
 Driscoll–Kraay and two-way clustered errors, dropping 2020–21, weighting by firms, the continuous rate, a
 time-invariant tangibility (−1.01, p = 0.043) and two of the three capex-based proxies (Net Cap Ex/Sales
-p = 0.027, Capital/Sales p = 0.039; Cap Ex/Depreciation −0.17, p = 0.30). It is not significant in the stable
-core (−0.60, p = 0.33) ([sensitivity](outputs/tab_H3_robustness.csv), [proxies](outputs/tab_H3_proxy_robustness.csv)).
+p = 0.027, Capital/Sales p = 0.039; Cap Ex/Depreciation −0.17, p = 0.30). PP&E and capital spending are
+correlated, but holding capital spending intensity fixed leaves the term at −1.07 (p = 0.027), so it is not
+investment intensity in disguise. It weakens to −0.96 (p = 0.07) without 2008–09 and is not significant in the
+stable core (−0.60, p = 0.33) ([sensitivity](outputs/tab_H3_robustness.csv), [proxies](outputs/tab_H3_proxy_robustness.csv)).
 
 **Is the H3 result fragile?** ([leave-one-out](outputs/tab_H3_leave_one_out.csv),
 [multiple testing](outputs/tab_multiple_testing.csv))
@@ -197,6 +205,9 @@ All results are associational.
   ordering reshuffles in 2013 and 2016 (rank correlation with the previous year 0.78 and 0.83, against 0.96–0.99
   otherwise, [table](outputs/tab_data_check_ppe_rank_stability.csv)). Tangibility is therefore used as a
   within-year percentile rank, and the time-invariant H3 variant averages over the reshuffles.
+- **Capital spending (2013).** The growth / reinvestment control, capital spending from `dbtfund`, is scaled by
+  book capital up to 2012 and by total assets from 2013, so its median halves in 2013. Like PP&E it enters as a
+  within-year percentile rank.
 - **Debt / EBITDA.** Damodaran reports it only in 2018 and 2022+, so it is built from D/(D+E) and EBITDA/EV. In
   the years where both exist the two rank industries alike (rank correlation 0.87–0.96); the constructed level is
   about 10–20% lower because EV nets out cash ([table](outputs/tab_data_check_debt_ebitda.csv)). Interest

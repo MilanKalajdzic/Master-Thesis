@@ -90,16 +90,17 @@ HEADERS = {
     "dbtfund": {
         "classic": [("Number of Firms", "n"), ("MV Debt Ratio", "lev_unadj"), ("BV Debt Ratio", "lev_book"),
                     ("Effective Tax Rate", "tax"), ("EBITDA/Value", "ebitda_ev"),
-                    ("Fixed Assets/BV of Capital", "ppe"), ("Capital Spending/BV of Capital", "junk")],
+                    ("Fixed Assets/BV of Capital", "ppe"), ("Capital Spending/BV of Capital", "capspend")],
         "transition": [("Number of firms", "n"), ("Book Debt to Capital", "lev_book"),
                        ("Market Debt to Capital (Unadjusted)", "lev_unadj"),
                        ("Market Debt to Capital (adjusted for leases)", "lev"),
                        ("Debt/EBITDA", "de_rep"), ("EBITDA/EV", "ebitda_ev"),
-                       ("Net PP&E/Total Assets", "ppe"), ("Capital Spending/Total Assets", "junk")],
+                       ("Net PP&E/Total Assets", "ppe"), ("Capital Spending/Total Assets", "capspend")],
         "modern": [("Number of firms", "n"), ("Book Debt to Capital", "lev_book"),
                    ("Market Debt to Capital (Unadjusted)", "lev_unadj"),
                    ("Market Debt to Capital (adjusted for leases)", "lev"), ("Interest Coverage Ratio", "icr"),
-                   ("Debt to EBITDA", "de_rep"), ("EBITDA/EV", "ebitda_ev"), ("Net PP&E/Total Assets", "ppe")],
+                   ("Debt to EBITDA", "de_rep"), ("EBITDA/EV", "ebitda_ev"), ("Net PP&E/Total Assets", "ppe"),
+                   ("Capital Spending/Total Assets", "capspend")],
     },
 }
 
@@ -139,6 +140,7 @@ def _simulate(years, seed):
                  "capex_dep": 0.8 + 1.2 * ppe / ppe_scale + rng.normal(0, 0.1),
                  "ncx_sales": 0.02 + 0.1 * ppe / ppe_scale, "s_cap": float(rng.uniform(0.5, 3)),
                  "junk": float(rng.uniform(0, 1))}
+            v["capspend"] = 0.02 + 0.06 * ppe + 0.02 * v["s_cap"]   # related to PP&E, not a copy of it
             out[y][ind] = v
     return out
 

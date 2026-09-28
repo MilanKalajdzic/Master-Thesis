@@ -12,6 +12,7 @@ tangibility,Moderator (H3),"PP&E / total assets, percentile rank within year (Fi
 roe,Control,Return on equity,divfund
 tax,Control,Effective tax rate,wacc
 size,Control,log(Market Cap),divfund
+invest,Control (robustness),"Capital spending / capital (to 2012) or total assets (2013+), within-year rank",dbtfund
 gdp_growth,Macro control,Real GDP growth % (absorbed by year FE; used in industry-FE-only spec),FRED GDPC1
 cred_spread,Macro control,BAA-AAA spread (absorbed by year FE; used in industry-FE-only spec),"FRED BAA, AAA"
 t10,Descriptive,"10-year Treasury yield, annual avg",FRED GS10

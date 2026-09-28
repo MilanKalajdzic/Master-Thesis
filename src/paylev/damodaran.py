@@ -182,6 +182,7 @@ def load_year(year, sources, tangibility_proxy="ppe_assets", positive_denominato
             "lev_book": num(pick(db, "bv debt ratio") or pick(db, "book debt to capital")),
             "ebitda_ev": num(pick(db, "ebitda/")),                       # EBITDA / firm value (every year)
             "ppe_assets": num(ppe_column(db)),
+            "capex_assets": num(pick(db, "capital spending")),              # reinvestment: capex / capital or assets
             "debt_ebitda_rep": num(pick(db, "debt", "ebitda")),           # reported only 2018, 2022+
             "int_cov": num(pick(db, "interest coverage")),                # reported only 2022+
         })

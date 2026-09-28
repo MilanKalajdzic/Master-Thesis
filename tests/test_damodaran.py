@@ -66,6 +66,7 @@ def test_load_year_reads_the_right_values(sources, fake_dir):
         assert r.loc["Machinery", "div_yield"] == pytest.approx(v["div"] / v["mktcap"])
         assert r.loc["Machinery", "div_to_fcfe"] == pytest.approx(v["div"] / v["fcfe"])
         assert r.loc["Machinery", "tangibility"] == pytest.approx(v["ppe"])          # PP&E is the default
+        assert r.loc["Machinery", "capex_assets"] == pytest.approx(v["capspend"])
         assert r.loc["Machinery", "nf_wacc"] == r.loc["Machinery", "n_firms"]
     assert "totpayout_ni" not in dm.load_year(2010, sources)                  # no buyback column before 2013
     r16 = dm.load_year(2016, sources).set_index("industry")

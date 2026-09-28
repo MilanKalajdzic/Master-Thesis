@@ -7,6 +7,8 @@ DV = (Div+Buybacks)/NI,lev_x_high,-0.4497,1.0514,0.669,894
 DV = Dividend yield,lev_x_high,0.0066,0.0042,0.1176,2087
 Two-way clustered SE,lev_x_high,-0.0406,0.1374,0.7676,1894
 Excl. 2020-21,lev_x_high,-0.0684,0.1491,0.6464,1771
+Excl. 2008-09,lev_x_high,-0.0473,0.1474,0.7484,1747
+Growth control (capex intensity),lev_x_high,-0.067,0.143,0.6396,1894
 Lagged leverage,lev_lag_x_high,-0.0431,0.1604,0.7885,1764
 Industry FE + macro controls,lev_x_high,-0.1444,0.1564,0.3561,1894
 Without ROE,lev_x_high,-0.0919,0.1548,0.5529,1908
