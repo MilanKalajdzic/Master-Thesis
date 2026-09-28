@@ -28,55 +28,11 @@ except ImportError:                                   # package not installed: u
     sys.path.insert(0, str(REPO / "src"))
 from paylev.damodaran import TOKENS, discover_sources, load_year  # noqa: E402
 from paylev.estimation import fit_panel, lincom  # noqa: E402
+from paylev.plotting import THEMES, dot, minus, runs, save, shade, titles, use  # noqa: E402
 
 CONTROLS = ["roe", "tax", "size"]
 H3_REGS = ["lev", "tangibility", "lev_x_high", "lev_x_tang", "high_x_tang", "lev_x_high_x_tang"]
 EQUIV_MARGIN = 0.05
-
-# Colour tokens (validated categorical slots 1-2 of the reference palette, light and dark steps; text never
-# wears a series colour, marks do).
-THEMES = {
-    "light": dict(surface="#fcfcfb", ink="#0b0b0b", ink2="#52514e", muted="#898781", grid="#e1e0d9",
-                  base="#c3c2b7", s1="#2a78d6", s2="#eb6834", dim="#b4b2aa", wash="#2a78d6", band="#efeee9", whisker=.55),
-    "dark": dict(surface="#1a1a19", ink="#ffffff", ink2="#c3c2b7", muted="#898781", grid="#2c2c2a",
-                 base="#383835", s1="#3987e5", s2="#d95926", dim="#5f5e59", wash="#3987e5", band="#262624", whisker=.8),
-}
-
-
-def style(t):
-    plt.rcParams.update({
-        "figure.facecolor": t["surface"], "axes.facecolor": t["surface"], "savefig.facecolor": t["surface"],
-        "font.family": "sans-serif", "font.size": 10.5, "text.color": t["ink"],
-        "axes.edgecolor": t["base"], "axes.labelcolor": t["ink2"], "axes.linewidth": 0.8,
-        "axes.spines.top": False, "axes.spines.right": False,
-        "axes.grid": True, "grid.color": t["grid"], "grid.linewidth": 0.8, "grid.linestyle": "-",
-        "xtick.color": t["muted"], "ytick.color": t["muted"], "xtick.labelcolor": t["ink2"],
-        "ytick.labelcolor": t["ink2"], "xtick.major.size": 0, "ytick.major.size": 0,
-        "legend.frameon": False, "lines.linewidth": 2, "lines.solid_capstyle": "round",
-    })
-
-
-def save(fig, path):
-    """Save as a 256-colour PNG (the charts use a handful of colours; octree keeps them exact, about 1/3 the size)."""
-    from PIL import Image
-    fig.savefig(path, dpi=200); plt.close(fig)
-    im = Image.open(path).convert("RGB")
-    im.quantize(colors=256, method=Image.Quantize.FASTOCTREE, dither=Image.Dither.NONE).save(path, optimize=True)
-
-
-def titles(fig, t, title, subtitle, y=0.985):
-    fig.text(0.012, y, title, fontsize=14, fontweight="bold", color=t["ink"], va="top")
-    fig.text(0.012, y - 0.052, subtitle, fontsize=10, color=t["ink2"], va="top")
-
-
-def minus(v, fmt="+.2f"):
-    """Signed number with a typographic minus."""
-    return format(v, fmt).replace("-", "−")
-
-
-def dot(ax, x, y, color, t, size=46, zorder=4, **kw):
-    ax.scatter(x, y, s=size, color=color, edgecolors=t["surface"], linewidths=1.6, zorder=zorder, **kw)
-
 
 # ---------------------------------------------------------------------------------------------------------------
 def hero(t, panel, path):
@@ -99,23 +55,14 @@ def hero(t, panel, path):
            "Top: fed funds rate (annual average); high-rate years (≥ 3%) shaded.  Bottom: payout-on-leverage slope "
            "estimated for each year, 95% CI,\nindustry and year effects, controls ROE, tax, size. If H2 held, the "
            "shaded years would sit lower.")
-    # episodes
-    runs, cur = [], []
-    for y, h in zip(years, hi):
-        if h:
-            cur.append(y)
-        elif cur:
-            runs.append(cur); cur = []
-    if cur:
-        runs.append(cur)
+    episodes = runs(years, hi)
     for ax in (a1, a2):
-        for run in runs:
-            ax.axvspan(run[0] - .5, run[-1] + .5, color=t["wash"], alpha=.10, lw=0, zorder=0)
+        shade(ax, episodes, t)
     a1.plot(years, rate["ffr"], color=t["ink2"], lw=2)
     a1.axhline(3, color=t["base"], lw=1)
     a1.text(years[-1] + .7, 3, "3%", color=t["muted"], va="center", fontsize=9)
     a1.set_ylabel("Fed funds, %")
-    for run in runs:
+    for run in episodes:
         lab = f"{run[0]}–{str(run[-1])[2:]}" if len(run) > 1 else str(run[0])
         a1.text((run[0] + run[-1]) / 2, rate["ffr"].max() * 1.02, lab, ha="center", va="bottom", fontsize=9,
                 color=t["ink2"])
@@ -323,8 +270,8 @@ def main():
     panel = pd.read_csv(panel_csv)
     a.img.mkdir(parents=True, exist_ok=True)
     made = []
-    for mode, t in THEMES.items():
-        style(t)
+    for mode in ["light", "dark"]:
+        t = use(THEMES[mode])
         sfx = "" if mode == "light" else "-dark"
         hero(t, panel, a.img / f"hero{sfx}.png")
         h2_bounds(t, a.outputs, a.img / f"h2_bounds{sfx}.png")

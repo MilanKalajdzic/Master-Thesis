@@ -53,7 +53,7 @@ so every number can be reproduced from scratch, and the pipeline is tested on fa
   net income scrambled across industries in `divfcfe07`, a depreciation break in the 2013–15 capex files, and
   definition changes in leverage (leases, 2013), PP&E and capital spending (2013).
 - **Tested.** On fake files with a planted effect and planted defects, the pipeline recovers the effect and
-  catches the defects; 43 tests run on every push, on Python 3.10–3.14.
+  catches the defects; 46 tests run on every push, on Python 3.10–3.14.
 
 ## Research question and hypotheses
 
@@ -407,6 +407,7 @@ src/paylev/
   estimation.py              two-way FE panel regressions (PanelOLS) and a fast numpy version for refits
   inference.py               Holm, Romano-Wolf and the industry-cluster bootstrap
   synthetic.py               fake Damodaran files with planted effects and defects, for the tests
+  plotting.py                figure style shared by the thesis and README figures (colours, themes, PNG export)
 tests/                       pytest suite (no downloads needed)
 scripts/
   download_damodaran.py      fetches the 135 Damodaran industry files (5 datasets, 1999-2025)
