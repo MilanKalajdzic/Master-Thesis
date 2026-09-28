@@ -113,7 +113,7 @@ the dependent variable the Debt/EBITDA coefficient is zero (p = 0.89), so its po
 partly mechanical. Book leverage rises mechanically when payouts shrink book equity, and it is missing where book
 equity is negative (restaurants and tobacco in recent years).
 
-**H3: rejected, and the evidence points the other way.** With tangibility measured as PP&E / total assets, the
+**H3: not supported; the estimate points the other way.** With tangibility measured as PP&E / total assets, the
 triple interaction is −1.09 (SE 0.49, p = 0.027). In high-rate years the leverage–payout slope *rises* by 0.47
 (p = 0.04) for the least tangible industries (10th percentile) and *falls* by 0.41 (p = 0.12) for the most
 tangible (90th percentile). H3 expected tangible industries to be the stable ones. The sign survives
@@ -121,8 +121,22 @@ Driscoll–Kraay and two-way clustered errors, dropping 2020–21, weighting by 
 time-invariant tangibility (−1.01, p = 0.043) and two of the three capex-based proxies (Net Cap Ex/Sales
 p = 0.027, Capital/Sales p = 0.039; Cap Ex/Depreciation −0.17, p = 0.30). It is not significant in the stable
 core (−0.60, p = 0.33) ([sensitivity](outputs/tab_H3_robustness.csv), [proxies](outputs/tab_H3_proxy_robustness.csv)).
-With this many specifications a p-value near 0.03 is suggestive rather than conclusive, but it does mean the H2
-null may average out opposite responses of asset-heavy and asset-light industries.
+
+**Is the H3 result fragile?** ([leave-one-out](outputs/tab_H3_leave_one_out.csv),
+[multiple testing](outputs/tab_multiple_testing.csv))
+- *No single industry drives it.* Dropping any one of the 141 industries leaves the term between −1.25 and −0.87,
+  significant at 5% in 138 cases and at 10% in all.
+- *It leans on the latest tightening cycle.* Dropping 1999–2001 or 2005–2007 leaves it at −1.33 (p = 0.04) and
+  −1.28 (p = 0.05); dropping 2023–2025 halves it to −0.60 (p = 0.14). Dropping 2023 alone gives −0.71
+  (p = 0.11), while every other single year keeps p < 0.05.
+- *It does not survive the multiple-testing adjustment.* The industry-cluster bootstrap gives p = 0.047
+  unadjusted. Adjusted for testing H2 and H3 together, p = 0.055 (Holm) and 0.076 (Romano–Wolf); adjusted
+  across the five tangibility measures, p = 0.18 (Romano–Wolf).
+
+So H3 is not supported, and the opposite pattern (the payout–leverage link weakening in high-rate years for
+asset-heavy industries and strengthening for asset-light ones) is exploratory: it comes mostly from the 2023–2025
+cycle and is not established once the number of tests is accounted for. It is still a reason not to read the H2
+null as "no effect anywhere": opposite responses may average out.
 
 **Other findings.**
 - The strong negative ROE coefficient is mechanical. ROE is negatively related to the payout ratio
@@ -153,8 +167,9 @@ dividends jump by a median 42% that year vs 10–20% otherwise):
 
 Interpretation: over three full rate cycles, more levered industries pay out more, industry dividends are
 smoothed, and on average neither the payout–leverage link nor the smoothing re-rates with the cost of debt beyond
-the bounds above, whichever leverage measure is used. The exception is the split by tangibility (H3), where
-asset-heavy and asset-light industries appear to move in opposite directions.
+the bounds above, whichever leverage measure is used. The one hint of regime dependence is the split by
+tangibility (H3), where asset-heavy and asset-light industries appear to move in opposite directions, mostly in
+the 2023–2025 cycle; it does not survive the multiple-testing adjustment.
 All results are associational.
 
 <p align="center"><img src="outputs/fig_coefficient_forest.png" width="620"></p>
@@ -214,6 +229,7 @@ jupyter nbconvert --to notebook --execute --inplace thesis_analysis.ipynb
 Or open `thesis_analysis.ipynb` and run all cells. Tables and figures are written to `outputs/`.
 FRED data come from a pinned snapshot (`data/fred/fred_snapshot.csv`, vintage 2026-09-28), so results
 match exactly. Set `FRED_SOURCE = "live"` in the configuration cell to download the current vintage.
+A full run takes under a minute; the bootstrap in §10b is seeded (`RW_SEED`), so it reproduces too.
 
 ## Repository layout
 
