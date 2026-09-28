@@ -68,8 +68,23 @@ opposite of H3's prediction.
   therefore at least partly mechanical: net income enters both ratios.
 - More capital-intensive industries pay out less (tangibility main effect −0.087, p = 0.002).
 
-Interpretation: over three full rate cycles, industry-level payout policy does not re-rate with the cost
-of debt. Any regime dependence most plausibly lives at the firm level and averages out across industries.
+**Dividend smoothing (Lintner, 1956).** Industry dividends adjust slowly toward a target payout: the speed of
+adjustment is between 0.09 and 0.36 per year (pooled vs within estimates, which bracket the true value), with a
+target payout of 0.28, close to the median payout ratio. The payout *ratio* itself is far less persistent
+(0.14–0.41), because it moves with earnings. Smoothing does not differ between rate regimes, and H1 tested
+in change form (do more levered industries cut dividends more when rates are high or rising?) is not supported.
+These change models drop 2013, when Damodaran's reclassification moves firms between industries (industry
+dividends jump by a median 42% that year vs 10–20% otherwise):
+
+| Change-form test of H1 | Coef. | SE | p | N |
+|---|---:|---:|---:|---:|
+| lev(t−1) × high-rate year | +0.0016 | 0.0039 | 0.675 | 1771 |
+| lev(t−1) × hiking year (fed funds up ≥ 25bp) | +0.0015 | 0.0023 | 0.505 | 1771 |
+| lev(t−1) × change in fed funds rate | +0.0006 | 0.0009 | 0.518 | 1771 |
+| lev(t−1) × high-rate year, stable core | +0.0022 | 0.0030 | 0.465 | 1026 |
+
+Interpretation: over three full rate cycles, industry dividends are smoothed and do not re-rate with the
+cost of debt. Any regime dependence most plausibly lives at the firm level and averages out across industries.
 All results are associational.
 
 <p align="center"><img src="outputs/fig_coefficient_forest.png" width="620"></p>
