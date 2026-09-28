@@ -7,5 +7,5 @@ H1 change form: high-rate,lev_l1_x_high_rate,0.0016,0.0039,0.6751,1771
 H1 change form: hiking year,lev_l1_x_hike,0.0015,0.0023,0.505,1771
 H1 change form: change in FFR,lev_l1_x_ffr_change,0.0006,0.0009,0.5179,1771
 "H1 change form: high-rate, stable core",lev_l1_x_high_rate,0.0022,0.003,0.4647,1026
-"Payout-ratio persistence, two-way FE",payout_l1,0.1352,0.0364,0.0002,1796
-"Payout-ratio persistence, year FE only",payout_l1,0.4092,0.0498,0.0,1796
+"Payout-ratio persistence, two-way FE",payout_l1,0.132,0.0438,0.0026,1651
+"Payout-ratio persistence, year FE only",payout_l1,0.4263,0.0553,0.0,1651

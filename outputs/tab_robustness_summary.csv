@@ -1,13 +1,14 @@
 specification,term,coef,se,p,N
-Main (two-way FE),lev_x_high,-0.0112,0.1381,0.9352,2015
-Stable core,lev_x_high,-0.0203,0.1747,0.9074,1153
-Regime = post-2022,lev_x_high,-0.3026,0.2065,0.143,2015
-DV = Dividends/FCFE,lev_x_high,0.6273,0.6392,0.3265,1946
-DV = (Div+Buybacks)/NI,lev_x_high,-1.6472,2.0068,0.412,997
-Two-way clustered SE,lev_x_high,-0.0112,0.146,0.9387,2015
-Excl. 2020-21,lev_x_high,-0.0968,0.1452,0.5051,1862
-Lagged leverage,lev_lag_x_high,-0.0238,0.1472,0.8714,1881
-Industry FE + macro controls,lev_x_high,-0.0895,0.144,0.5341,2015
-Without ROE,lev_x_high,-0.0532,0.1361,0.696,2029
-Backward elimination,lev_x_high,-0.0028,0.1384,0.9841,2015
-"H3 triple term, stable core",lev_x_high_x_tang,0.0798,0.1649,0.6287,1019
+Main (two-way FE),lev_x_high,-0.0356,0.1412,0.8007,1905
+Stable core,lev_x_high,-0.0854,0.1754,0.6266,1098
+Regime = post-2022,lev_x_high,-0.1669,0.2644,0.5279,1905
+DV = Dividends/FCFE,lev_x_high,-0.2656,0.655,0.6851,1612
+DV = (Div+Buybacks)/NI,lev_x_high,-0.4496,1.0514,0.669,894
+Two-way clustered SE,lev_x_high,-0.0356,0.1377,0.7958,1905
+Excl. 2020-21,lev_x_high,-0.0634,0.1493,0.6709,1782
+Lagged leverage,lev_lag_x_high,-0.047,0.1587,0.767,1774
+Industry FE + macro controls,lev_x_high,-0.1425,0.1566,0.3628,1905
+Without ROE,lev_x_high,-0.0863,0.1547,0.577,1919
+Backward elimination,lev_x_high,-0.0374,0.1429,0.7935,1905
+"H3 triple term, stable core",lev_x_high_x_tang,0.0141,0.2222,0.9492,970
+Payout incl. non-positive earnings,lev_x_high,-0.0112,0.1381,0.9352,2015

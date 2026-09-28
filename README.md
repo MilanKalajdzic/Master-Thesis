@@ -41,45 +41,56 @@ credit spread). Those variables enter through interactions, or in a separate ind
 
 ## Results (current)
 
-**H1/H2: not supported.** The interaction is close to zero and nowhere near significance
-(β₂ = −0.011, SE 0.138, p = 0.94). The leverage slope is +0.124 in low-rate years and
-+0.113 in high-rate years. The null holds in every specification:
+Payout ratios are only defined for positive earnings, so industry-years with ROE ≤ 0 are excluded from the
+payout-ratio models (1,905 observations; see the data-quality notes).
+
+**Leverage and payout.** Leverage is *positively* related to payout: +0.300 (SE 0.137, p = 0.028) with
+industry and year fixed effects. More levered industries pay out more, the opposite of the substitution
+(free-cash-flow) story behind H1 and in line with the complementarity view.
+
+**H2: not supported.** The regime interaction is close to zero and nowhere near significance
+(β₂ = −0.036, SE 0.141, p = 0.80); the leverage slope is +0.314 in low-rate years and +0.278 in high-rate
+years. The null holds in every specification:
 
 | Specification | Term | Coef. | SE | p | N |
 |---|---|---:|---:|---:|---:|
-| Main (two-way FE) | lev × high | −0.011 | 0.138 | 0.935 | 2015 |
-| Stable core (46 industries) | lev × high | −0.020 | 0.175 | 0.907 | 1153 |
-| Regime = post-2022 dummy | lev × high | −0.303 | 0.207 | 0.143 | 2015 |
-| Continuous rate | lev × FFR | +0.015 | 0.029 | 0.596 | 2015 |
-| DV = Dividends / FCFE | lev × high | +0.627 | 0.639 | 0.327 | 1946 |
-| Two-way clustered SE | lev × high | −0.011 | 0.146 | 0.939 | 2015 |
-| Excluding 2020–21 | lev × high | −0.097 | 0.145 | 0.505 | 1862 |
-| Lagged leverage | lev(t−1) × high | −0.024 | 0.147 | 0.871 | 1881 |
-| Industry FE + macro controls | lev × high | −0.090 | 0.144 | 0.534 | 2015 |
-| Backward elimination of controls | lev × high | −0.003 | 0.138 | 0.984 | 2015 |
+| Main (two-way FE) | lev × high | −0.036 | 0.141 | 0.801 | 1905 |
+| Stable core (46 industries) | lev × high | −0.085 | 0.175 | 0.627 | 1098 |
+| Regime = post-2022 dummy | lev × high | −0.167 | 0.264 | 0.528 | 1905 |
+| Continuous rate | lev × FFR | −0.002 | 0.033 | 0.943 | 1905 |
+| DV = Dividends / FCFE | lev × high | −0.266 | 0.655 | 0.685 | 1612 |
+| Two-way clustered SE | lev × high | −0.036 | 0.138 | 0.796 | 1905 |
+| Excluding 2020–21 | lev × high | −0.063 | 0.149 | 0.671 | 1782 |
+| Lagged leverage | lev(t−1) × high | −0.047 | 0.159 | 0.767 | 1774 |
+| Industry FE + macro controls | lev × high | −0.143 | 0.157 | 0.363 | 1905 |
+| Backward elimination of controls | lev × high | −0.037 | 0.143 | 0.794 | 1905 |
+| Payout as reported (incl. ROE ≤ 0) | lev × high | −0.011 | 0.138 | 0.935 | 2015 |
 
 **How large an effect can we rule out?** A null result is only informative if the test could have found a
-meaningful effect. In the main specification the 95% interval for β₂ is [−0.282, +0.259]. Scaled by the
-standard deviation of leverage (0.138), this rules out regime effects larger than 0.039 in the payout ratio per
-1 SD of leverage (11% of the mean payout of 0.35); an equivalence test (TOST) rejects effects above 0.033 at the
-5% level. The test has 80% power only for effects of about 0.053 (15% of the mean), so smaller effects cannot be
-excluded. Across the other specifications the bound is 0.038–0.053, except the post-2022 dummy (0.098), which
+meaningful effect. In the main specification the 95% interval for β₂ is [−0.312, +0.241]. Scaled by the
+standard deviation of leverage (0.138), this rules out regime effects larger than 0.043 in the payout ratio per
+1 SD of leverage (12% of the mean payout of 0.37); an equivalence test (TOST) rejects effects above 0.037 at the
+5% level. The test has 80% power only for effects of about 0.055 (15% of the mean), so smaller effects cannot be
+excluded. Across the other specifications the bound is 0.039–0.062, except the post-2022 dummy (0.094), which
 uses the least regime variation ([table](outputs/tab_power_bounds.csv)).
 
-**H3: not supported.** The triple interaction is −0.054 (SE 0.143, p = 0.70). It is not robust across
-tangibility proxies: one proxy (capital/sales) gives a *significantly negative* term (p = 0.007), the
-opposite of H3's prediction.
+**H3: not supported.** With the primary tangibility proxy the triple interaction is −0.172 (SE 0.166,
+p = 0.30). The two alternative proxies give *significantly negative* terms (Net Cap Ex/Sales p = 0.029,
+Capital/Sales p = 0.039), the opposite of H3's prediction: if anything, the payout–leverage link weakens more in
+high-rate years for capital-intensive industries.
 
 **Other findings.**
-- Profitability (ROE) is strongly negatively related to the payout ratio (−0.53, p < 0.001), but the
-  effect disappears when payout is measured as Dividends/FCFE (+0.27, p = 0.43). The ROE result is
-  therefore at least partly mechanical: net income enters both ratios.
-- More capital-intensive industries pay out less (tangibility main effect −0.087, p = 0.002).
+- Profitability (ROE) is strongly negatively related to the payout ratio (−1.59, p < 0.001), and also to
+  Dividends/FCFE (−2.85, p < 0.001). Both ratios contain net income in the denominator (FCFE includes net
+  income), so part of this relationship may be mechanical; neither check separates the two.
+- The effective tax rate is negatively related to payout (−0.52, p = 0.001).
+- More capital-intensive industries pay out less (tangibility main effect −0.077, p = 0.008), and pay out
+  relatively more in high-rate years (tangibility × high-rate +0.064, p = 0.044).
 
 **Dividend smoothing (Lintner, 1956).** Industry dividends adjust slowly toward a target payout: the speed of
 adjustment is between 0.09 and 0.36 per year (pooled vs within estimates, which bracket the true value), with a
 target payout of 0.28, close to the median payout ratio. The payout *ratio* itself is far less persistent
-(0.14–0.41), because it moves with earnings. Smoothing does not differ between rate regimes, and H1 tested
+(0.13–0.43), because it moves with earnings. Smoothing does not differ between rate regimes, and H1 tested
 in change form (do more levered industries cut dividends more when rates are high or rising?) is not supported.
 These change models drop 2013, when Damodaran's reclassification moves firms between industries (industry
 dividends jump by a median 42% that year vs 10–20% otherwise):
@@ -91,8 +102,9 @@ dividends jump by a median 42% that year vs 10–20% otherwise):
 | lev(t−1) × change in fed funds rate | +0.0006 | 0.0009 | 0.518 | 1771 |
 | lev(t−1) × high-rate year, stable core | +0.0022 | 0.0030 | 0.465 | 1026 |
 
-Interpretation: over three full rate cycles, industry dividends are smoothed and do not re-rate with the
-cost of debt. Any regime dependence most plausibly lives at the firm level and averages out across industries.
+Interpretation: over three full rate cycles, more levered industries pay out more, industry dividends are
+smoothed, and neither the payout–leverage link nor the smoothing re-rates with the cost of debt beyond the bounds
+above. Any regime dependence most plausibly lives at the firm level and averages out across industries.
 All results are associational.
 
 <p align="center"><img src="outputs/fig_coefficient_forest.png" width="620"></p>
@@ -112,6 +124,11 @@ All results are associational.
   `divfcfe07` the net-income column does not match the listed industries. Measures built from `divfcfe`
   are excluded in those years ([table](outputs/tab_data_check_crossfile.csv)); the main payout variable
   comes from `divfund` and is unaffected.
+- **Undefined ratios.** Payout (dividends ÷ earnings), Dividends/FCFE and total payout ÷ net income are
+  meaningless when the denominator is ≤ 0, yet the files report values there: 110 loss-making industry-years
+  have a median payout of 0.003 although they pay dividends, and 318 have a negative Dividends/FCFE. These are
+  set to missing (`POSITIVE_DENOMINATORS` in the configuration); the as-reported payout is kept as a
+  robustness check.
 - **Heterogeneous layouts.** File layouts differ across three eras (sheet names, header rows, column
   names). The loader finds the table, the columns and the data year automatically.
 

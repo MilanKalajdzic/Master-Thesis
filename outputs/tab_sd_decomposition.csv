@@ -1,8 +1,8 @@
 ,sd_overall,sd_between,sd_within
-payout,0.363,0.21,0.304
+payout,0.372,0.221,0.309
 lev,0.138,0.13,0.076
 roe,0.128,0.078,0.106
 tax,0.096,0.08,0.071
 size,1.337,1.349,0.587
 tangibility,0.659,0.531,0.442
-div_to_fcfe,1.697,0.837,1.625
+div_to_fcfe,1.56,0.876,1.398
