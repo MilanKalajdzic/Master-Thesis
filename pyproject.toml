@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "paylev"
+version = "1.0.0"
+description = "Does the payout-leverage relationship vary with the interest rate regime? Industry-level evidence from US non-financial firms, 1999-2025 (master's thesis pipeline)."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Apache-2.0" }
+authors = [{ name = "Milan Kalajdžić" }]
+dependencies = [
+    "pandas>=2.2",
+    "numpy>=1.26",
+    "scipy>=1.11",
+    "statsmodels>=0.14",
+    "linearmodels>=6.0",
+    "matplotlib>=3.8",
+    "xlrd>=2.0.1",       # Damodaran's legacy .xls files
+    "openpyxl>=3.1",     # .xlsx files (newer downloads, the tests' fake data)
+    "requests>=2.31",    # scripts/download_damodaran.py
+]
+
+[project.optional-dependencies]
+# running the notebook (scripts/run_notebook.py, VS Code / Jupyter) and the tests
+dev = ["pytest>=7", "nbclient>=0.7", "nbformat>=5", "ipykernel>=6", "jupyter"]
+# FRED_SOURCE = "live" and scripts/refresh_fred_snapshot.py
+fred = ["pandas-datareader>=0.10"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src", "."]

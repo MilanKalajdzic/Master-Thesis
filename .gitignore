@@ -24,3 +24,8 @@ venv/
 Thumbs.db
 .vscode/
 .idea/
+
+# Packaging / tests
+*.egg-info/
+.pytest_cache/
+build/

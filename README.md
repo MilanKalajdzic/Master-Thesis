@@ -1,5 +1,9 @@
 # Does the Payout–Leverage Relationship Vary with the Interest Rate Regime?
 
+[![tests](https://github.com/MilanKalajdzic/Master-Thesis/actions/workflows/tests.yml/badge.svg)](https://github.com/MilanKalajdzic/Master-Thesis/actions/workflows/tests.yml)
+[![python](https://img.shields.io/badge/python-3.10%20%E2%80%93%203.14-3776ab)](pyproject.toml)
+[![license: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-2a78d6)](LICENSE)
+
 **Industry-Level Evidence from US Non-Financial Firms, 1999–2025**
 
 Master's thesis in Quantitative Finance, Faculty of Economic Sciences, University of Warsaw.
@@ -216,32 +220,72 @@ All results are associational.
 - **Heterogeneous layouts.** File layouts differ across three eras (sheet names, header rows, column
   names). The loader finds the table, the columns and the data year automatically.
 
-## Reproduce
+## Setup and reproduce
+
+Linux or macOS (on Windows, use `.venv\Scripts\python` in place of `.venv/bin/python`):
 
 ```bash
 git clone https://github.com/MilanKalajdzic/Master-Thesis.git
 cd Master-Thesis
-pip install -r requirements.txt           # or requirements-lock.txt for the exact tested versions
-python scripts/download_damodaran.py      # 135 files -> data/raw/  (see data/README.md)
-jupyter nbconvert --to notebook --execute --inplace thesis_analysis.ipynb
+python3 -m venv .venv
+.venv/bin/python -m pip install -e ".[dev]"        # the package in src/, plus notebook and test tools
+.venv/bin/python -m pytest                         # about 40 s, on fake data: no downloads needed
+.venv/bin/python scripts/download_damodaran.py     # 135 files -> data/raw/  (see data/README.md)
+.venv/bin/python scripts/run_notebook.py           # reruns the notebook in place; tables and figures -> outputs/
 ```
 
-Or open `thesis_analysis.ipynb` and run all cells. Tables and figures are written to `outputs/`.
+For the exact package versions behind the committed outputs, run
+`.venv/bin/python -m pip install -r requirements-lock.txt` before the `-e ".[dev]"` step.
+`scripts/run_notebook.py` runs the notebook with the venv's Python from the repo root, whatever Jupyter kernels
+are registered on the machine. In VS Code, open the repo folder and pick the `.venv` kernel; if the package isn't
+installed, the notebook falls back to the copy in `src/`.
+
 FRED data come from a pinned snapshot (`data/fred/fred_snapshot.csv`, vintage 2026-09-28), so results
-match exactly. Set `FRED_SOURCE = "live"` in the configuration cell to download the current vintage.
-A full run takes under a minute; the bootstrap in §10b is seeded (`RW_SEED`), so it reproduces too.
+match exactly. Set `FRED_SOURCE = "live"` in the configuration cell to download the current vintage
+(needs the `fred` extra). A full run takes under a minute; the bootstrap in §10b is seeded (`RW_SEED`), so it
+reproduces too.
+
+### Tests
+
+The tests need no downloads. `paylev.synthetic` writes fake Damodaran files for 1999–2025 in the same three
+layouts as the real archive, with the real column names of each era, and plants in them:
+
+- a known effect: payout = … + 0.3 × leverage − 0.4 × leverage × high-rate year − 1.0 × ROE + noise;
+- the defects found in the real files: a block of rows shifted against the industry names (as in `wacc99`) and
+  a year with net income scrambled across industries (as in `divfcfe07`);
+- a financial and a utility industry, an industry renamed at the 2013 reclassification, and a newest file
+  without year digits.
+
+The whole notebook then runs on these files (`tests/test_notebook.py`). It has to finish without errors,
+write every output the repo ships, recover the planted coefficients and catch both defects. So a null result
+on the real data can't come from a pipeline that is unable to find an effect. Unit tests cover the file
+readers across layouts, the alignment and cross-file checks, the estimators (the fast estimator used for the
+refits must equal PanelOLS, standard errors included), Holm and Romano–Wolf, and the download script against a
+fake server. GitHub Actions runs them on every push, on Python 3.10, 3.12 and 3.14, and on 3.11 with the
+pinned versions.
 
 ## Repository layout
 
 ```
-thesis_analysis.ipynb        full pipeline (sections map to thesis chapters 4-6 and appendices)
+thesis_analysis.ipynb        the analysis, top to bottom (sections map to thesis chapters 4-6 and appendices)
+src/paylev/
+  damodaran.py               find and read Damodaran's files across their three layouts, one year's rows
+  sample.py                  reconciliation, exclusions, row-alignment and cross-file checks, winsorising
+  macro.py                   FRED: pinned snapshot or live download, annual averages, the rate regime
+  estimation.py              two-way FE panel regressions (PanelOLS) and a fast numpy version for refits
+  inference.py               Holm, Romano-Wolf and the industry-cluster bootstrap
+  synthetic.py               fake Damodaran files with planted effects and defects, for the tests
+tests/                       pytest suite (no downloads needed)
 scripts/
   download_damodaran.py      fetches the 135 Damodaran industry files (5 datasets, 1999-2025)
+  run_notebook.py            reruns the notebook with this Python, from the repo root
   refresh_fred_snapshot.py   re-downloads the FRED series into the snapshot
 data/
   raw/                       Damodaran .xls files (not committed; downloaded)
   fred/fred_snapshot.csv     FRED monthly/quarterly series used in the thesis
 outputs/                     regression tables (CSV + LaTeX), robustness tables, appendices, figures
+pyproject.toml               the package, its dependencies and the dev/fred extras
+requirements-lock.txt        exact versions behind the committed outputs
 ```
 
 ## Limitations

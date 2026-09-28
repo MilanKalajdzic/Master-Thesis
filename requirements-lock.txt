@@ -1,5 +1,5 @@
 # Exact versions that produced the committed outputs (Python 3.11.15).
-#   pip install -r requirements-lock.txt
+#   pip install -r requirements-lock.txt   (then: pip install -e ".[dev]" for the package and the tests)
 pandas==3.0.2
 numpy==2.4.4
 scipy==1.17.1
@@ -15,3 +15,4 @@ nbconvert==7.17.1
 nbclient==0.11.0
 ipykernel==7.3.0
 jupyter==1.1.1
+pytest==9.1.1

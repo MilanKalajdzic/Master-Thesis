@@ -1,12 +1,4 @@
-# Minimum versions. The exact versions behind the committed outputs are in requirements-lock.txt.
-pandas>=2.2
-numpy>=1.26
-matplotlib>=3.8
-statsmodels>=0.14
-scipy>=1.11          # t/normal quantiles, power bounds (§9b), multiple testing (§10b)
-linearmodels>=6.0
-xlrd>=2.0.1          # reads Damodaran's legacy .xls files
-openpyxl>=3.1
-requests>=2.31       # scripts/download_damodaran.py
-pandas-datareader>=0.10   # only needed for FRED_SOURCE = "live" and scripts/refresh_fred_snapshot.py
-jupyter
+# The dependencies are listed in pyproject.toml; this installs them together with the repo's package (src/paylev)
+# and the extras for running the notebook and the tests. Same as: pip install -e ".[dev,fred]"
+# The exact versions behind the committed outputs are in requirements-lock.txt.
+-e .[dev,fred]
