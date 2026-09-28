@@ -60,7 +60,20 @@ def test_finds_the_planted_effects(run):
 def test_catches_the_planted_data_defects(run):
     token, year, a, b = SHIFTED
     al = pd.read_csv(run / "outputs" / "tab_data_check_alignment.csv")
-    assert al.loc[(al["file"] == token) & (al["year"] == year), "rows_set_missing"].item() == b - a
-    assert al.loc[~((al["file"] == token) & (al["year"] == year)), "rows_set_missing"].eq(0).all()
+    hit = (al["file"] == token) & (al["year"] == year)
+    by_check = al[hit].set_index("check")["rows_set_missing"]
+    assert by_check.sum() == b - a                               # every shifted row is caught ...
+    assert by_check.loc["D/(D+E) vs dbtfund"] == 1               # ... the one with an equal firm count by value
+    assert al.loc[~hit, "rows_set_missing"].eq(0).all()
     cf = pd.read_csv(run / "outputs" / "tab_data_check_crossfile.csv", index_col=0)["share_agree"]
     assert cf.loc[SCRAMBLED[1]] < 0.75 and cf.drop(SCRAMBLED[1]).ge(0.75).all()
+
+
+def test_readme_figures_are_drawn_from_the_outputs(run, fake_dir, tmp_path):
+    proc = subprocess.run([sys.executable, str(REPO / "scripts" / "readme_figures.py"), "--outputs",
+                           str(run / "outputs"), "--data", str(fake_dir), "--img", str(tmp_path)],
+                          capture_output=True, text=True, timeout=600)
+    assert proc.returncode == 0, proc.stderr[-3000:]
+    made = {p.name for p in tmp_path.iterdir()}
+    for name in ["hero", "h2_bounds", "h3_tangibility", "data_alignment"]:
+        assert {f"{name}.png", f"{name}-dark.png"} <= made, name

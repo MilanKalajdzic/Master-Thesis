@@ -180,6 +180,10 @@ def load_year(year, sources, tangibility_proxy="ppe_assets", positive_denominato
             # market D/(D+E) without the lease adjustment (wacc's D/(D+E) includes leases from 2013 on)
             "lev_unadj": num(pick(db, "mv debt ratio") or pick(db, "market debt to capital", "unadjusted")),
             "lev_book": num(pick(db, "bv debt ratio") or pick(db, "book debt to capital")),
+            # the same number as wacc's D/(D+E): lease-adjusted where dbtfund reports it (2013+), else the plain
+            # market ratio (used to check that wacc's rows line up, paylev.sample.check_value_agreement)
+            "lev_dbt": num(pick(db, "market debt to capital", "adjusted for leases") or pick(db, "mv debt ratio")
+                           or pick(db, "market debt to capital", "unadjusted")),
             "ebitda_ev": num(pick(db, "ebitda/")),                       # EBITDA / firm value (every year)
             "ppe_assets": num(ppe_column(db)),
             "capex_assets": num(pick(db, "capital spending")),              # reinvestment: capex / capital or assets

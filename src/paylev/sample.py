@@ -69,6 +69,34 @@ def check_row_alignment(raw, align_vars, min_share, agg_rows):
     return raw, pd.DataFrame(rows)
 
 
+def check_value_agreement(raw, pairs, min_share=0.9, rtol=1e-3, agg_rows=()):
+    """Rows whose value disagrees with the same quantity reported in another file, in years where the two
+    files otherwise agree exactly.
+
+    `pairs` maps a file to (column, reference column, columns to blank), e.g. wacc's D/(D+E) against dbtfund's
+    market debt ratio on the same definition. This catches what the firm-count check cannot: a shifted row whose
+    neighbour happens to have the same number of firms. In a year where fewer than `min_share` of the rows agree
+    (within relative `rtol`), the files were computed differently and nothing is changed. Run it after
+    check_row_alignment (rows already set to missing are skipped). Returns the corrected frame and a table.
+    """
+    raw = raw.copy()
+    rows = []
+    for tok, (col, ref, cols) in pairs.items():
+        if col not in raw or ref not in raw:
+            continue
+        both = raw[col].notna() & raw[ref].notna() & ~raw["industry"].isin(agg_rows)
+        scale = raw[[col, ref]].abs().max(axis=1).where(lambda s: s > 0, 1.0)
+        same = (raw[col] - raw[ref]).abs() / scale < rtol
+        share = same[both].groupby(raw.loc[both, "year"]).mean()
+        bad = both & ~same & raw["year"].isin(share[share >= min_share].index)
+        raw.loc[bad, [c for c in cols if c in raw]] = np.nan
+        for y, s in share.items():
+            rows.append({"file": tok, "year": int(y), "share_same_value": round(s, 3),
+                         "rows_set_missing": int((bad & (raw["year"] == y)).sum()),
+                         "treated_as": "same values" if s >= min_share else "computed differently (kept)"})
+    return raw, pd.DataFrame(rows)
+
+
 def crossfile_agreement(raw, rename, industries, tol=0.05):
     """Share of industries per year whose divfund payout ratio equals dividends / net income from divfcfe
     (within `tol`, relative). A year where most disagree points to a scrambled divfcfe file."""

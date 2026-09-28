@@ -1,4 +1,4 @@
 dependent variable,net income in DV,roe_coef,se,p,N
-payout (D/NI),yes,-1.5905,0.2055,0.0,1894
-Dividends/FCFE,yes (via FCFE),-2.8535,0.7815,0.0003,1602
-Dividend yield (D/MC),no,0.0039,0.0021,0.0709,2087
+payout (D/NI),yes,-1.5908,0.2055,0.0,1893
+Dividends/FCFE,yes (via FCFE),-2.8512,0.7811,0.0003,1601
+Dividend yield (D/MC),no,0.0039,0.0021,0.0701,2086

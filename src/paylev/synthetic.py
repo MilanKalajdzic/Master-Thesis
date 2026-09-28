@@ -7,8 +7,9 @@ exercise it. The data contain:
 
 - a planted leverage effect and leverage x high-rate interaction in the payout ratio (so the pipeline has to
   find them), with high-rate years that match the committed FRED snapshot and the 3% rule;
-- a block of rows in one wacc file shifted against the industry names (like wacc99), which the row-alignment
-  check must catch;
+- a block of rows in one wacc file shifted against the industry names (like wacc99), with two neighbours in the
+  block that have the same firm count, so the firm-count check catches all but one row and the shared-value
+  check the last one;
 - a year whose divfcfe net income is scrambled across industries (like divfcfe07), which the cross-file check
   must catch;
 - a financial and a utility industry (excluded), and an industry renamed at the 2013 reclassification
@@ -130,7 +131,7 @@ def _simulate(years, seed):
             div = payout * ni
             ppe = float(np.clip(base["ppe"][i] + rng.normal(0, 0.02), 0.01, 0.95)) * ppe_scale
             ebitda_ev = float(rng.uniform(0.06, 0.16))
-            lease = 0.03 if 2013 <= y <= 2019 else 0.005     # wacc's D/(D+E) includes leases from 2013 on
+            lease = 0.03 if 2013 <= y <= 2019 else (0.005 if y >= 2020 else 0.0)   # wacc includes leases from 2013
             v = {"n": int(base["n"][i] + rng.integers(-3, 4)), "payout": payout, "roe": roe, "mktcap": mktcap,
                  "yield": div / mktcap, "div": div, "ni": ni, "fcfe": ni * rng.uniform(0.6, 1.2),
                  "totpay": div * rng.uniform(1.2, 2.0), "lev": lev, "eq": 1 - lev,
@@ -142,6 +143,9 @@ def _simulate(years, seed):
                  "junk": float(rng.uniform(0, 1))}
             v["capspend"] = 0.02 + 0.06 * ppe + 0.02 * v["s_cap"]   # related to PP&E, not a copy of it
             out[y][ind] = v
+        if y == SHIFTED[1]:          # two neighbours in the shifted block with equal firm counts (like wacc99)
+            a = SHIFTED[2]
+            out[y][INDUSTRIES[a + 2]]["n"] = out[y][INDUSTRIES[a + 1]]["n"]
     return out
 
 

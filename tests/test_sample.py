@@ -12,13 +12,27 @@ def test_row_alignment_catches_the_shifted_block(raw):
     token, year, a, b = SHIFTED
     fixed, table = sample.check_row_alignment(raw, {"wacc": ["lev", "tax"]}, 0.5, AGG)
     row = table[(table["file"] == "wacc") & (table["year"] == year)].iloc[0]
-    assert row["rows_set_missing"] == b - a and row["treated_as"] == "aligned"
+    assert row["rows_set_missing"] == b - a - 1 and row["treated_as"] == "aligned"   # one has an equal firm count
     assert table.loc[table["year"] != year, "rows_set_missing"].eq(0).all()
     hit = fixed[fixed["year"] == year].set_index("industry")
-    assert hit.loc[INDUSTRIES[a:b], "lev"].isna().all()
-    assert hit.drop(index=INDUSTRIES[a:b] + AGG)["lev"].notna().all()
+    caught = [INDUSTRIES[k] for k in range(a, b) if k != a + 2]
+    assert hit.loc[caught, "lev"].isna().all() and hit.loc[INDUSTRIES[a + 2], "lev"] == pytest.approx(
+        raw.set_index(["year", "industry"]).loc[(year, INDUSTRIES[a + 1]), "lev_unadj"])   # the neighbour's value
     assert not any(c.startswith("nf_") for c in fixed.columns)
-    assert raw["lev"].notna().sum() - fixed["lev"].notna().sum() == b - a   # nothing else touched, input unchanged
+    assert raw["lev"].notna().sum() - fixed["lev"].notna().sum() == b - a - 1   # nothing else touched
+
+    fixed2, values = sample.check_value_agreement(fixed, {"wacc": ("lev", "lev_dbt", ["lev", "tax"])}, agg_rows=AGG)
+    v = values.set_index("year")
+    assert v.loc[year, "rows_set_missing"] == 1 and v.drop(index=year)["rows_set_missing"].eq(0).all()
+    assert np.isnan(fixed2.set_index(["year", "industry"]).loc[(year, INDUSTRIES[a + 2]), "lev"])
+    assert v["treated_as"].eq("same values").all()
+
+
+def test_value_check_leaves_differently_computed_years_alone():
+    raw = pd.DataFrame({"industry": list("ABCD"), "year": 2001, "lev": [0.10, 0.20, 0.30, 0.40],
+                        "lev_dbt": [0.11, 0.21, 0.30, 0.43], "tax": 0.3})
+    fixed, table = sample.check_value_agreement(raw, {"wacc": ("lev", "lev_dbt", ["lev", "tax"])})
+    assert table.iloc[0]["treated_as"] == "computed differently (kept)" and fixed["lev"].notna().all()
 
 
 def test_row_alignment_keeps_a_different_vintage():
