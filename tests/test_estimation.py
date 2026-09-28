@@ -56,17 +56,22 @@ def test_fe_ols_ignores_empty_entities_and_missing_years():
     assert np.allclose(b1, b0) and np.allclose(se1, se0)
 
 
+@pytest.mark.filterwarnings("ignore::linearmodels.panel.utility.AbsorbingEffectWarning")   # the point of the test
 def test_absorbed_regressors_are_reported(capsys):
     r = fit_panel(make_panel(), "y", ["x", "trait"], title="absorbed")
     assert "trait" not in r.params.index
     assert "Absorbed by the fixed effects" in capsys.readouterr().out
 
 
+# Two-way clustered variances (industry + year - intersection) can come out negative for the constant, whose
+# SE linearmodels then reports as NaN with a RuntimeWarning; the slopes are unaffected (and checked here).
+@pytest.mark.filterwarnings("ignore:invalid value encountered in sqrt:RuntimeWarning")
 def test_other_covariances_and_weights_run():
     df = make_panel(seed=4)
     for kw in [dict(cov="kernel"), dict(cluster_time=True), dict(weights="w"), dict(time=False)]:
         r = fit_panel(df, "y", ["x", "z"], verbose=False, **kw)
         assert r.params["x"] == pytest.approx(0.5, abs=0.1), kw
+        assert r.std_errors[["x", "z"]].notna().all(), kw
 
 
 def test_lincom_is_a_sum_of_coefficients():
