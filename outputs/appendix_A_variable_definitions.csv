@@ -2,6 +2,7 @@ variable,role,definition,source
 payout,Dependent (primary),Dividend payout ratio; missing when ROE <= 0,divfund
 div_to_fcfe,Dependent (secondary),Dividends / FCFE; missing when FCFE <= 0,divfcfe
 totpayout_ni,Dependent (alt),(Dividends+Buybacks)/Net Income; missing when NI <= 0,divfcfe (2015+)
+div_yield,Dependent (ROE check),Dividends / market cap (no earnings in it),divfcfe + divfund
 lev,Key independent,Market debt ratio D/(D+E),wacc
 tangibility,Moderator (H3),Proxy = capex_deprec; missing in 2013-2015,capex
 roe,Control,Return on equity,divfund

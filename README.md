@@ -59,6 +59,7 @@ years. The null holds in every specification:
 | Regime = post-2022 dummy | lev × high | −0.167 | 0.264 | 0.528 | 1905 |
 | Continuous rate | lev × FFR | −0.002 | 0.033 | 0.943 | 1905 |
 | DV = Dividends / FCFE | lev × high | −0.266 | 0.655 | 0.685 | 1612 |
+| DV = Dividend yield (D/MC) | lev × high | +0.007 | 0.004 | 0.112 | 2099 |
 | Two-way clustered SE | lev × high | −0.036 | 0.138 | 0.796 | 1905 |
 | Excluding 2020–21 | lev × high | −0.063 | 0.149 | 0.671 | 1782 |
 | Lagged leverage | lev(t−1) × high | −0.047 | 0.159 | 0.767 | 1774 |
@@ -80,9 +81,12 @@ Capital/Sales p = 0.039), the opposite of H3's prediction: if anything, the payo
 high-rate years for capital-intensive industries.
 
 **Other findings.**
-- Profitability (ROE) is strongly negatively related to the payout ratio (−1.59, p < 0.001), and also to
-  Dividends/FCFE (−2.85, p < 0.001). Both ratios contain net income in the denominator (FCFE includes net
-  income), so part of this relationship may be mechanical; neither check separates the two.
+- The strong negative ROE coefficient is mechanical. ROE is negatively related to the payout ratio
+  (−1.59, p < 0.001) and to Dividends/FCFE (−2.85, p < 0.001), but both contain net income in the denominator
+  (FCFE includes net income). With dividend yield (dividends ÷ market cap), which contains no earnings, the
+  ROE coefficient is +0.004 (p = 0.07): more profitable industries do not pay out less
+  ([table](outputs/tab_roe_check.csv)). The leverage coefficient in the yield regression is not interpreted,
+  because yield and D/(D+E) both contain market equity.
 - The effective tax rate is negatively related to payout (−0.52, p = 0.001).
 - More capital-intensive industries pay out less (tangibility main effect −0.077, p = 0.008), and pay out
   relatively more in high-rate years (tangibility × high-rate +0.064, p = 0.044).
