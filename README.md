@@ -51,7 +51,7 @@ near significance (β₂ = −0.011, SE 0.138, p = 0.94). The leverage slope is 
 | Stable core (46 industries) | lev × high | −0.020 | 0.175 | 0.907 | 1153 |
 | Regime = post-2022 dummy | lev × high | −0.303 | 0.207 | 0.143 | 2015 |
 | Continuous rate | lev × FFR | +0.015 | 0.029 | 0.596 | 2015 |
-| DV = Dividends / FCFE | lev × high | +0.650 | 0.544 | 0.232 | 2099 |
+| DV = Dividends / FCFE | lev × high | +0.627 | 0.639 | 0.327 | 1946 |
 | Two-way clustered SE | lev × high | −0.011 | 0.146 | 0.939 | 2015 |
 | Excluding 2020–21 | lev × high | −0.097 | 0.145 | 0.505 | 1862 |
 | Lagged leverage | lev(t−1) × high | −0.024 | 0.147 | 0.871 | 1881 |
@@ -64,7 +64,7 @@ opposite of H3's prediction.
 
 **Other findings.**
 - Profitability (ROE) is strongly negatively related to the payout ratio (−0.53, p < 0.001), but the
-  effect disappears when payout is measured as Dividends/FCFE (+0.10, p = 0.79). The ROE result is
+  effect disappears when payout is measured as Dividends/FCFE (+0.27, p = 0.43). The ROE result is
   therefore at least partly mechanical: net income enters both ratios.
 - More capital-intensive industries pay out less (tangibility main effect −0.087, p = 0.002).
 
@@ -84,6 +84,11 @@ All results are associational.
 - **Industry reclassification (2012→2013).** Damodaran moved to a new industry scheme. Names are
   reconciled with a conservative rename map ([Appendix B](outputs/appendix_B_rename_map.csv)), and the
   stable-core sample checks that nothing hinges on it.
+- **Cross-file check (2000, 2007).** `divfund`'s payout ratio should equal dividends ÷ net income from
+  `divfcfe`; it does (within 5%) for 91–100% of industries in every year except 2000 and 2007. In
+  `divfcfe07` the net-income column does not match the listed industries. Measures built from `divfcfe`
+  are excluded in those years ([table](outputs/tab_data_check_crossfile.csv)); the main payout variable
+  comes from `divfund` and is unaffected.
 - **Heterogeneous layouts.** File layouts differ across three eras (sheet names, header rows, column
   names). The loader finds the table, the columns and the data year automatically.
 
