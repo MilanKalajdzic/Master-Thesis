@@ -42,9 +42,9 @@ credit spread). Those variables enter through interactions, or in a separate ind
 ## Results (current)
 
 Payout ratios are only defined for positive earnings, so industry-years with ROE ≤ 0 are excluded from the
-payout-ratio models (1,905 observations; see the data-quality notes).
+payout-ratio models (1,894 observations; see the data-quality notes).
 
-**Leverage and payout.** Leverage is *positively* related to payout: +0.300 (SE 0.137, p = 0.028) with
+**Leverage and payout.** Leverage is *positively* related to payout: +0.299 (SE 0.140, p = 0.033) with
 industry and year fixed effects. More levered industries pay out more, the opposite of the substitution
 (free-cash-flow) story behind H1 and in line with the complementarity view. The estimate survives
 standard errors robust to common shocks and weighting by the number of firms, but not first differences,
@@ -54,44 +54,44 @@ medium-run association, consistent with smoothed dividends, rather than a year-t
 
 | Stress test | Leverage coef. | SE | p | β₂ (lev × high) | p | N |
 |---|---:|---:|---:|---:|---:|---:|
-| Industry-clustered SE (main) | +0.300 | 0.137 | 0.028 | −0.036 | 0.801 | 1905 |
-| Two-way clustered SE | +0.300 | 0.148 | 0.042 | −0.036 | 0.796 | 1905 |
-| Driscoll–Kraay SE (3 lags) | +0.300 | 0.110 | 0.006 | −0.036 | 0.801 | 1905 |
-| First differences (+ year FE) | +0.109 | 0.315 | 0.729 | −0.058 | 0.660 | 1650 |
-| Weighted by number of firms | +0.328 | 0.161 | 0.042 | −0.027 | 0.856 | 1905 |
+| Industry-clustered SE (main) | +0.299 | 0.140 | 0.033 | −0.041 | 0.774 | 1894 |
+| Two-way clustered SE | +0.299 | 0.151 | 0.048 | −0.041 | 0.768 | 1894 |
+| Driscoll–Kraay SE (3 lags) | +0.299 | 0.111 | 0.007 | −0.041 | 0.775 | 1894 |
+| First differences (+ year FE) | +0.109 | 0.335 | 0.744 | −0.060 | 0.652 | 1640 |
+| Weighted by number of firms | +0.328 | 0.163 | 0.044 | −0.033 | 0.823 | 1894 |
 
 **H2: not supported.** The regime interaction is close to zero and nowhere near significance
-(β₂ = −0.036, SE 0.141, p = 0.80); the leverage slope is +0.314 in low-rate years and +0.278 in high-rate
+(β₂ = −0.041, SE 0.141, p = 0.77); the leverage slope is +0.314 in low-rate years and +0.274 in high-rate
 years. The null holds in every specification:
 
 | Specification | Term | Coef. | SE | p | N |
 |---|---|---:|---:|---:|---:|
-| Main (two-way FE) | lev × high | −0.036 | 0.141 | 0.801 | 1905 |
-| Stable core (46 industries) | lev × high | −0.085 | 0.175 | 0.627 | 1098 |
-| Regime = post-2022 dummy | lev × high | −0.167 | 0.264 | 0.528 | 1905 |
-| Continuous rate | lev × FFR | −0.002 | 0.033 | 0.943 | 1905 |
-| DV = Dividends / FCFE | lev × high | −0.266 | 0.655 | 0.685 | 1612 |
-| DV = Dividend yield (D/MC) | lev × high | +0.007 | 0.004 | 0.112 | 2099 |
-| Two-way clustered SE | lev × high | −0.036 | 0.138 | 0.796 | 1905 |
-| Excluding 2020–21 | lev × high | −0.063 | 0.149 | 0.671 | 1782 |
-| Lagged leverage | lev(t−1) × high | −0.047 | 0.159 | 0.767 | 1774 |
-| Industry FE + macro controls | lev × high | −0.143 | 0.157 | 0.363 | 1905 |
-| Backward elimination of controls | lev × high | −0.037 | 0.143 | 0.794 | 1905 |
-| Payout as reported (incl. ROE ≤ 0) | lev × high | −0.011 | 0.138 | 0.935 | 2015 |
-| Driscoll–Kraay SE | lev × high | −0.036 | 0.141 | 0.801 | 1905 |
-| First differences | Δ(lev × high) | −0.058 | 0.131 | 0.660 | 1650 |
-| Weighted by number of firms | lev × high | −0.027 | 0.148 | 0.856 | 1905 |
+| Main (two-way FE) | lev × high | −0.041 | 0.141 | 0.774 | 1894 |
+| Stable core (46 industries) | lev × high | −0.089 | 0.176 | 0.614 | 1089 |
+| Regime = post-2022 dummy | lev × high | −0.166 | 0.265 | 0.531 | 1894 |
+| Continuous rate | lev × FFR | −0.003 | 0.033 | 0.917 | 1894 |
+| DV = Dividends / FCFE | lev × high | −0.262 | 0.657 | 0.690 | 1602 |
+| DV = Dividend yield (D/MC) | lev × high | +0.007 | 0.004 | 0.118 | 2087 |
+| Two-way clustered SE | lev × high | −0.041 | 0.137 | 0.768 | 1894 |
+| Excluding 2020–21 | lev × high | −0.068 | 0.149 | 0.646 | 1771 |
+| Lagged leverage | lev(t−1) × high | −0.043 | 0.160 | 0.789 | 1764 |
+| Industry FE + macro controls | lev × high | −0.144 | 0.156 | 0.356 | 1894 |
+| Backward elimination of controls | lev × high | −0.042 | 0.143 | 0.767 | 1894 |
+| Payout as reported (incl. ROE ≤ 0) | lev × high | −0.018 | 0.138 | 0.894 | 2004 |
+| Driscoll–Kraay SE | lev × high | −0.041 | 0.142 | 0.775 | 1894 |
+| First differences | Δ(lev × high) | −0.060 | 0.133 | 0.652 | 1640 |
+| Weighted by number of firms | lev × high | −0.033 | 0.147 | 0.823 | 1894 |
 
 **How large an effect can we rule out?** A null result is only informative if the test could have found a
-meaningful effect. In the main specification the 95% interval for β₂ is [−0.312, +0.241]. Scaled by the
-standard deviation of leverage (0.138), this rules out regime effects larger than 0.043 in the payout ratio per
-1 SD of leverage (12% of the mean payout of 0.37); an equivalence test (TOST) rejects effects above 0.037 at the
+meaningful effect. In the main specification the 95% interval for β₂ is [−0.317, +0.236]. Scaled by the
+standard deviation of leverage (0.139), this rules out regime effects larger than 0.044 in the payout ratio per
+1 SD of leverage (12% of the mean payout of 0.37); an equivalence test (TOST) rejects effects above 0.038 at the
 5% level. The test has 80% power only for effects of about 0.055 (15% of the mean), so smaller effects cannot be
-excluded. Across the other specifications the bound is 0.039–0.062, except the post-2022 dummy (0.094), which
+excluded. Across the other specifications the bound is 0.040–0.063, except the post-2022 dummy (0.095), which
 uses the least regime variation ([table](outputs/tab_power_bounds.csv)).
 
-**H3: not supported.** With the primary tangibility proxy the triple interaction is −0.172 (SE 0.166,
-p = 0.30). The two alternative proxies give *significantly negative* terms (Net Cap Ex/Sales p = 0.029,
+**H3: not supported.** With the primary tangibility proxy the triple interaction is −0.174 (SE 0.167,
+p = 0.30). The two alternative proxies give *significantly negative* terms (Net Cap Ex/Sales p = 0.027,
 Capital/Sales p = 0.039), the opposite of H3's prediction: if anything, the payout–leverage link weakens more in
 high-rate years for capital-intensive industries.
 
@@ -102,9 +102,9 @@ high-rate years for capital-intensive industries.
   ROE coefficient is +0.004 (p = 0.07): more profitable industries do not pay out less
   ([table](outputs/tab_roe_check.csv)). The leverage coefficient in the yield regression is not interpreted,
   because yield and D/(D+E) both contain market equity.
-- The effective tax rate is negatively related to payout (−0.52, p = 0.001).
-- More capital-intensive industries pay out less (tangibility main effect −0.077, p = 0.008), and pay out
-  relatively more in high-rate years (tangibility × high-rate +0.064, p = 0.044).
+- The effective tax rate is negatively related to payout (−0.48, p = 0.004).
+- More capital-intensive industries pay out less (tangibility main effect −0.075, p = 0.010), and pay out
+  relatively more in high-rate years (tangibility × high-rate +0.065, p = 0.040).
 
 **Dividend smoothing (Lintner, 1956).** Industry dividends adjust slowly toward a target payout: the speed of
 adjustment is between 0.09 and 0.36 per year (pooled vs within estimates, which bracket the true value), with a
@@ -138,6 +138,12 @@ All results are associational.
 - **Industry reclassification (2012→2013).** Damodaran moved to a new industry scheme. Names are
   reconciled with a conservative rename map ([Appendix B](outputs/appendix_B_rename_map.csv)), and the
   stable-core sample checks that nothing hinges on it.
+- **Row alignment (1999).** An industry has the same number of firms in every file of a year, so matching
+  firm counts across files confirm that each row belongs to its name. They match everywhere except in
+  `wacc99`, where 17 industries (Aluminum to Chemical (Specialty)) are shifted by one row: Auto & Truck, for
+  example, carries Apparel's leverage (0.18 instead of 0.51). Leverage and the tax rate are set to missing for
+  those rows ([table](outputs/tab_data_check_alignment.csv)); this removes 11 observations from the
+  payout-ratio models.
 - **Cross-file check (2000, 2007).** `divfund`'s payout ratio should equal dividends ÷ net income from
   `divfcfe`; it does (within 5%) for 91–100% of industries in every year except 2000 and 2007. In
   `divfcfe07` the net-income column does not match the listed industries. Measures built from `divfcfe`

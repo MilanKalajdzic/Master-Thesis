@@ -1,6 +1,6 @@
 specification,lev_coef,lev_se,lev_p,beta2,beta2_se,beta2_p,N
-Industry-clustered SE (main),0.3003,0.1368,0.0282,-0.0356,0.1412,0.8007,1905
-Two-way clustered SE,0.3003,0.1477,0.0422,-0.0356,0.1377,0.7958,1905
-Driscoll-Kraay SE,0.3003,0.1095,0.0062,-0.0356,0.1413,0.8009,1905
-First differences,0.109,0.3146,0.729,-0.0576,0.131,0.6601,1650
-Weighted by number of firms,0.3284,0.1611,0.0417,-0.0269,0.1481,0.8556,1905
+Industry-clustered SE (main),0.2991,0.1403,0.0331,-0.0406,0.1411,0.7735,1894
+Two-way clustered SE,0.2991,0.1512,0.048,-0.0406,0.1374,0.7676,1894
+Driscoll-Kraay SE,0.2991,0.1109,0.0071,-0.0406,0.1419,0.7747,1894
+First differences,0.1092,0.3348,0.7444,-0.06,0.1328,0.6516,1640
+Weighted by number of firms,0.3278,0.1625,0.0438,-0.033,0.1472,0.8226,1894
