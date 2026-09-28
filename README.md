@@ -157,7 +157,7 @@ All results are associational.
 git clone https://github.com/MilanKalajdzic/Master-Thesis.git
 cd Master-Thesis
 pip install -r requirements.txt
-python scripts/download_damodaran.py      # 108 files -> data/raw/  (see data/README.md)
+python scripts/download_damodaran.py      # 135 files -> data/raw/  (see data/README.md)
 jupyter nbconvert --to notebook --execute --inplace thesis_analysis.ipynb
 ```
 
@@ -170,7 +170,7 @@ match exactly. Set `FRED_SOURCE = "live"` in the configuration cell to download 
 ```
 thesis_analysis.ipynb        full pipeline (sections map to thesis chapters 4-6 and appendices)
 scripts/
-  download_damodaran.py      fetches the 108 Damodaran industry files (1999-2025)
+  download_damodaran.py      fetches the 135 Damodaran industry files (5 datasets, 1999-2025)
   refresh_fred_snapshot.py   re-downloads the FRED series into the snapshot
 data/
   raw/                       Damodaran .xls files (not committed; downloaded)

@@ -2,7 +2,7 @@
 
 ## Damodaran industry files (`data/raw/`, not committed)
 
-Four US industry datasets from Aswath Damodaran's archive (NYU Stern), one file per data year, 1999–2025:
+Five US industry datasets from Aswath Damodaran's archive (NYU Stern), one file per data year, 1999–2025:
 
 | Token | Contents used | Example |
 |---|---|---|
@@ -10,12 +10,17 @@ Four US industry datasets from Aswath Damodaran's archive (NYU Stern), one file 
 | `divfcfe` | Dividends, FCFE, (dividends + buybacks), net income | `divfcfe24.xls` |
 | `wacc` | Market debt ratio D/(D+E), effective tax rate | `wacc24.xls` |
 | `capex` | Cap Ex / Depreciation, Net Cap Ex / Sales, Sales / Capital | `capex24.xls` |
+| `dbtfund` | Interest coverage, Debt / EBITDA, book debt to capital, net PP&E / total assets | `dbtfund24.xls` |
 
-Download everything with:
+Download with:
 
 ```bash
-python scripts/download_damodaran.py
+python scripts/download_damodaran.py                   # everything
+python scripts/download_damodaran.py --tokens dbtfund  # one dataset
 ```
+
+Existing files are skipped, so re-running only fetches what is missing. A few archive years may be
+published as `.xlsx`; the script tries both extensions and keeps the one the server delivers.
 
 **Naming.** The two-digit suffix is the *data* year. Each archive file is the January update of the
 following year, so `archives/wacc24.xls` (listed as "1/25" on the archive page) holds 2024 data. The newest
