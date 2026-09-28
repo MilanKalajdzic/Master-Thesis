@@ -1,0 +1,11 @@
+# Tested with Python 3.11 (pandas 2.3 and 3.0)
+pandas>=2.2
+numpy>=1.26
+matplotlib>=3.8
+statsmodels>=0.14
+linearmodels>=6.0
+xlrd>=2.0.1          # reads Damodaran's legacy .xls files
+openpyxl>=3.1
+requests>=2.31       # scripts/download_damodaran.py
+pandas-datareader>=0.10   # only needed for FRED_SOURCE = "live" and scripts/refresh_fred_snapshot.py
+jupyter

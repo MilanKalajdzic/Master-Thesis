@@ -1,0 +1,4 @@
+proxy,years,triple_coef,se,p_value,N
+capex_deprec,1999-2025 (24),-0.0542,0.1428,0.704,1787
+netcapex_sales,1999-2025 (24),-3.7622,2.1858,0.085,1787
+invcap_sales,2001-2025 (25),-0.532,0.1973,0.007,1867

@@ -1,0 +1,5 @@
+H1/H2  beta2 = -0.0112 (p=0.935) -> NOT supported at 5%
+        slope: low-rate +0.124 | high-rate +0.113  (H2 expects more negative when high)
+
+H3     triple = -0.0542 (p=0.704) -> NOT supported at 5%
+        (H3 expects a POSITIVE triple term)

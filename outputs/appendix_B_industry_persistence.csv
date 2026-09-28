@@ -1,0 +1,144 @@
+industry,years_present,in_core
+Advertising,27,True
+Aerospace/Defense,27,True
+Air Transport,27,True
+Apparel,27,True
+Auto Parts,27,True
+Building Materials,27,True
+Furn/Home Furnishings,27,True
+Entertainment,27,True
+Environmental & Waste Services,27,True
+Electrical Equipment,27,True
+Education,27,True
+Chemical (Basic),27,True
+Chemical (Diversified),27,True
+Chemical (Specialty),27,True
+Cable TV,27,True
+Retail (Building Supply),27,True
+Semiconductor,27,True
+Shoe,27,True
+Semiconductor Equip,27,True
+Telecom. Services,27,True
+Tobacco,27,True
+Trucking,27,True
+Restaurant/Dining,27,True
+Oilfield Svcs/Equip.,27,True
+Hotel/Gaming,27,True
+Homebuilding,27,True
+Household Products,27,True
+Food Processing,27,True
+Recreation,27,True
+Transportation (Railroads),27,True
+Telecom. Equipment,27,True
+Publishing & Newspapers,27,True
+Packaging & Container,27,True
+Paper/Forest Products,27,True
+Precious Metals,27,True
+Metals & Mining,27,True
+Machinery,27,True
+Retail (Special Lines),25,True
+Information Services,25,True
+Auto & Truck,24,True
+Computers/Peripherals,24,True
+Food Wholesalers,23,True
+Retail (Automotive),22,True
+Rubber& Tires,21,True
+Beverage (Alcoholic),21,True
+Beverage (Soft),20,True
+Oil/Gas Distribution,19,False
+Electronics,15,False
+Steel,15,False
+Internet,14,False
+Drug,14,False
+Toiletries/Cosmetics,14,False
+Retail Store,14,False
+Industrial Services,14,False
+Diversified Co.,14,False
+Petroleum (Integrated),14,False
+Metal Fabricating,14,False
+Natural Gas (Div.),14,False
+Office Equip/Supplies,14,False
+Medical Services,14,False
+Petroleum (Producing),14,False
+Precision Instrument,14,False
+Maritime,14,False
+Shipbuilding & Marine,13,False
+Oil/Gas (Integrated),13,False
+Oil/Gas (Production and Exploration),13,False
+Telecom (Wireless),13,False
+Broadcasting,13,False
+Biotechnology,13,False
+Heathcare Information and Technology,13,False
+Healthcare Products,13,False
+E-Commerce,13,False
+Business & Consumer Services,13,False
+Coal & Related Energy,13,False
+Diversified,13,False
+Computer Services,13,False
+Retail (General),13,False
+Electronics (Consumer & Office),13,False
+Farming/Agriculture,13,False
+Office Equipment & Services,13,False
+Transportation,13,False
+Retail (Grocery and Food),13,False
+Retail (Distributors),13,False
+Wireless Networking,13,False
+Steel (Integrated),12,False
+Software (System & Application),12,False
+Drugs (Pharmaceutical),12,False
+Software (Internet),12,False
+Engineering/Construction,12,False
+Electronics (General),12,False
+Drugs (Biotechnology),12,False
+Medical Supplies,12,False
+Software (Entertainment),12,False
+Steel (General),12,False
+Pharmacy Services,12,False
+Entertainment Tech,12,False
+Green & Renewable Energy,12,False
+Healthcare Support Services,12,False
+Human Resources,12,False
+Computer Software/Svcs,12,False
+Canadian Energy,12,False
+Coal,12,False
+Construction Supplies,12,False
+Hospitals/Healthcare Facilities,12,False
+Healthcare Information,11,False
+Foreign Electronics,11,False
+Manuf. Housing/RV,11,False
+Grocery,10,False
+Retail (Online),9,False
+Home Appliance,9,False
+Cement & Aggregates,8,False
+Foreign Telecom.,7,False
+Beverage,7,False
+Property Management,6,False
+Textile,5,False
+Funeral Services,5,False
+Heavy Construction,4,False
+Retail/Wholesale Food,4,False
+Automotive,3,False
+Pipeline MLPs,3,False
+Healthcare Info Systems,3,False
+Foreign Electron/Entertn,3,False
+Engineering & Const,3,False
+Heavy Truck & Equip,3,False
+Computer Software,3,False
+Computer & Peripherals,3,False
+Retail (Hardlines),2,False
+Retail (Softlines),2,False
+IT Services,2,False
+Med Supp Non-Invasive,2,False
+Med Supp Invasive,2,False
+Drugstore,2,False
+Alternate Energy,1,False
+Aluminum,1,False
+Construction,1,False
+Healthcare Services,1,False
+Healthcare Facilities,1,False
+Healthcare Equipment,1,False
+Engineering,1,False
+Copper,1,False
+Internet software and services,1,False
+Pharma & Drugs,1,False
+Retail (Internet),1,False

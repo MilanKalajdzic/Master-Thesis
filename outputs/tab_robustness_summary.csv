@@ -1,0 +1,13 @@
+specification,term,coef,se,p,N
+Main (two-way FE),lev_x_high,-0.0112,0.1381,0.9352,2015
+Stable core,lev_x_high,-0.0203,0.1747,0.9074,1153
+Regime = post-2022,lev_x_high,-0.3026,0.2065,0.143,2015
+DV = Dividends/FCFE,lev_x_high,0.6499,0.544,0.2324,2099
+DV = (Div+Buybacks)/NI,lev_x_high,-1.6472,2.0068,0.412,997
+Two-way clustered SE,lev_x_high,-0.0112,0.146,0.9387,2015
+Excl. 2020-21,lev_x_high,-0.0968,0.1452,0.5051,1862
+Lagged leverage,lev_lag_x_high,-0.0238,0.1472,0.8714,1881
+Industry FE + macro controls,lev_x_high,-0.0895,0.144,0.5341,2015
+Without ROE,lev_x_high,-0.0532,0.1361,0.696,2029
+Backward elimination,lev_x_high,-0.0028,0.1384,0.9841,2015
+"H3 triple term, stable core",lev_x_high_x_tang,0.0798,0.1649,0.6287,1019

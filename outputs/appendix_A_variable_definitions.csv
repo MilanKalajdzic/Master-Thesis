@@ -1,0 +1,14 @@
+variable,role,definition,source
+payout,Dependent (primary),Dividend payout ratio,divfund
+div_to_fcfe,Dependent (secondary),Dividends / FCFE,divfcfe
+totpayout_ni,Dependent (alt),(Dividends+Buybacks)/Net Income,divfcfe (2015+)
+lev,Key independent,Market debt ratio D/(D+E),wacc
+tangibility,Moderator (H3),Proxy = capex_deprec; missing in 2013-2015,capex
+roe,Control,Return on equity,divfund
+tax,Control,Effective tax rate,wacc
+size,Control,log(Market Cap),divfund
+gdp_growth,Macro control,Real GDP growth % (absorbed by year FE; used in industry-FE-only spec),FRED GDPC1
+cred_spread,Macro control,BAA-AAA spread (absorbed by year FE; used in industry-FE-only spec),"FRED BAA, AAA"
+t10,Descriptive,"10-year Treasury yield, annual avg",FRED GS10
+high_rate,Regime,1 if ffr>=3%,FRED FEDFUNDS
+ffr,Regime (cont.),Avg fed funds rate,FRED FEDFUNDS
