@@ -1,8 +1,8 @@
 family,test,expected_sign,coef,se,p,p_bootstrap,p_holm,p_romano_wolf,N
-Primary hypotheses,H2: lev x high-rate,-,-0.0414,0.1413,0.7698,0.756,0.7698,0.756,1893
-Primary hypotheses,"H3: triple, PP&E rank",+,-1.0946,0.4949,0.0271,0.047,0.0542,0.076,1893
-H3 across tangibility measures,H3: PP&E rank,+,-1.0946,0.4949,0.0271,0.047,0.1354,0.181,1893
-H3 across tangibility measures,"H3: PP&E, time-invariant",+,-1.0108,0.4979,0.0425,0.06,0.1354,0.181,1893
-H3 across tangibility measures,H3: Cap Ex / Depreciation,+,-0.175,0.1669,0.2944,0.29,0.2944,0.29,1679
-H3 across tangibility measures,H3: Net Cap Ex / Sales,+,-7.0008,3.1642,0.0271,0.095,0.1354,0.181,1679
-H3 across tangibility measures,H3: Invested capital / Sales,+,-0.6024,0.291,0.0386,0.079,0.1354,0.181,1762
+Primary hypotheses,H2: lev x high-rate,-,-0.095102,0.153234,0.534923,0.5251,0.5251,0.5251,1879
+Primary hypotheses,"H3: triple, PP&E rank",+,-1.182992,0.547595,0.030885,0.0485,0.097,0.067,1879
+H3 across tangibility measures,H3: PP&E rank,+,-1.182992,0.547595,0.030885,0.0485,0.2425,0.1708,1879
+H3 across tangibility measures,"H3: PP&E, time-invariant",+,-1.170329,0.576876,0.04264,0.0564,0.2425,0.1708,1879
+H3 across tangibility measures,H3: Cap Ex / Depreciation,+,-0.186443,0.169804,0.272384,0.2853,0.2853,0.2853,1666
+H3 across tangibility measures,H3: Net Cap Ex / Sales,+,-7.27664,3.174534,0.022032,0.086,0.258,0.1708,1666
+H3 across tangibility measures,H3: Invested capital / Sales,+,-0.736259,0.350582,0.035878,0.0993,0.258,0.1708,1748

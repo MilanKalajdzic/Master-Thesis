@@ -1,23 +1,24 @@
 specification,term,coef,se,p,N
-Main (two-way FE),lev_x_high,-0.0414,0.1413,0.7698,1893
-Stable core,lev_x_high,-0.0887,0.1759,0.6141,1089
-Regime = post-2022,lev_x_high,-0.1656,0.2647,0.5317,1893
-DV = Dividends/FCFE,lev_x_high,-0.2498,0.6578,0.7042,1601
-DV = (Div+Buybacks)/NI,lev_x_high,-0.4497,1.0514,0.669,894
-DV = Dividend yield,lev_x_high,0.0066,0.0042,0.1153,2086
-Two-way clustered SE,lev_x_high,-0.0414,0.1376,0.7639,1893
-Excl. 2020-21,lev_x_high,-0.0692,0.1493,0.6429,1770
-Excl. 2008-09,lev_x_high,-0.0479,0.1475,0.7455,1746
-Growth control (capex intensity),lev_x_high,-0.0681,0.1432,0.6345,1893
-Lagged leverage,lev_lag_x_high,-0.0435,0.1608,0.7869,1763
-Industry FE + macro controls,lev_x_high,-0.1468,0.1566,0.3488,1893
-Without ROE,lev_x_high,-0.0915,0.155,0.5553,1907
-Backward elimination,lev_x_high,-0.0431,0.1431,0.7633,1893
-"H3 triple term, stable core",lev_x_high_x_tang,-0.6006,0.6108,0.3257,1089
-Payout incl. non-positive earnings,lev_x_high,-0.0183,0.138,0.8943,2003
-Driscoll-Kraay SE,lev_x_high,-0.0414,0.1423,0.7713,1893
-First differences,d_lev_x_high,-0.0611,0.1332,0.6467,1639
-Weighted by number of firms,lev_x_high,-0.0331,0.1472,0.822,1893
-Leverage without leases,m_x_high,-0.0495,0.149,0.7399,1893
-Book leverage,m_x_high,-0.0092,0.0864,0.9148,1891
-"Debt/EBITDA (per unit, not per SD)",m_x_high,-0.0107,0.0175,0.5402,1890
+Main (two-way FE),lev_x_high,-0.095102,0.153234,0.534923,1879
+Stable core,lev_x_high,-0.0908,0.177762,0.609605,1088
+Regime = 2022-25 dummy,lev_x_high,-0.266875,0.304017,0.380159,1879
+DV = Dividends/FCFE,lev_x_high,-0.248923,0.64839,0.701103,1587
+DV = (Div+Buybacks)/NI,lev_x_high,-0.66775,1.180489,0.571828,740
+Two-way clustered SE,lev_x_high,-0.095102,0.148937,0.523208,1879
+Excl. 2020-21,lev_x_high,-0.093111,0.152324,0.541111,1758
+Excl. 2008-09,lev_x_high,-0.115782,0.16234,0.475826,1732
+Capital spending control,lev_x_high,-0.113459,0.153865,0.460984,1879
+Lagged leverage,lev_lag_x_high,-0.079288,0.167419,0.63586,1703
+Industry FE + macro controls,lev_x_high,-0.191935,0.16674,0.249848,1879
+Without ROE,lev_x_high,-0.140714,0.168866,0.404797,1879
+DV = log dividend yield (leverage terms partly mechanical),lev_x_high,0.934974,0.413582,0.023904,1884
+Backward elimination,lev_x_high,-0.09797,0.155017,0.527472,1879
+"H3 triple term, stable core",lev_x_high_x_tang,-0.61231,0.633879,0.334289,1088
+Payout incl. non-positive earnings,lev_x_high,-0.037708,0.134702,0.779555,1988
+Payout incl. rows contradicting divfcfe,lev_x_high,-0.044799,0.137825,0.74519,1893
+Driscoll-Kraay SE,lev_x_high,-0.095102,0.134343,0.479097,1879
+First differences,d_lev_x_high,-0.062584,0.138427,0.651251,1622
+Weighted by number of firms,lev_x_high,-0.086773,0.152563,0.569586,1879
+Leverage without leases,m_x_high,-0.105897,0.163276,0.5167,1879
+Book leverage,m_x_high,-0.030453,0.089599,0.733988,1877
+"Debt/EBITDA (per unit, not per SD)",m_x_high,-0.017606,0.019021,0.354779,1876

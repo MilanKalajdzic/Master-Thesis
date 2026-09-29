@@ -43,7 +43,7 @@ def test_row_alignment_keeps_a_different_vintage():
     assert fixed["lev_book"].notna().all()
 
 
-def test_crossfile_check_flags_the_scrambled_year(raw):
+def test_crossfile_check_flags_the_year_with_doubled_net_income(raw):
     agree = sample.crossfile_agreement(raw, {}, INDUSTRIES)
     assert agree.loc[2007] < 0.2
     assert agree.drop(2007).eq(1).all()
@@ -52,11 +52,14 @@ def test_crossfile_check_flags_the_scrambled_year(raw):
 def test_clean_sample_reconciles_and_excludes():
     df = pd.DataFrame({
         "industry": ["Auto Parts (OEM)", "Auto Parts (Replacement)", "Bank (Regional)", "Total Market", "Steel"],
-        "year": 2005, "n_firms": [30, 10, 50, 900, 20], "payout": [0.2, 0.4, 0.5, 0.3, 0.1]})
+        "year": 2005, "n_firms": [30, 10, 50, 900, 20], "payout": [0.2, 0.4, 0.5, 0.3, 0.1],
+        "mktcap": [300.0, 100.0, 500.0, 9e3, np.nan]})
     out = sample.clean_sample(df, {"Auto Parts (OEM)": "Auto Parts", "Auto Parts (Replacement)": "Auto Parts"},
                               AGG, ["bank"], verbose=False).set_index("industry")
     assert list(out.index) == ["Auto Parts", "Steel"]
     assert out.loc["Auto Parts", "n_firms"] == 40                     # firm counts summed
+    assert out.loc["Auto Parts", "mktcap"] == 400                     # dollar levels summed ...
+    assert np.isnan(out.loc["Steel", "mktcap"])                       # ... missing stays missing
     assert out.loc["Auto Parts", "payout"] == pytest.approx(0.3)      # ratios averaged
     kept = sample.clean_sample(df, {}, AGG, None, verbose=False)
     assert "Bank (Regional)" in set(kept["industry"])                # no keys: financials kept

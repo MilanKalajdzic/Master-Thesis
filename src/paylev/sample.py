@@ -15,9 +15,11 @@ def is_fin_util(name, keys):
     return any(k in nl for k in keys)
 
 
-def clean_sample(df, rename, agg_rows, fin_util_keys=None, verbose=True):
+def clean_sample(df, rename, agg_rows, fin_util_keys=None, verbose=True,
+                 sum_cols=("n_firms", "mktcap", "div_usd", "ni_usd")):
     """Reconcile names, drop aggregate rows and (if keys are given) financials/utilities, then collapse
-    industry-years that the rename map merged: mean of numeric columns, firm counts summed."""
+    industry-years that the rename map merged: dollar levels and firm counts (`sum_cols`) are summed, ratios
+    averaged."""
     df = df.copy()
     df["industry"] = df["industry"].replace(rename)
     df = df[~df["industry"].isin(agg_rows)]
@@ -27,7 +29,7 @@ def clean_sample(df, rename, agg_rows, fin_util_keys=None, verbose=True):
             print(f"Excluding {int(m.sum())} financial/utility rows across all years")
         df = df[~m]
     num = [c for c in df.select_dtypes("number").columns if c != "year"]
-    agg = {c: ("sum" if c == "n_firms" else "mean") for c in num}
+    agg = {c: ((lambda s: s.sum(min_count=1)) if c in sum_cols else "mean") for c in num}
     df = df.groupby(["industry", "year"], as_index=False).agg(agg)
     return df.reset_index(drop=True)
 
@@ -117,4 +119,4 @@ def xtsum(df, cols, entity="industry"):
         m = s.groupby(entity)[c].transform("mean")
         rows[c] = {"sd_overall": s[c].std(), "sd_between": s.groupby(entity)[c].mean().std(),
                    "sd_within": (s[c] - m + s[c].mean()).std()}
-    return pd.DataFrame(rows).T.round(3)
+    return pd.DataFrame(rows).T

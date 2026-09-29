@@ -46,14 +46,24 @@ def test_fast_estimator_on_a_subset_matches_a_refit():
     assert b == pytest.approx(r.params["z"], abs=1e-10) and se == pytest.approx(r.std_errors["z"], abs=1e-10)
 
 
-def test_fe_ols_ignores_empty_entities_and_missing_years():
+@pytest.mark.parametrize("absent", [[2003], [2000, 2003]])       # a gap; the base year missing as well
+def test_fe_ols_ignores_empty_entities_and_missing_years(absent):
     df = make_panel(seed=3)
-    df = df[df["year"] != 2003]                                   # a year absent from the sample
-    ent = pd.factorize(df["industry"])[0] + 1                      # entity code 0 has no rows
-    yr = np.unique(df["year"], return_inverse=True)[1]
-    b1, se1, _ = fe_ols(df["y"].to_numpy(), df[["x", "z"]].to_numpy(), ent, yr)
-    b0, se0, _ = fe_ols(df["y"].to_numpy(), df[["x", "z"]].to_numpy(), ent - 1, yr)
-    assert np.allclose(b1, b0) and np.allclose(se1, se0)
+    df = df[~df["year"].isin(absent)]
+    r = fit_panel(df, "y", ["x", "z"], verbose=False)
+    y, X = df["y"].to_numpy(), df[["x", "z"]].to_numpy()
+    yr = (df["year"] - 2000).to_numpy()                            # codes of the absent years have no rows
+    ent = pd.factorize(df["industry"])[0]
+    b0, se0, dof0 = fe_ols(y, X, ent, yr)
+    b1, se1, dof1 = fe_ols(y, X, ent + 1, yr)                      # entity code 0 has no rows either
+    assert np.allclose(b1, b0) and np.allclose(se1, se0) and dof1 == dof0
+    assert b0 == pytest.approx(r.params[["x", "z"]].to_numpy(), abs=1e-10)
+    assert se0 == pytest.approx(r.std_errors[["x", "z"]].to_numpy(), abs=1e-10)
+
+
+def test_too_few_years_is_not_estimated():
+    df = make_panel(years=range(2000, 2002))
+    assert fit_panel(df, "y", ["x", "z"], verbose=False) is None
 
 
 @pytest.mark.filterwarnings("ignore::linearmodels.panel.utility.AbsorbingEffectWarning")   # the point of the test

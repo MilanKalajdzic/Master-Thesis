@@ -9,5 +9,6 @@ reconciliation, specifications); this package holds the machinery it calls, so t
     estimation  two-way fixed-effects panel regressions (linearmodels, plus a fast numpy version for refits)
     inference   multiple-testing adjustments (Holm, Romano-Wolf) and the industry-cluster bootstrap
     synthetic   fake Damodaran files with known effects, for the tests
+    plotting    the figure style shared by the thesis and README figures
 """
-__version__ = "1.0.0"
+__version__ = "1.1.0"

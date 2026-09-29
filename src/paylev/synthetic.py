@@ -10,8 +10,12 @@ exercise it. The data contain:
 - a block of rows in one wacc file shifted against the industry names (like wacc99), with two neighbours in the
   block that have the same firm count, so the firm-count check catches all but one row and the shared-value
   check the last one;
-- a year whose divfcfe net income is scrambled across industries (like divfcfe07), which the cross-file check
-  must catch;
+- a year whose divfcfe net income is twice the true figure (like divfcfe07), which the cross-file check must
+  catch;
+- total payout reported net of stock issuance only in 2014-15 (like the real divfcfe14-15), which must not be
+  read as the gross figure;
+- an industry with negative book equity from 2020 ("Restaurant/Dining", like the real one): its reported ROE is
+  negative although net income is positive, so its payout ratio is defined and its ROE is not;
 - a financial and a utility industry (excluded), and an industry renamed at the 2013 reclassification
   ("Restaurant" -> "Restaurant/Dining", reconciled by the notebook's rename map);
 - a newest file saved without year digits (dated from its stamp, like a fresh download from /datasets/).
@@ -27,7 +31,8 @@ import openpyxl
 HIGH_RATE_YEARS = [1999, 2000, 2001, 2005, 2006, 2007, 2023, 2024, 2025]   # fed funds >= 3% in the snapshot
 TRUTH = {"lev": 0.3, "lev_x_high": -0.4, "roe": -1.0}                     # planted payout coefficients
 SHIFTED = ("wacc", 2004, 3, 9)       # file, year, rows [3, 9) of the industry list shifted by one
-SCRAMBLED = ("divfcfe", 2007)        # net income permuted across industries
+DOUBLED = ("divfcfe", 2007)          # net income reported at twice its value
+NEG_EQUITY = ("Restaurant", 2020)    # industry and first year with negative book equity
 
 INDUSTRIES = ["Advertising", "Aerospace/Defense", "Air Transport", "Apparel", "Auto & Truck", "Beverage",
               "Building Materials", "Chemical (Basic)", "Computers/Peripherals", "Electrical Equipment",
@@ -132,9 +137,10 @@ def _simulate(years, seed):
             ppe = float(np.clip(base["ppe"][i] + rng.normal(0, 0.02), 0.01, 0.95)) * ppe_scale
             ebitda_ev = float(rng.uniform(0.06, 0.16))
             lease = 0.03 if 2013 <= y <= 2019 else (0.005 if y >= 2020 else 0.0)   # wacc includes leases from 2013
-            v = {"n": int(base["n"][i] + rng.integers(-3, 4)), "payout": payout, "roe": roe, "mktcap": mktcap,
+            roe_rep = -0.05 if (ind == NEG_EQUITY[0] and y >= NEG_EQUITY[1]) else roe   # NI / negative equity
+            v = {"n": int(base["n"][i] + rng.integers(-3, 4)), "payout": payout, "roe": roe_rep, "mktcap": mktcap,
                  "yield": div / mktcap, "div": div, "ni": ni, "fcfe": ni * rng.uniform(0.6, 1.2),
-                 "totpay": div * rng.uniform(1.2, 2.0), "lev": lev, "eq": 1 - lev,
+                 "totpay": div * rng.uniform(1.2, 2.0), "netpay": div * rng.uniform(0.3, 1.1), "lev": lev, "eq": 1 - lev,
                  "tax": float(rng.uniform(0.1, 0.35)), "lev_unadj": max(lev - lease, 0.0),
                  "lev_book": float(np.clip(lev * 1.6, 0.05, 0.95)), "ebitda_ev": ebitda_ev,
                  "de_rep": lev / ebitda_ev * 1.15, "icr": float(rng.uniform(2, 15)), "ppe": ppe,
@@ -154,17 +160,18 @@ def _rows(token, year, sim):
     cols = HEADERS[token][_era(year)]
     if token == "dbtfund" and _era(year) == "transition" and year != 2018:
         cols = [c for c in cols if c[1] != "de_rep"]           # Damodaran reports Debt/EBITDA in 2018 only here
+    if token == "divfcfe" and year in (2014, 2015, 2016):     # net of stock issuance: 2014-15 only, 2016 both
+        net = ("Dividends + Buybacks - Stock Issuances", "netpay")
+        cols = [c for c in cols if c[1] != "totpay"] + [net] if year < 2016 else cols + [net]
     names = [_name(ind, year) for ind in INDUSTRIES]
     values = [[sim[year][ind][k] for _, k in cols] for ind in INDUSTRIES]
     if token == SHIFTED[0] and year == SHIFTED[1]:
         a, b = SHIFTED[2], SHIFTED[3]                            # names a..b-1 carry the data of the row above
         values[a:b] = values[a - 1:b - 1]
-    if token == SCRAMBLED[0] and year == SCRAMBLED[1]:
+    if token == DOUBLED[0] and year == DOUBLED[1]:
         k = [c[1] for c in cols].index("ni")
-        perm = np.random.default_rng(year).permutation(len(values))
-        ni = [values[p][k] for p in perm]
-        for r, v in zip(values, ni):
-            r[k] = v
+        for r in values:
+            r[k] *= 2
     total = [sum(r[j] for r in values) if isinstance(values[0][j], (int, float)) else None
              for j in range(len(cols))]
     return (["Industry Name"] + [h for h, _ in cols],

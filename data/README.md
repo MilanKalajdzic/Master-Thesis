@@ -7,10 +7,10 @@ Five US industry datasets from Aswath Damodaran's archive (NYU Stern), one file 
 | Token | Contents used | Example |
 |---|---|---|
 | `divfund` | Dividend payout ratio, ROE, market cap | `divfund24.xls` |
-| `divfcfe` | Dividends, FCFE, (dividends + buybacks), net income | `divfcfe24.xls` |
+| `divfcfe` | Dividends, FCFE, dividends + buybacks (gross; 2013 and 2016+), net income | `divfcfe24.xls` |
 | `wacc` | Market debt ratio D/(D+E), effective tax rate | `wacc24.xls` |
 | `capex` | Cap Ex / Depreciation, Net Cap Ex / Sales, Sales / Capital | `capex24.xls` |
-| `dbtfund` | PP&E / total assets, book and lease-free market debt ratios, EBITDA / EV | `dbtfund24.xls` |
+| `dbtfund` | PP&E / total assets, book and lease-free market debt ratios, EBITDA / EV, capital spending | `dbtfund24.xls` |
 
 Download with:
 
@@ -25,7 +25,7 @@ published as `.xlsx`; the script tries both extensions and keeps the one the ser
 **Naming.** The two-digit suffix is the *data* year. Each archive file is the January update of the
 following year, so `archives/wacc24.xls` (listed as "1/25" on the archive page) holds 2024 data. The newest
 year is not archived yet: it is the current file (`pc/datasets/wacc.xls`) and gets saved as `wacc25.xls`.
-The notebook reads the year from each file's internal "Date updated" stamp where there is one (2018+),
+The notebook reads the year from each file's internal "Date updated" stamp where there is one (2013+),
 so a mislabelled newest file is still dated correctly.
 
 Manual download: <https://pages.stern.nyu.edu/~adamodar/New_Home_Page/dataarchived.html>. Firefox or
@@ -34,7 +34,8 @@ searches recursively.
 
 ## FRED snapshot (`data/fred/fred_snapshot.csv`, committed)
 
-Long format (`series_id, date, value`), vintage 2026-09-28:
+Long format (`series_id, date, value`): monthly series 1998–2025 and quarterly GDP 1997–2025, committed on
+2026-09-28:
 
 | Series | Frequency | Used as |
 |---|---|---|

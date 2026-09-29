@@ -46,7 +46,10 @@ def test_column_pickers_on_real_header_variants():
                                "FCFE (before debt cash flows)(US $ millions)", "Net Cash Returned/FCFE (pre-debt)"])
     assert dm.pick_div(fc) == "  Dividends (US $ millions)"
     assert dm.pick_fcfe(fc) == "FCFE (before debt cash flows)(US $ millions)"
-    assert dm.pick(fc, "dividends", "buyback") == "Dividends + Buybacks(US $ millions)"
+    assert dm.pick_totpay(fc) == "Dividends + Buybacks(US $ millions)"
+    net = pd.DataFrame(columns=["industry", "Dividends + Buybacks - Stock Issuances", "Dividends + Buybacks"])
+    assert dm.pick_totpay(net) == "Dividends + Buybacks"                  # gross, not net of issuance
+    assert dm.pick_totpay(net[["industry", "Dividends + Buybacks - Stock Issuances"]]) is None
     wc = pd.DataFrame(columns=["industry", "E/(D+E)", "D/(D+E)", "After-tax Cost of Debt", "Tax Rate"])
     assert dm.pick(wc, "d/(d+e)") == "D/(D+E)"                  # not E/(D+E)
     db = pd.DataFrame(columns=["industry", "Book Debt to Capital", "Debt to EBITDA", "EBITDA/EV", "Net PP&E/Total Assets"])
@@ -69,7 +72,8 @@ def test_load_year_reads_the_right_values(sources, fake_dir):
         assert r.loc["Machinery", "capex_assets"] == pytest.approx(v["capspend"])
         assert r.loc["Machinery", "nf_wacc"] == r.loc["Machinery", "n_firms"]
     assert "totpayout_ni" not in dm.load_year(2010, sources)                  # no buyback column before 2013
-    r16 = dm.load_year(2016, sources).set_index("industry")
+    assert "totpayout_ni" not in dm.load_year(2014, sources)                  # 2014-15: only net of issuance
+    r16 = dm.load_year(2016, sources).set_index("industry")                   # 2016: both, the gross one is read
     assert r16.loc["Machinery", "totpayout_ni"] == pytest.approx(sim[2016]["Machinery"]["totpay"] / sim[2016]["Machinery"]["ni"])
     r = dm.load_year(2010, sources, tangibility_proxy="capex_deprec").set_index("industry")
     assert r.loc["Machinery", "tangibility"] == pytest.approx(r.loc["Machinery", "capex_deprec"])

@@ -12,6 +12,7 @@ data-quality figure reads the raw Damodaran files for the file-year the row-alig
 from __future__ import annotations
 
 import argparse
+import re
 import sys
 from pathlib import Path
 
@@ -91,12 +92,10 @@ def hero(t, panel, path):
     save(fig, path)
 
 
-def h2_bounds(t, outputs, path):
+def h2_bounds(t, panel, outputs, path):
     """Regime effect per 1 SD of leverage, 95% CI, in every specification and leverage measure."""
     pw = pd.read_csv(outputs / "tab_power_bounds.csv")
-    sd = float(pd.read_csv(outputs / "tab_sd_decomposition.csv", index_col=0).loc["lev", "sd_overall"])
-    rows = [(r.specification, r.coef * sd, (r.coef - 1.96 * r.se) * sd, (r.coef + 1.96 * r.se) * sd)
-            for r in pw.itertuples()]
+    rows = [(r.specification, r.coef_payout, r.ci95_lo_payout, r.ci95_hi_payout) for r in pw.itertuples()]
     alt = pd.read_csv(outputs / "tab_alt_leverage.csv")
     alt = alt[(alt["dependent"] == "payout") & (alt["regime"] == "high-rate")].iloc[1:]   # row 0 = main measure
     extra = [(f"Leverage = {r._2}", r.interaction * r.sd_measure, (r.interaction - 1.96 * r.int_se) * r.sd_measure,
@@ -108,7 +107,8 @@ def h2_bounds(t, outputs, path):
     fig.subplots_adjust(left=0.34, right=0.97, top=1 - 1.25 / h, bottom=0.75 / h)
     titles(fig, t, "The rate regime doesn't move the payout–leverage slope",
            "Change in the payout ratio per 1 SD of leverage, high- minus low-rate years: estimate and 95% CI.\n"
-           f"Shaded: ±{EQUIV_MARGIN:.2f}, about 14% of the mean payout, treated as economically negligible.",
+           f"Shaded: ±{EQUIV_MARGIN:.2f}, about {EQUIV_MARGIN / panel['payout'].mean():.0%} of the mean payout, "
+           "treated as economically negligible.",
            y=1 - 0.12 / h)
     ax.axvspan(-EQUIV_MARGIN, EQUIV_MARGIN, color=t["band"], lw=0, zorder=0)
     ax.axvline(0, color=t["base"], lw=1, zorder=1)
@@ -122,7 +122,9 @@ def h2_bounds(t, outputs, path):
         c = t["s1"] if main else t["dim"]
         ax.plot([lo, hi], [y, y], color=c, lw=2 if main else 1.6, zorder=2)
         dot(ax, est, y, c, t, size=52 if main else 40)
-        labels.append(name.replace("Main (two-way FE)", "Main specification"))
+        labels.append(re.sub(r"(\d{2})(\d{2})-(\d{2})\b", "\\1\\2–\\1\\3",
+                             name.replace("Main (two-way FE)", "Main specification")
+                             .replace("Driscoll-Kraay", "Driscoll–Kraay")))
     ax.set_yticks(range(n)); ax.set_yticklabels(labels[::-1])
     for lab in ax.get_yticklabels():
         if lab.get_text().startswith("Main"):
@@ -274,7 +276,7 @@ def main():
         t = use(THEMES[mode])
         sfx = "" if mode == "light" else "-dark"
         hero(t, panel, a.img / f"hero{sfx}.png")
-        h2_bounds(t, a.outputs, a.img / f"h2_bounds{sfx}.png")
+        h2_bounds(t, panel, a.outputs, a.img / f"h2_bounds{sfx}.png")
         h3(t, panel, a.outputs, a.img / f"h3_tangibility{sfx}.png")
         ok = alignment(t, a.outputs, a.data, a.img / f"data_alignment{sfx}.png")
         made += [f"hero{sfx}", f"h2_bounds{sfx}", f"h3_tangibility{sfx}"] + ([f"data_alignment{sfx}"] if ok else [])

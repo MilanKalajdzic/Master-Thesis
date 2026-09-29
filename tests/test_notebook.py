@@ -11,7 +11,7 @@ import sys
 import pandas as pd
 import pytest
 
-from paylev.synthetic import SCRAMBLED, SHIFTED, TRUTH
+from paylev.synthetic import DOUBLED, NEG_EQUITY, SHIFTED, TRUTH
 from tests.conftest import REPO
 
 
@@ -54,7 +54,8 @@ def test_finds_the_planted_effects(run):
     assert coef(tab.loc["lev_x_high", "Interaction"]) == pytest.approx(TRUTH["lev_x_high"], abs=0.05)
     assert coef(tab.loc["roe", "Interaction"]) == pytest.approx(TRUTH["roe"], abs=0.1)
     verdicts = (run / "outputs" / "hypothesis_verdicts.txt").read_text()
-    assert "H1/H2" in verdicts and "-> SUPPORTED" in verdicts.splitlines()[0]
+    h2 = [line for line in verdicts.splitlines() if line.startswith("H2")]
+    assert h2 and "-> SUPPORTED" in h2[0]
 
 
 def test_catches_the_planted_data_defects(run):
@@ -66,7 +67,11 @@ def test_catches_the_planted_data_defects(run):
     assert by_check.loc["D/(D+E) vs dbtfund"] == 1               # ... the one with an equal firm count by value
     assert al.loc[~hit, "rows_set_missing"].eq(0).all()
     cf = pd.read_csv(run / "outputs" / "tab_data_check_crossfile.csv", index_col=0)["share_agree"]
-    assert cf.loc[SCRAMBLED[1]] < 0.75 and cf.drop(SCRAMBLED[1]).ge(0.75).all()
+    assert cf.loc[DOUBLED[1]] < 0.75 and cf.drop(DOUBLED[1]).ge(0.75).all()
+    panel = pd.read_csv(run / "outputs" / "analysis_panel.csv").set_index(["industry", "year"])
+    neg = panel.loc["Restaurant/Dining"].loc[NEG_EQUITY[1]:]         # negative book equity, positive net income:
+    assert neg["payout"].notna().all() and neg["roe"].isna().all()    # payout defined, ROE not
+    assert panel.xs(2014, level="year")["totpayout_ni"].isna().all()   # only the net figure in 2014-15
 
 
 def test_readme_figures_are_drawn_from_the_outputs(run, fake_dir, tmp_path):

@@ -26,12 +26,8 @@ def fit_panel(df, depvar, regressors, entity=True, time=True, cluster_time=False
     ny = d["year"].nunique()
     say(f"=== {title} ===\nobs={len(d)}  industries={d['industry'].nunique()}  years={ny}")
     if ny < 3 or not HAVE_LM:
-        if not HAVE_LM:
-            say("linearmodels unavailable."); return None
-        import statsmodels.formula.api as smf
-        say("Short panel -> pooled OLS.\n")
-        res = smf.ols(f"{depvar} ~ " + " + ".join(regressors), data=d).fit(cov_type="HC1")
-        say(res.summary().tables[1]); return res
+        say("linearmodels unavailable." if not HAVE_LM else "Fewer than 3 years: not estimated.")
+        return None
     import statsmodels.api as sm
     dd = d.set_index(["industry", "year"]); X = sm.add_constant(dd[regressors])
     mod = PanelOLS(dd[depvar], X, entity_effects=entity, time_effects=time, drop_absorbed=True,
@@ -40,7 +36,7 @@ def fit_panel(df, depvar, regressors, entity=True, time=True, cluster_time=False
         res = mod.fit(cov_type="kernel", kernel="bartlett", bandwidth=dk_bandwidth)
     else:
         res = mod.fit(cov_type="clustered", cluster_entity=True, cluster_time=cluster_time)
-    say(res.summary.tables[1]); say(f"R2(within): {res.rsquared_within:.3f}")
+    say(res.summary.tables[1]); say(f"R2 (after removing the fixed effects): {res.rsquared:.3f}")
     absorbed = [r for r in regressors if r not in res.params.index]
     if absorbed:
         say("Absorbed by the fixed effects (not estimable, dropped):", absorbed)
@@ -67,15 +63,17 @@ def fe_ols(y, X, ent, yr):
     `ent` and `yr` are integer codes starting at 0. Returns (coefficients, SE, residual degrees of freedom).
     """
     n, k = X.shape
-    D = np.zeros((n, yr.max() + 1)); D[np.arange(n), yr] = 1.0
-    Z = np.column_stack([y, X, D[:, 1:]])
+    T = yr.max() + 1
+    D = np.zeros((n, T)); D[np.arange(n), yr] = 1.0
+    D = D[:, np.bincount(yr, minlength=T) > 0][:, 1:]        # years present, the first one as the base
+    Z = np.column_stack([y, X, D])
     G = ent.max() + 1
     cnt = np.bincount(ent, minlength=G).astype(float)
     M = np.zeros((G, Z.shape[1])); np.add.at(M, ent, Z)
     Zd = Z - (M / np.maximum(cnt, 1)[:, None])[ent]
     yd, Xd = Zd[:, 0], Zd[:, 1:]
-    Xd = Xd[:, np.r_[np.ones(k, bool), np.abs(Xd[:, k:]).sum(0) > 1e-10]]   # years absent from the sample
-    A = np.linalg.pinv(Xd.T @ Xd)
+    Xd = Xd[:, np.r_[np.ones(k, bool), np.abs(Xd[:, k:]).sum(0) > 1e-10]]   # year dummies absorbed by industries
+    A = np.linalg.pinv(Xd.T @ Xd, hermitian=True)   # symmetric: eigh, not the SVD (LAPACK gesdd can fail to converge)
     b = A @ (Xd.T @ yd); u = yd - Xd @ b
     S = np.zeros((G, Xd.shape[1])); np.add.at(S, ent, Xd * u[:, None])
     dof = n - Xd.shape[1] - int((cnt > 0).sum())

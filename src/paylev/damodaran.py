@@ -1,12 +1,13 @@
 """Damodaran (NYU Stern) US industry files: locate, read and combine them.
 
 The files come in three layouts: 1999-2012 (`Sheet1`, no date stamp), 2013-2018 (`Sheet1` with a "Date updated"
-stamp) and 2019+ (`Variables & FAQ` + `Industry Averages`). Columns are renamed from year to year, so they are
-matched by keyword rather than by exact name.
+stamp) and 2019+ (`Variables & FAQ` + `Industry Averages`; divfund keeps `Sheet1` until 2019). Columns are renamed
+from year to year, so they are matched by keyword rather than by exact name.
 """
 from __future__ import annotations
 
 import re
+import warnings
 from pathlib import Path
 
 import numpy as np
@@ -62,6 +63,16 @@ def pick_div(df):
     return None
 
 
+def pick_totpay(df):
+    """Gross total payout column, dividends + buybacks ($). The 2014-2016 files also (2014-15: only) have
+    dividends + buybacks - stock issuances, a net figure that is not used."""
+    for c in df.columns:
+        cl = str(c).lower()
+        if "dividend" in cl and "buyback" in cl and "issu" not in cl and "/" not in str(c):
+            return c
+    return None
+
+
 def nfirms(df):
     """Number-of-firms column as numbers (NaN if the file has none), for the row-alignment check."""
     c = pick(df, "number", "firm")
@@ -98,8 +109,11 @@ def discover_sources(token, search_dirs):
             if f.name.startswith("~$") or not re.fullmatch(rf"{token}\d*\.xlsx?", f.name, re.I):
                 continue
             y = data_year(f)
-            if y is not None:
-                found.setdefault(y, f)
+            if y is None:
+                continue
+            if y in found and found[y].resolve() != f.resolve():
+                warnings.warn(f"{token}: {f} and {found[y]} both hold {y}; using {found[y]}", stacklevel=2)
+            found.setdefault(y, f)
     return found
 
 
@@ -148,7 +162,7 @@ def load_year(year, sources, tangibility_proxy="ppe_assets", positive_denominato
     if year in sources.get("divfcfe", {}):
         fc = read_industry_sheet(sources["divfcfe"][year])
         dcol, fcol = pick_div(fc), pick_fcfe(fc)
-        tot, ni = pick(fc, "dividends", "buyback"), pick(fc, "net income")
+        tot, ni = pick_totpay(fc), pick(fc, "net income")
         f = pd.DataFrame({"industry": fc["industry"], "nf_divfcfe": nfirms(fc)})
         if dcol:
             f["div_usd"] = pd.to_numeric(fc[dcol], errors="coerce")   # $m, used for checks and §8b

@@ -1,10 +1,11 @@
 specification,triple_coef,se,p,N
-Main (industry-clustered SE),-1.0946,0.4949,0.0271,1893
-Driscoll-Kraay SE,-1.0946,0.3616,0.0025,1893
-Two-way clustered SE,-1.0946,0.4812,0.0231,1893
-Excl. 2020-21,-1.2407,0.552,0.0247,1770
-Excl. 2008-09,-0.9656,0.5275,0.0674,1746
-Weighted by number of firms,-0.9054,0.4197,0.0311,1893
-Growth control (capex intensity),-1.0737,0.4829,0.0263,1893
-Stable core,-0.6006,0.6108,0.3257,1089
-"Continuous rate (FFR, per pp)",-0.2311,0.1096,0.0351,1893
+Main (industry-clustered SE),-1.182992,0.547595,0.030885,1879
+Driscoll-Kraay SE,-1.182992,0.388886,0.002386,1879
+Two-way clustered SE,-1.182992,0.546459,0.030539,1879
+Excl. 2020-21,-1.257529,0.544752,0.021103,1758
+Excl. 2008-09,-1.074508,0.591012,0.069243,1732
+Weighted by number of firms,-1.04834,0.478811,0.028698,1879
+Capital spending control,-1.164254,0.539597,0.031095,1879
+"Capital spending, all interactions",-1.819246,0.735768,0.013511,1879
+Stable core,-0.61231,0.633879,0.334289,1088
+"Continuous rate (FFR, per pp)",-0.270283,0.123769,0.029115,1879
