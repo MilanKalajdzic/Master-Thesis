@@ -14,7 +14,7 @@ Without ROE,lev_x_high,-0.140714,0.168866,0.404797,1879
 DV = log dividend yield (leverage terms partly mechanical),lev_x_high,0.934974,0.413582,0.023904,1884
 Backward elimination,lev_x_high,-0.09797,0.155017,0.527472,1879
 "H3 triple term, stable core",lev_x_high_x_tang,-0.61231,0.633879,0.334289,1088
-Payout incl. non-positive earnings,lev_x_high,-0.037708,0.134702,0.779555,1988
+Payout incl. non-positive earnings,lev_x_high,-0.059944,0.144059,0.67738,1974
 Payout incl. rows contradicting divfcfe,lev_x_high,-0.044799,0.137825,0.74519,1893
 Driscoll-Kraay SE,lev_x_high,-0.095102,0.134343,0.479097,1879
 First differences,d_lev_x_high,-0.062584,0.138427,0.651251,1622

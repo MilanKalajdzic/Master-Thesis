@@ -45,7 +45,7 @@ def pick(df, *keys):
 
 
 def pick_fcfe(df):
-    """FCFE level column (not a ratio): starts with 'fcfe', no '/'. Prefers 'before debt'."""
+    """FCFE level column (not a ratio): the first column that starts with 'fcfe' and has no '/'."""
     for c in df.columns:
         cl = str(c).lower().strip()
         if cl.startswith("fcfe") and "/" not in str(c):

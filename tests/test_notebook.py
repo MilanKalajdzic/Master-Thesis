@@ -11,7 +11,7 @@ import sys
 import pandas as pd
 import pytest
 
-from paylev.synthetic import DOUBLED, NEG_EQUITY, SHIFTED, TRUTH
+from paylev.synthetic import CONFLICT, DOUBLED, NEG_EQUITY, SHIFTED, TRUTH
 from tests.conftest import REPO
 
 
@@ -72,6 +72,14 @@ def test_catches_the_planted_data_defects(run):
     neg = panel.loc["Restaurant/Dining"].loc[NEG_EQUITY[1]:]         # negative book equity, positive net income:
     assert neg["payout"].notna().all() and neg["roe"].isna().all()    # payout defined, ROE not
     assert panel.xs(2014, level="year")["totpayout_ni"].isna().all()   # only the net figure in 2014-15
+    doubled = panel.xs(DOUBLED[1], level="year")                        # faulty divfcfe year: its measures go,
+    assert doubled["payout"].notna().all()                              # divfund's payout stays
+    assert doubled[["div_yield", "div_to_fcfe"]].isna().all().all()
+    row = panel.loc[(CONFLICT[0], CONFLICT[1])]                         # a payout contradicting divfcfe's D/NI is
+    assert pd.isna(row["payout"]) and pd.isna(row["payout_all"])        # dropped (also "as reported"), and kept
+    assert pd.notna(row["payout_rowcheck_off"])                         # only in the check without the rule
+    und = pd.read_csv(run / "outputs" / "tab_data_check_undefined_ratios.csv")
+    assert und.loc[und["rule"].str.startswith("differs"), "n_set_missing"].item() == 1
 
 
 def test_readme_figures_are_drawn_from_the_outputs(run, fake_dir, tmp_path):

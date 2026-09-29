@@ -92,7 +92,7 @@ def hero(t, panel, path):
     save(fig, path)
 
 
-def h2_bounds(t, panel, outputs, path):
+def h2_bounds(t, outputs, path):
     """Regime effect per 1 SD of leverage, 95% CI, in every specification and leverage measure."""
     pw = pd.read_csv(outputs / "tab_power_bounds.csv")
     rows = [(r.specification, r.coef_payout, r.ci95_lo_payout, r.ci95_hi_payout) for r in pw.itertuples()]
@@ -105,9 +105,9 @@ def h2_bounds(t, panel, outputs, path):
     h = 0.34 * n + 2.1
     fig, ax = plt.subplots(figsize=(10, h))
     fig.subplots_adjust(left=0.34, right=0.97, top=1 - 1.25 / h, bottom=0.75 / h)
-    titles(fig, t, "The rate regime doesn't move the payout–leverage slope",
+    titles(fig, t, "No detectable regime effect on the payout–leverage slope",
            "Change in the payout ratio per 1 SD of leverage, high- minus low-rate years: estimate and 95% CI.\n"
-           f"Shaded: ±{EQUIV_MARGIN:.2f}, about {EQUIV_MARGIN / panel['payout'].mean():.0%} of the mean payout, "
+           f"Shaded: ±{EQUIV_MARGIN:.2f}, about {EQUIV_MARGIN / pw['mean_payout'].iloc[0]:.0%} of the mean payout, "
            "treated as economically negligible.",
            y=1 - 0.12 / h)
     ax.axvspan(-EQUIV_MARGIN, EQUIV_MARGIN, color=t["band"], lw=0, zorder=0)
@@ -276,7 +276,7 @@ def main():
         t = use(THEMES[mode])
         sfx = "" if mode == "light" else "-dark"
         hero(t, panel, a.img / f"hero{sfx}.png")
-        h2_bounds(t, panel, a.outputs, a.img / f"h2_bounds{sfx}.png")
+        h2_bounds(t, a.outputs, a.img / f"h2_bounds{sfx}.png")
         h3(t, panel, a.outputs, a.img / f"h3_tangibility{sfx}.png")
         ok = alignment(t, a.outputs, a.data, a.img / f"data_alignment{sfx}.png")
         made += [f"hero{sfx}", f"h2_bounds{sfx}", f"h3_tangibility{sfx}"] + ([f"data_alignment{sfx}"] if ok else [])

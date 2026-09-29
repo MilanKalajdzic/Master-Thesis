@@ -3,7 +3,7 @@ import pandas as pd
 import pytest
 
 from paylev import sample
-from paylev.synthetic import INDUSTRIES, SHIFTED
+from paylev.synthetic import CONFLICT, INDUSTRIES, SHIFTED
 
 AGG = ["Total Market"]
 
@@ -46,7 +46,8 @@ def test_row_alignment_keeps_a_different_vintage():
 def test_crossfile_check_flags_the_year_with_doubled_net_income(raw):
     agree = sample.crossfile_agreement(raw, {}, INDUSTRIES)
     assert agree.loc[2007] < 0.2
-    assert agree.drop(2007).eq(1).all()
+    assert 0.9 < agree.loc[CONFLICT[1]] < 1                       # one contradicting row, not a faulty file
+    assert agree.drop([2007, CONFLICT[1]]).eq(1).all()
 
 
 def test_clean_sample_reconciles_and_excludes():

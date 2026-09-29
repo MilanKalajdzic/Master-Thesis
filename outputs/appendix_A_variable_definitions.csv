@@ -1,14 +1,14 @@
 variable,role,definition,source
 payout,Dependent (primary),Dividend payout ratio; missing when net income <= 0 (divfcfe; ROE where net income is missing or unreliable) and where it differs from divfcfe's dividends / net income by more than 25%,divfund
 div_to_fcfe,Dependent (secondary),Dividends / FCFE; missing when FCFE <= 0,divfcfe
-totpayout_ni,Dependent (alt),"(Dividends+Buybacks)/Net Income, gross of stock issuance; missing when NI <= 0 and in 2014-15 (only the net figure is reported)","divfcfe (2013, 2016+)"
+totpayout_ni,Dependent (alt),"(Dividends+Buybacks)/Net Income, gross of stock issuance; missing when NI <= 0 and in 2014-2015 (only the net figure is reported)","divfcfe (2013, 2016+)"
 div_yield,Dependent (ROE check),Dividends / market cap (no earnings in it); used in logs,divfcfe + divfund
 n_firms,Weight (robustness),Number of firms in the industry,divfund
 lev,Key independent,Market debt ratio D/(D+E),wacc
 lev_unadj,Alt. leverage (§9d),Market D/(D+E) without capitalised leases,dbtfund
 lev_book,Alt. leverage (§9d),Book D/(D+E); missing when book equity <= 0,dbtfund
 debt_ebitda,Alt. leverage (§9d),D/(D+E) / (EBITDA/EV) = Debt / EBITDA; missing when EBITDA <= 0,wacc + dbtfund
-tangibility,Moderator (H3),"PP&E / total assets, percentile rank within year (Fixed Assets/BV of Capital to 2012, Fixed Assets/Total Assets 2013-15, Net PP&E/Total Assets from 2016, labelled so from 2017)",dbtfund
+tangibility,Moderator (H3),"PP&E / total assets, percentile rank within year (Fixed Assets/BV of Capital to 2012, Fixed Assets/Total Assets 2013-2015, Net PP&E/Total Assets from 2016, labelled so from 2017)",dbtfund
 roe,Control,Return on equity; missing where its sign contradicts net income,divfund
 tax,Control,Effective tax rate,wacc
 size,Control,log(Market Cap); the 2001 and 2004 levels are about 1.6 and 2.1 times their neighbours' (the common part is absorbed by the year effects),divfund
@@ -18,3 +18,10 @@ cred_spread,Macro control,BAA-AAA spread (absorbed by year FE; used in industry-
 t10,Descriptive,"10-year Treasury yield, annual avg",FRED GS10
 high_rate,Regime,1 if ffr>=3%,FRED FEDFUNDS
 ffr,Regime (cont.),Avg fed funds rate,FRED FEDFUNDS
+high_rate_post2022,Regime (robustness),1 if year >= 2022,-
+ffr_change,Regime (H1),Change in the annual-average fed funds rate (pp),FRED FEDFUNDS
+hike,Regime (H1),1 if the annual-average fed funds rate rose by >= 0.25pp,FRED FEDFUNDS
+lev_lag / lev_l1,Key independent (H1; robustness),"Leverage in the previous calendar year (none across a gap; missing in 2013, the reclassification)",wacc
+dD,"Dependent (H1, Lintner)",Change in dividends ($) / last year's market cap; not across a gap or 2012-2013; divfcfe's 2000 and 2007 figures not used,divfcfe + divfund
+E,Independent (Lintner),Net income ($) / last year's market cap,divfcfe + divfund
+Dl,Independent (Lintner),Last year's dividends ($) / last year's market cap,divfcfe + divfund

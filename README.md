@@ -40,14 +40,14 @@ so every number can be reproduced from scratch, and the pipeline is tested on fa
   spending fixed; in first differences it is about as large but imprecise.
 - **H1: no.** More levered industries do not cut dividends more in hiking years
   (lev(t−1) × hiking year +0.0015, p = 0.53), nor in high-rate years or as the fed funds rate rises.
-- **H2: the rate regime doesn't change the slope.** β₂ = −0.095 (p = 0.53). The 95% interval rules out regime
-  effects larger than 0.055 in the payout ratio per SD of leverage
-  (15% of the mean payout). None of 19 payout specifications finds an
+- **H2: no detectable regime effect.** β₂ = −0.095 (p = 0.53). The 95% interval rules out regime
+  effects larger than 0.052 in the payout ratio per SD of leverage
+  (14% of the mean payout). None of 19 payout specifications finds an
   effect, and neither do three other leverage measures or Debt/EBITDA × the fed funds rate, the closest available
   proxy for interest burden.
 - **H3: not supported.** The estimate points the other way (−1.18, p = 0.031), but it
   leans on the 2023–2025 cycle and does not survive the multiple-testing adjustment (Romano–Wolf
-  p = 0.067): an exploratory pattern.
+  p = 0.071): an exploratory pattern.
 - **Dividends are smoothed** (Lintner speed of adjustment 0.09–0.36 a year), with no detectable
   difference between rate regimes.
 - **Damodaran's files needed fixing.** The pipeline's checks find a block of shifted rows in `wacc99`, doubled
@@ -56,7 +56,7 @@ so every number can be reproduced from scratch, and the pipeline is tested on fa
   PP&E (2013, 2016) and capital spending (2013); total payout switches to a net figure in 2014–2015. Each is handled
   in code.
 - **Tested.** On fake files with a planted effect and planted defects, the pipeline recovers the effect and
-  catches the defects; 48 tests run on every push, on Python 3.10–3.14.
+  catches the defects; 49 tests run on every push, on Python 3.10–3.14.
 
 ## Research question and hypotheses
 
@@ -137,23 +137,23 @@ p = 0.14) ([stress test](outputs/tab_stress_leverage.csv)):
 <p align="center">
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/img/h2_bounds-dark.png">
-  <img src="docs/img/h2_bounds.png" alt="Forest plot: the regime effect per 1 SD of leverage with 95% intervals in {len(P)} payout-ratio specifications and three other leverage measures; all intervals straddle zero and most lie close to a band of plus or minus 0.05.">
+  <img src="docs/img/h2_bounds.png" alt="Forest plot: the regime effect per 1 SD of leverage with 95% intervals in 16 payout-ratio specifications and three other leverage measures; all intervals straddle zero and most lie close to a band of plus or minus 0.05.">
 </picture>
 </p>
 
 The regime interaction is close to zero and nowhere near significance (β₂ = −0.095, SE 0.153,
 p = 0.53); the leverage slope is +0.378 in low-rate years and +0.283 in high-rate
 years. A null result is only informative if the test could have found a meaningful effect. The 95% interval
-for β₂ is [−0.395, +0.205]. Scaled by the standard deviation of leverage across the panel (0.139),
-it rules out regime effects larger than 0.055 in the payout ratio per 1 SD of leverage
-(15% of the mean payout of 0.37); per SD of leverage within
-industries (0.076), the variation the fixed-effects estimate uses, the bound is 0.030.
-An equivalence test (TOST) rejects effects above 0.048 at the 5% level, and the design has
-80% power against an effect of 0.059 (the minimum detectable effect). Across the other
-payout-ratio specifications the bound is 0.042–0.072, except the 2022–2025 dummy
-(0.120), which uses the least regime variation. At a margin of ±0.05
-(about 14% of the mean payout), equivalence holds in 10 of the 16 payout-ratio
-specifications, including the main one: the data rule out large regime effects, but cannot show everywhere that
+for β₂ is [−0.395, +0.205]. Scaled by the standard deviation of leverage in the estimation sample (0.132),
+it rules out regime effects larger than 0.052 in the payout ratio per 1 SD of leverage
+(14% of the mean payout of 0.36); per SD of leverage within
+industries (0.072), the variation the fixed-effects estimate uses, the bound is 0.028.
+An equivalence test (TOST) rejects effects above 0.046 at the 5% level, and the design has
+80% power against an effect of 0.057 (the minimum detectable effect). Across the other
+payout-ratio specifications the bound is 0.042–0.069, except the 2022–2025 dummy
+(0.114), which uses the least regime variation. At a margin of ±0.05
+(about 14% of the mean payout), equivalence holds in 11 of the 16 payout-ratio
+specifications with a regime dummy, including the main one: the data rule out large regime effects, but cannot show everywhere that
 the effect is below 0.05 ([table](outputs/tab_power_bounds.csv)).
 
 One regression points the other way. With the log dividend yield as the dependent variable, the interaction is
@@ -180,7 +180,7 @@ partly mechanical; it is reported, but not counted among the H2 specifications.
 | Industry FE + macro controls | lev × high | −0.192 | 0.167 | 0.250 | 1879 |
 | Without ROE | lev × high | −0.141 | 0.169 | 0.405 | 1879 |
 | Backward elimination of controls | lev × high | −0.098 | 0.155 | 0.527 | 1879 |
-| Payout as reported (incl. net income ≤ 0) | lev × high | −0.038 | 0.135 | 0.780 | 1988 |
+| Payout as reported (incl. net income ≤ 0) | lev × high | −0.060 | 0.144 | 0.677 | 1974 |
 | Payout incl. the rows that contradict `divfcfe` | lev × high | −0.045 | 0.138 | 0.745 | 1893 |
 | Driscoll–Kraay SE | lev × high | −0.095 | 0.134 | 0.479 | 1879 |
 | First differences | Δ(lev × high) | −0.063 | 0.138 | 0.651 | 1622 |
@@ -197,15 +197,15 @@ panel measure is Debt/EBITDA (debt relative to operating cash flow), built as D/
 against Damodaran's own figure where he reports it. The positive leverage–payout relation holds for every measure,
 and the regime interaction is null for every measure, including Debt/EBITDA × the fed funds rate, the nearest
 thing to an interest-burden test ([table](outputs/tab_alt_leverage.csv)). The Debt/EBITDA interval is the widest:
-it rules out effects above 0.082 per SD.
+it rules out effects above 0.071 per SD.
 
 | Leverage measure | Leverage coef. | p | × high-rate | p | per 1 SD | 95% bound per SD | N |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| Market D/(D+E), main (leases from 2013) | +0.342 | 0.022 | −0.095 | 0.535 | −0.013 | 0.055 | 1879 |
-| Market D/(D+E), without leases | +0.371 | 0.011 | −0.106 | 0.517 | −0.014 | 0.058 | 1879 |
-| Book D/(D+E) | +0.634 | < 0.001 | −0.030 | 0.734 | −0.005 | 0.033 | 1877 |
-| Debt / EBITDA | +0.052 | 0.002 | −0.018 | 0.355 | −0.026 | 0.082 | 1876 |
-| Debt / EBITDA × fed funds rate (per pp) |  |  | −0.003 | 0.540 | −0.004 | 0.016 | 1876 |
+| Market D/(D+E), main (leases from 2013) | +0.342 | 0.022 | −0.095 | 0.535 | −0.013 | 0.052 | 1879 |
+| Market D/(D+E), without leases | +0.371 | 0.011 | −0.106 | 0.517 | −0.014 | 0.055 | 1879 |
+| Book D/(D+E) | +0.634 | < 0.001 | −0.030 | 0.734 | −0.005 | 0.032 | 1877 |
+| Debt / EBITDA | +0.052 | 0.002 | −0.018 | 0.355 | −0.023 | 0.071 | 1876 |
+| Debt / EBITDA × fed funds rate (per pp) |  |  | −0.003 | 0.540 | −0.003 | 0.014 | 1876 |
 
 Two caveats. Debt/EBITDA and the payout ratio both have earnings in the denominator; with the log dividend yield
 as the dependent variable the Debt/EBITDA coefficient is −0.05 (p = 0.14), so its
@@ -232,8 +232,8 @@ weighting by firms, the continuous rate and two of the three capex-based proxies
 p = 0.022, Invested capital/Sales p = 0.036; Cap Ex/Depreciation
 −0.19, p = 0.27); a time-invariant tangibility gives
 −1.17 (p = 0.043). These are regression
-p-values; with the cluster bootstrap only the main estimate stays below 5%. PP&E and capital spending are
-correlated, but the term is −1.16 (p = 0.031)
+p-values; the cluster bootstrap, run for the five tangibility measures, keeps only the main one below 5%, and
+barely (p = 0.0496). PP&E and capital spending are correlated, but the term is −1.16 (p = 0.031)
 with capital spending as a control and −1.82
 (p = 0.014) when capital spending gets the same interactions as tangibility, so
 it is not capital spending in disguise. It weakens to −1.07
@@ -252,8 +252,8 @@ Is it fragile? ([leave-one-out](outputs/tab_H3_leave_one_out.csv), [multiple tes
   (p = 0.12). Of the single years, only dropping 2023 (−0.72, p = 0.14) or 2009 (−1.06, p = 0.052) takes p above
   0.05.
 - *It does not survive the multiple-testing adjustment.* The industry-cluster bootstrap (9,999 draws) gives
-  p = 0.049 unadjusted. Adjusted for testing H2 and H3 together, p = 0.097 (Holm, on the
-  bootstrap p-values) and 0.067 (Romano–Wolf, which accounts for the correlation between the
+  p = 0.0496 unadjusted. Adjusted for testing H2 and H3 together, p = 0.099 (Holm, on the
+  bootstrap p-values) and 0.071 (Romano–Wolf, which accounts for the correlation between the
   tests); adjusted across the five tangibility measures, p = 0.17 (Romano–Wolf). Both families
   are small, so even these adjustments understate how many specifications were tried.
 
@@ -285,7 +285,10 @@ payout *ratio* itself is far less persistent (0.18–0.47), because it moves wit
 Smoothing shows no detectable difference between rate regimes (p = 0.44).
 
 H1 is a statement about changes, so it is tested in the same dividend-change equation: do more levered
-industries cut dividends more when rates rise? They do not. The change models drop 2013, when Damodaran's
+industries cut dividends more when rates rise? They do not, and the interval is tight: for an industry one SD
+(0.14) more levered, the hiking-year change in dividends lies between
+−2.9% and +5.7% of last year's dividends (95% interval), so a cut beyond about
+3% is ruled out ([bound](outputs/tab_H1_bound.csv)). The change models drop 2013, when Damodaran's
 reclassification moves firms between industries, and do not use `divfcfe`'s 2000 and 2007 figures, not even as
 last year's value ([table](outputs/tab_lintner.csv)):
 
@@ -348,8 +351,9 @@ new download with a new problem shows up in the tables but is not fixed automati
 - **Leverage and leases (2013).** From 2013 on, `wacc`'s D/(D+E) capitalises operating leases (it equals
   `dbtfund`'s lease-adjusted ratio exactly); before 2013 it equals `dbtfund`'s plain market debt ratio in most years
   (not in 2001, 2002 and 2008, where the two files compute it differently). The main leverage measure therefore
-  changes definition in 2013, most for lease-heavy industries. From 2020 (ASC 842 in force) leases are on the
-  balance sheet and the two ratios almost coincide. The lease-free ratio gives the same results.
+  changes definition in 2013, most for lease-heavy industries. ASC 842 put operating leases on public companies'
+  balance sheets from fiscal 2019, and from 2020 on the two ratios almost coincide. The lease-free ratio gives the
+  same results.
 - **PP&E / assets (2013, 2016).** `dbtfund` labels it Fixed Assets / BV of Capital (1999–2012), Fixed Assets /
   Total Assets (2013–2016) and Net PP&E / Total Assets (2017+), but the values change basis in 2013 and 2016: the
   industry ordering reshuffles (rank correlation with the previous year 0.78 and 0.83, against
@@ -374,7 +378,7 @@ new download with a new problem shows up in the tables but is not fixed automati
   and 15 industry-years have an ROE whose sign contradicts their net income (e.g. tobacco
   2014–2020; in some of them book equity is negative). These are set to missing (`POSITIVE_DENOMINATORS` in the
   configuration), and whether earnings are positive is read from net income (from ROE only where net income is
-  missing or unreliable). The as-reported payout is kept as a robustness
+  missing or unreliable). The payout including the loss-making years is kept as a robustness
   check ([table](outputs/tab_data_check_undefined_ratios.csv)).
 - **Industry reclassification (2012→2013).** Damodaran moved to a new industry scheme. Names are reconciled
   with a conservative rename map ([Appendix B](outputs/appendix_B_rename_map.csv)): spelling variants and clear
@@ -444,8 +448,9 @@ layouts as the real archive, with the real column names of each era, and plants 
 - a known effect: payout = … + 0.3 × leverage − 0.4 × leverage × high-rate year − 1.0 × ROE + noise;
 - the defects found in the real files: a block of rows shifted against the industry names (as in `wacc99`),
   including one row whose neighbour has the same firm count; a year with net income at twice its value (as in
-  `divfcfe07`); total payout reported only net of stock issuance in 2014–2015; and an industry with negative book
-  equity, whose ROE is negative while its net income is positive;
+  `divfcfe07`); a payout near zero that contradicts the dividend file's dividends ÷ net income; total payout
+  reported only net of stock issuance in 2014–2015; and an industry with negative book equity, whose ROE is negative
+  while its net income is positive;
 - a financial and a utility industry, an industry renamed at the 2013 reclassification, and a newest file
   without year digits.
 

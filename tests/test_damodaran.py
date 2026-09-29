@@ -40,6 +40,14 @@ def test_discover_skips_other_regions_and_lock_files(sources, tmp_path):
     assert list(found) == [2024]
 
 
+def test_discover_warns_when_two_files_hold_the_same_year(sources, tmp_path):
+    shutil.copy(sources["dbtfund"][2024], tmp_path / "dbtfund24.xlsx")
+    shutil.copy(sources["dbtfund"][2024], tmp_path / "dbtfund.xlsx")      # e.g. a fresh download of the same year
+    with pytest.warns(UserWarning, match="both hold 2024"):
+        found = dm.discover_sources("dbtfund", [tmp_path])
+    assert list(found) == [2024]
+
+
 def test_column_pickers_on_real_header_variants():
     fc = pd.DataFrame(columns=["industry", "Number of firms", "  Dividends (US $ millions)", " Net Income (US $ millions)",
                                "Payout", "Dividends + Buybacks(US $ millions)", "Dividend Yield",

@@ -1,7 +1,7 @@
 dependent,leverage measure,regime,sd_measure,per_sd_units,lev_coef,lev_p,interaction,int_se,int_p,interaction_per_sd,ci95_bound_per_sd,N
-payout,"Market D/(D+E), main (leases from 2013)",high-rate,0.138569,payout ratio,0.341713,0.021644,-0.095102,0.153234,0.534923,-0.013178,0.054796,1879
-payout,"Market D/(D+E), without leases",high-rate,0.135327,payout ratio,0.370653,0.011354,-0.105897,0.163276,0.5167,-0.014331,0.057638,1879
-payout,Book D/(D+E),high-rate,0.160866,payout ratio,0.633754,1.3e-05,-0.030453,0.089599,0.733988,-0.004899,0.033149,1877
-payout,Debt / EBITDA,high-rate,1.496008,payout ratio,0.051764,0.001534,-0.017606,0.019021,0.354779,-0.026339,0.082113,1876
-payout,Debt / EBITDA,fed funds rate (per pp),1.496008,payout ratio,0.051764,0.001534,-0.002613,0.004265,0.540208,-0.003909,0.016416,1876
-ln_div_yield,Debt / EBITDA,high-rate,1.496008,log dividend yield,-0.05296,0.14428,0.023655,0.051437,0.645652,0.035388,0.186209,1874
+payout,"Market D/(D+E), main (leases from 2013)",high-rate,0.132333,payout ratio,0.341713,0.021644,-0.095102,0.153234,0.534923,-0.012585,0.05233,1879
+payout,"Market D/(D+E), without leases",high-rate,0.129091,payout ratio,0.370653,0.011354,-0.105897,0.163276,0.5167,-0.01367,0.054982,1879
+payout,Book D/(D+E),high-rate,0.156306,payout ratio,0.633754,1.3e-05,-0.030453,0.089599,0.733988,-0.00476,0.032209,1877
+payout,Debt / EBITDA,high-rate,1.289422,payout ratio,0.051764,0.001534,-0.017606,0.019021,0.354779,-0.022702,0.070774,1876
+payout,Debt / EBITDA,fed funds rate (per pp),1.289422,payout ratio,0.051764,0.001534,-0.002613,0.004265,0.540208,-0.003369,0.014149,1876
+ln_div_yield,Debt / EBITDA,high-rate,1.515927,log dividend yield,-0.05296,0.14428,0.023655,0.051437,0.645652,0.03586,0.188689,1874

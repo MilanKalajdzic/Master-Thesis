@@ -16,6 +16,8 @@ exercise it. The data contain:
   read as the gross figure;
 - an industry with negative book equity from 2020 ("Restaurant/Dining", like the real one): its reported ROE is
   negative although net income is positive, so its payout ratio is defined and its ROE is not;
+- one divfund payout near zero although divfcfe's dividends and net income are positive (like Drugs
+  (Biotechnology) 2022), which the row-level cross-file check must set to missing;
 - a financial and a utility industry (excluded), and an industry renamed at the 2013 reclassification
   ("Restaurant" -> "Restaurant/Dining", reconciled by the notebook's rename map);
 - a newest file saved without year digits (dated from its stamp, like a fresh download from /datasets/).
@@ -33,6 +35,7 @@ TRUTH = {"lev": 0.3, "lev_x_high": -0.4, "roe": -1.0}                     # plan
 SHIFTED = ("wacc", 2004, 3, 9)       # file, year, rows [3, 9) of the industry list shifted by one
 DOUBLED = ("divfcfe", 2007)          # net income reported at twice its value
 NEG_EQUITY = ("Restaurant", 2020)    # industry and first year with negative book equity
+CONFLICT = ("Steel", 2010)           # divfund payout near zero, contradicting divfcfe's dividends / net income
 
 INDUSTRIES = ["Advertising", "Aerospace/Defense", "Air Transport", "Apparel", "Auto & Truck", "Beverage",
               "Building Materials", "Chemical (Basic)", "Computers/Peripherals", "Electrical Equipment",
@@ -168,6 +171,8 @@ def _rows(token, year, sim):
     if token == SHIFTED[0] and year == SHIFTED[1]:
         a, b = SHIFTED[2], SHIFTED[3]                            # names a..b-1 carry the data of the row above
         values[a:b] = values[a - 1:b - 1]
+    if token == "divfund" and year == CONFLICT[1]:
+        values[INDUSTRIES.index(CONFLICT[0])][[c[1] for c in cols].index("payout")] = 0.0006
     if token == DOUBLED[0] and year == DOUBLED[1]:
         k = [c[1] for c in cols].index("ni")
         for r in values:

@@ -1,14 +1,15 @@
 H1     change form, lev(t-1) x hiking year = +0.0015 (p=0.528) -> NOT supported at 5%
         (H1 expects a NEGATIVE term: more levered industries cut dividends more when rates rise)
         other regimes: high-rate year +0.0012 (p=0.766), change in fed funds +0.0008 (p=0.477)
+        95% CI [-0.0031, +0.0060]: per 1-SD lagged leverage, a hiking-year change in dividends of -2.9% to +5.7% of last year's dividends
 
 H2     beta2 = -0.0951 (p=0.535) -> NOT supported at 5%
         slope: low-rate +0.378 | high-rate +0.283  (H2 expects more negative when high)
-        95% CI [-0.395, +0.205]: rules out effects above 0.055 payout per 1-SD leverage; 80% power against 0.059 per 1-SD leverage (MDE)
+        95% CI [-0.395, +0.205]: rules out effects above 0.052 payout per 1-SD leverage; 80% power against 0.057 per 1-SD leverage (MDE)
 
 H3     triple = -1.1830 (p=0.031) -> NOT supported: significant with the opposite sign
         (H3 expects a POSITIVE triple term: with H2's negative regime effect, a smaller one for tangible
         industries; the estimate instead gives effects of similar size and opposite sign at the two ends)
-        high-rate change in the leverage slope: low tangibility (p10) +0.452 (p=0.043) | high tangibility (p90) -0.500 (p=0.098)
+        high-rate change in the leverage slope: low tangibility (p10) +0.452 (p=0.044) | high tangibility (p90) -0.500 (p=0.098)
         fragility: negative without any single industry (p < 0.05 in 135 of 138); without 2023-2025: -0.628 (p=0.123)
-        cluster bootstrap p 0.049; adjusted: Holm 0.097, Romano-Wolf 0.067 (H2 + H3); Romano-Wolf 0.171 (five tangibility measures)
+        cluster bootstrap p 0.0496; adjusted: Holm 0.099, Romano-Wolf 0.071 (H2 + H3); Romano-Wolf 0.171 (five tangibility measures)
