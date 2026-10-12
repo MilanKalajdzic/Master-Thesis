@@ -32,7 +32,7 @@ def run(notebook=NOTEBOOK, output=None, timeout=1800):
         spec.mkdir(parents=True)
         (spec / "kernel.json").write_text(json.dumps({
             "argv": [sys.executable, "-m", "ipykernel_launcher", "-f", "{connection_file}"],
-            "display_name": "paylev", "language": "python"}))
+            "display_name": "paylev", "language": "python"}), encoding="utf-8")
         os.environ["JUPYTER_PATH"] = tmp + os.pathsep + os.environ.get("JUPYTER_PATH", "")
         os.environ.pop("MPLBACKEND", None)   # a forced backend (e.g. Agg) would keep figures out of the notebook
 
@@ -57,7 +57,9 @@ def main():
         import nbclient  # noqa: F401
         import nbformat  # noqa: F401
     except ImportError:
-        sys.exit('needs nbclient, nbformat and ipykernel: pip install -e ".[dev]"')
+        sys.exit(f"{sys.executable} does not have nbclient, nbformat and ipykernel.\n"
+                 "Run this script with the repo's virtual environment, e.g. .venv/bin/python (Linux, macOS) or\n"
+                 ".\\.venv\\Scripts\\python.exe (Windows), after: pip install -e \".[dev]\" (see the README).")
     run(args.notebook, args.output, args.timeout)
 
 

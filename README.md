@@ -37,9 +37,11 @@ so every number can be reproduced from scratch, and the pipeline is tested on fa
 - **Leverage and payout move together.** In years when an industry's leverage is above its own average, it pays
   out more (+0.34, p = 0.022): the complementarity view, not the substitution (free-cash-flow) view.
   The link survives robust standard errors, firm weights, dropping the financial crisis and holding capital
-  spending fixed; in first differences it is about as large but imprecise.
+  spending fixed; in first differences and with last year's leverage it is about as large but less precise
+  (p = 0.14 and 0.07).
 - **H1: no.** More levered industries do not cut dividends more in hiking years
-  (lev(t−1) × hiking year +0.0015, p = 0.53), nor in high-rate years or as the fed funds rate rises.
+  (lev(t−1) × hiking year +0.0015, p = 0.53), nor in high-rate years, as the fed funds rate rises, or with hiking
+  years dated by the December rate.
 - **H2: no detectable regime effect.** β₂ = −0.095 (p = 0.53). The 95% interval rules out regime
   effects larger than 0.052 in the payout ratio per SD of leverage
   (14% of the mean payout). None of 19 payout specifications finds an
@@ -47,7 +49,8 @@ so every number can be reproduced from scratch, and the pipeline is tested on fa
   proxy for interest burden.
 - **H3: not supported.** The estimate points the other way (−1.18, p = 0.031), but it
   leans on the 2023–2025 cycle and does not survive the multiple-testing adjustment (Romano–Wolf
-  p = 0.071): an exploratory pattern.
+  p = 0.071): an exploratory pattern. It is tied to the actual high-rate years, though: moved to any of 969
+  other placements, the episodes give as large a |t| only 2.9% of the time.
 - **Dividends are smoothed** (Lintner speed of adjustment 0.09–0.36 a year), with no detectable
   difference between rate regimes.
 - **Damodaran's files needed fixing.** The pipeline's checks find a block of shifted rows in `wacc99`, doubled
@@ -56,7 +59,7 @@ so every number can be reproduced from scratch, and the pipeline is tested on fa
   PP&E (2013, 2016) and capital spending (2013); total payout switches to a net figure in 2014–2015. Each is handled
   in code.
 - **Tested.** On fake files with a planted effect and planted defects, the pipeline recovers the effect and
-  catches the defects; 49 tests run on every push, on Python 3.10–3.14.
+  catches the defects; 54 tests run on every push, on Python 3.10–3.14.
 
 ## Research question and hypotheses
 
@@ -120,7 +123,10 @@ managers, and in line with the complementarity view. The estimate survives stand
 shocks, weighting by the number of firms and dropping the financial crisis. Holding capital spending fixed lowers
 it to +0.31 (p = 0.048): part of the association is shared with how much industries invest. In first
 differences, which use only year-to-year changes, it is about as large (+0.36) but imprecise (SE 0.24,
-p = 0.14) ([stress test](outputs/tab_stress_leverage.csv)):
+p = 0.14). A bad industry-year could also produce the link mechanically: lower net income raises the payout ratio
+when dividends are sticky, and a lower share price raises market leverage. Last year's leverage is set before this
+year's shocks, and with it the coefficient is +0.33 (SE 0.185, p = 0.073): about as large, less precise
+([stress test](outputs/tab_stress_leverage.csv)):
 
 | Stress test | Leverage coef. | SE | p | β₂ (lev × high) | p | N |
 |---|---:|---:|---:|---:|---:|---:|
@@ -131,6 +137,7 @@ p = 0.14) ([stress test](outputs/tab_stress_leverage.csv)):
 | Weighted by number of firms | +0.369 | 0.169 | 0.029 | −0.087 | 0.570 | 1879 |
 | Excluding 2008–2009 | +0.388 | 0.165 | 0.018 | −0.116 | 0.476 | 1732 |
 | Capital spending as a control | +0.311 | 0.157 | 0.048 | −0.113 | 0.461 | 1879 |
+| Lagged leverage, lev(t−1) | +0.332 | 0.185 | 0.073 | −0.079 | 0.636 | 1703 |
 
 ### H2: a bounded null
 
@@ -155,6 +162,10 @@ payout-ratio specifications the bound is 0.042–0.069, except the 2022–2025 d
 (about 14% of the mean payout), equivalence holds in 11 of the 16 payout-ratio
 specifications with a regime dummy, including the main one: the data rule out large regime effects, but cannot show everywhere that
 the effect is below 0.05 ([table](outputs/tab_power_bounds.csv)).
+
+The actual high-rate years are also unremarkable for H2. Moving the three episodes to every other placement of
+three 3-year episodes in 1999–2025 (969 placements) gives a |t| at least as large as the actual 0.62 in 59% of
+them ([placebo timing](outputs/tab_placebo_timing.csv)).
 
 One regression points the other way. With the log dividend yield as the dependent variable, the interaction is
 +0.93 (p = 0.024): a *stronger* leverage link in high-rate years. The yield is not a payout ratio,
@@ -227,13 +238,15 @@ With tangibility measured as PP&E / total assets, the triple interaction is −1
 0.45 (p = 0.04) for the least tangible industries (10th percentile) and *falls* by 0.50
 (p = 0.10) for the most tangible (90th percentile): the regime effect is about as large at both ends, with
 opposite signs, so tangible industries are not the stable ones H3 expected. The sign is negative in every variation
-below, and the term stays significant at 5% with Driscoll–Kraay and two-way clustered errors, dropping 2020–2021,
+below, and the term stays significant at 5% with Driscoll–Kraay and two-way clustered errors (Driscoll–Kraay
+errors are built for long panels and tend to be too small with 27 years, so they are weak support), dropping 2020–2021,
 weighting by firms, the continuous rate and two of the three capex-based proxies (Net Cap Ex/Sales
 p = 0.022, Invested capital/Sales p = 0.036; Cap Ex/Depreciation
 −0.19, p = 0.27); a time-invariant tangibility gives
 −1.17 (p = 0.043). These are regression
-p-values; the cluster bootstrap, run for the five tangibility measures, keeps only the main one below 5%, and
-barely (p = 0.0496). PP&E and capital spending are correlated, but the term is −1.16 (p = 0.031)
+p-values; the cluster bootstrap, run for the five tangibility measures, puts only the main one near 5%
+(p = 0.0496, with a Monte Carlo error of about 0.002 from the 9,999 draws, so it is not settled on which side of
+0.05 it lies). PP&E and capital spending are correlated, but the term is −1.16 (p = 0.031)
 with capital spending as a control and −1.82
 (p = 0.014) when capital spending gets the same interactions as tangibility, so
 it is not capital spending in disguise. It weakens to −1.07
@@ -252,14 +265,20 @@ Is it fragile? ([leave-one-out](outputs/tab_H3_leave_one_out.csv), [multiple tes
   (p = 0.12). Of the single years, only dropping 2023 (−0.72, p = 0.14) or 2009 (−1.06, p = 0.052) takes p above
   0.05.
 - *It does not survive the multiple-testing adjustment.* The industry-cluster bootstrap (9,999 draws) gives
-  p = 0.0496 unadjusted. Adjusted for testing H2 and H3 together, p = 0.099 (Holm, on the
+  p = 0.0496 unadjusted (Monte Carlo error about 0.002). Adjusted for testing H2 and H3 together, p = 0.099 (Holm, on the
   bootstrap p-values) and 0.071 (Romano–Wolf, which accounts for the correlation between the
   tests); adjusted across the five tangibility measures, p = 0.17 (Romano–Wolf). Both families
   are small, so even these adjustments understate how many specifications were tried.
+- *But it is tied to the actual high-rate years.* The bootstrap resamples industries, not years. Moving the three
+  high-rate episodes to every other placement (969 placements of three 3-year episodes) gives a |t| at least as
+  large as the actual 2.16 in only 2.9% of them (28 placements). The 95th percentile of the placebo |t| is 1.93
+  for H3 and 2.18 for H2, close to the usual 1.96, so the industry-clustered errors do not look far off despite
+  the few regime switches ([placebo timing](outputs/tab_placebo_timing.csv)).
 
 So H3 is not supported, and the opposite pattern (the payout–leverage link weakening in high-rate years for
-asset-heavy industries and strengthening for asset-light ones) is exploratory: it comes mostly from the 2023–2025
-cycle and is not established once the number of tests is accounted for. It is still a reason not to read the H2
+asset-heavy industries and strengthening for asset-light ones) is exploratory: it is tied to the actual high-rate
+years, but it comes mostly from the 2023–2025 cycle and is not established once the number of tests is accounted
+for. It is still a reason not to read the H2
 null as "no effect anywhere": opposite responses may average out.
 
 ### Other findings
@@ -299,6 +318,7 @@ last year's value ([table](outputs/tab_lintner.csv)):
 | lev(t−1) × change in fed funds rate | +0.0008 | 0.0011 | 0.477 | 1623 |
 | lev(t−1) × high-rate year, stable core | +0.0031 | 0.0029 | 0.285 | 941 |
 | lev(t−1) × hiking year, without 2002 and 2005 | +0.0015 | 0.0026 | 0.570 | 1463 |
+| lev(t−1) × hiking year from the December rate (adds 2004, drops 2019) | +0.0001 | 0.0028 | 0.984 | 1623 |
 
 The thesis figures and every table are in [`outputs/`](outputs).
 
@@ -397,7 +417,9 @@ new download with a new problem shows up in the tables but is not fixed automati
 3. **Two-way fixed effects with industry-clustered errors.** Industry effects remove permanent differences
    between sectors, year effects remove everything common to a year (including the regime itself, which then
    enters only through interactions). Driscoll–Kraay errors, two-way clustering and a cluster bootstrap check
-   the inference.
+   the inference; Driscoll–Kraay errors are built for long panels and tend to be too small with 27 years, so they
+   are the weakest of the three. The bootstrap resamples industries, not years, so a placebo-timing check moves
+   the high-rate episodes to every other placement and asks how unusual the actual ones are.
 4. **Undefined ratios are missing, not small.** A payout ratio with negative earnings, Dividends/FCFE with
    negative FCFE, book leverage with negative book equity, or an ROE that contradicts net income carry no
    information about the concept.
@@ -416,7 +438,7 @@ new download with a new problem shows up in the tables but is not fixed automati
 
 ## Setup and reproduce
 
-Linux or macOS (on Windows, use `.venv\Scripts\python` in place of `.venv/bin/python`):
+Linux or macOS:
 
 ```bash
 git clone https://github.com/MilanKalajdzic/Master-Thesis.git
@@ -428,6 +450,23 @@ python3 -m venv .venv
 .venv/bin/python scripts/run_notebook.py           # reruns the notebook in place; tables and figures -> outputs/
 .venv/bin/python scripts/readme_figures.py         # redraws the README figures -> docs/img/
 ```
+
+Windows (PowerShell), with Python from [python.org](https://www.python.org/downloads/) or
+`winget install -e --id Python.Python.3.11`. The Python of MSYS2 or Cygwin does not work: it cannot install
+numpy, scipy and pandas from PyPI's Windows packages, and pip ends up trying to compile them.
+
+```powershell
+git clone https://github.com/MilanKalajdzic/Master-Thesis.git
+cd Master-Thesis
+py -3.11 -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -e ".[dev]"
+.\.venv\Scripts\python.exe -m pytest
+.\.venv\Scripts\python.exe scripts\download_damodaran.py
+.\.venv\Scripts\python.exe scripts\run_notebook.py
+.\.venv\Scripts\python.exe scripts\readme_figures.py
+```
+
+Run the commands from the repository folder: the download script saves to `data\raw` under the current folder.
 
 For the exact package versions behind the committed outputs, run
 `.venv/bin/python -m pip install -r requirements-lock.txt` before the `-e ".[dev]"` step.
@@ -460,7 +499,8 @@ README figures are drawn from its outputs. So the null results on the real data 
 same code finds a planted effect of the same kind (whether the real data could detect a real effect is what the
 bounds above answer). Unit tests cover the file readers across layouts, the alignment and cross-file checks, the
 sample construction, the estimators (the fast estimator used for the refits must equal PanelOLS, standard errors
-included), Holm and Romano–Wolf, the figure style and the download script against a fake server. GitHub Actions
+included), Holm and Romano–Wolf, the placebo-timing placements, the December fed funds rate, the figure style and
+the download script against a fake server. GitHub Actions
 runs them on every push, on Python 3.10, 3.12, 3.13 and 3.14, and on 3.11 with the pinned versions.
 
 ## Repository layout
@@ -472,7 +512,7 @@ src/paylev/
   sample.py                  reconciliation, exclusions, row-alignment and cross-file checks, winsorising
   macro.py                   FRED: pinned snapshot or live download, annual averages, the rate regime
   estimation.py              two-way FE panel regressions (PanelOLS) and a fast numpy version for refits
-  inference.py               Holm, Romano-Wolf and the industry-cluster bootstrap
+  inference.py               Holm, Romano-Wolf, the industry-cluster bootstrap and placebo regime timing
   synthetic.py               fake Damodaran files with planted effects and defects, for the tests
   plotting.py                figure style shared by the thesis and README figures (colours, themes, PNG export)
 tests/                       pytest suite (no downloads needed)
@@ -501,7 +541,8 @@ LICENSE                      MIT
 - The regime changes only from year to year, and there are three high-rate episodes, so the evidence on the
   interactions rests on few regime switches; the H3 pattern rests mostly on the last one.
 - The regime is built from annual averages of the fed funds rate. So 2019 counts as a hiking year (the average
-  rose after the 2018 hikes, although the Fed cut in 2019), and 2004 does not (the hikes began in June).
+  rose after the 2018 hikes, although the Fed cut in 2019), and 2004 does not (the hikes began in June). The H1
+  test is therefore also run with hiking years from the December-to-December change (+0.0001, p = 0.98).
 - Tangibility (PP&E / assets) and capital spending change definition over time, so only their within-year
   ranking is used.
 - Payout ratios are noisy when earnings are near zero (winsorised at 1%/99%).

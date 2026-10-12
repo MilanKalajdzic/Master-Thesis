@@ -22,7 +22,7 @@ def run(fake_dir, tmp_path_factory):
     env = {**os.environ, "PAYLEV_DATA": str(fake_dir), "PAYLEV_OUTDIR": str(out / "outputs"),
            "PAYLEV_RW_BOOT": "49", "MPLBACKEND": "Agg"}
     proc = subprocess.run([sys.executable, str(REPO / "scripts" / "run_notebook.py"), "--output", str(out / "nb.ipynb")],
-                          capture_output=True, text=True, timeout=1200, env=env)
+                          capture_output=True, text=True, errors="replace", timeout=1200, env=env)
     assert proc.returncode == 0, proc.stderr[-3000:]
     return out
 
@@ -33,7 +33,7 @@ def coef(cell):
 
 
 def test_runs_without_errors(run):
-    nb = json.loads((run / "nb.ipynb").read_text())
+    nb = json.loads((run / "nb.ipynb").read_text(encoding="utf-8"))
     errors = [o for c in nb["cells"] if c["cell_type"] == "code" for o in c.get("outputs", [])
               if o.get("output_type") == "error"]
     assert not errors
@@ -41,7 +41,7 @@ def test_runs_without_errors(run):
 
 
 def test_writes_every_output_the_repo_ships(run):
-    shipped = subprocess.run(["git", "ls-files", "outputs"], cwd=REPO, capture_output=True, text=True).stdout.split()
+    shipped = subprocess.run(["git", "ls-files", "outputs"], cwd=REPO, capture_output=True, text=True, errors="replace").stdout.split()
     if not shipped:
         pytest.skip("not a git checkout")
     made = {p.name for p in (run / "outputs").iterdir()}
@@ -53,7 +53,7 @@ def test_finds_the_planted_effects(run):
     assert coef(tab.loc["lev", "Interaction"]) == pytest.approx(TRUTH["lev"], abs=0.05)
     assert coef(tab.loc["lev_x_high", "Interaction"]) == pytest.approx(TRUTH["lev_x_high"], abs=0.05)
     assert coef(tab.loc["roe", "Interaction"]) == pytest.approx(TRUTH["roe"], abs=0.1)
-    verdicts = (run / "outputs" / "hypothesis_verdicts.txt").read_text()
+    verdicts = (run / "outputs" / "hypothesis_verdicts.txt").read_text(encoding="utf-8")
     h2 = [line for line in verdicts.splitlines() if line.startswith("H2")]
     assert h2 and "-> SUPPORTED" in h2[0]
 
@@ -85,8 +85,23 @@ def test_catches_the_planted_data_defects(run):
 def test_readme_figures_are_drawn_from_the_outputs(run, fake_dir, tmp_path):
     proc = subprocess.run([sys.executable, str(REPO / "scripts" / "readme_figures.py"), "--outputs",
                            str(run / "outputs"), "--data", str(fake_dir), "--img", str(tmp_path)],
-                          capture_output=True, text=True, timeout=600)
+                          capture_output=True, text=True, errors="replace", timeout=600)
     assert proc.returncode == 0, proc.stderr[-3000:]
     made = {p.name for p in tmp_path.iterdir()}
     for name in ["hero", "h2_bounds", "h3_tangibility", "data_alignment"]:
         assert {f"{name}.png", f"{name}-dark.png"} <= made, name
+
+
+def test_placebo_timing_and_the_new_robustness_rows(run):
+    pl = pd.read_csv(run / "outputs" / "tab_placebo_timing.csv").set_index("test")
+    assert (pl["placements"] == 969).all()                                # three 3-year episodes in 1999-2025
+    assert pl.loc["H2", "share_abs_t_at_least_actual"] < 0.05             # the planted regime effect stands out
+    assert pl.loc["H2", "rank_abs_t"] <= 0.05 * 969
+    mt = pd.read_csv(run / "outputs" / "tab_multiple_testing.csv")
+    assert mt["p_bootstrap_mc_se"].notna().all()
+    stress = pd.read_csv(run / "outputs" / "tab_stress_leverage.csv").set_index("specification")
+    assert "Lagged leverage (t-1)" in stress.index
+    lint = pd.read_csv(run / "outputs" / "tab_lintner.csv")
+    assert "lev_l1_x_hike_dec" in set(lint["term"])
+    verdicts = (run / "outputs" / "hypothesis_verdicts.txt").read_text(encoding="utf-8")
+    assert "placebo timing" in verdicts and "December rate" in verdicts

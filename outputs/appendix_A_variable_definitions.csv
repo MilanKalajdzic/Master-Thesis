@@ -21,6 +21,8 @@ ffr,Regime (cont.),Avg fed funds rate,FRED FEDFUNDS
 high_rate_post2022,Regime (robustness),1 if year >= 2022,-
 ffr_change,Regime (H1),Change in the annual-average fed funds rate (pp),FRED FEDFUNDS
 hike,Regime (H1),1 if the annual-average fed funds rate rose by >= 0.25pp,FRED FEDFUNDS
+ffr_change_dec,"Regime (H1, robustness)",Change in the December fed funds rate from the previous December (pp),FRED FEDFUNDS
+hike_dec,"Regime (H1, robustness)",1 if the December fed funds rate rose by >= 0.25pp,FRED FEDFUNDS
 lev_lag / lev_l1,Key independent (H1; robustness),"Leverage in the previous calendar year (none across a gap; missing in 2013, the reclassification)",wacc
 dD,"Dependent (H1, Lintner)",Change in dividends ($) / last year's market cap; not across a gap or 2012-2013; divfcfe's 2000 and 2007 figures not used,divfcfe + divfund
 E,Independent (Lintner),Net income ($) / last year's market cap,divfcfe + divfund

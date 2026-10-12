@@ -25,7 +25,12 @@ def annualise(wide):
     out["t10"] = a["GS10"]                           # annual-average 10y Treasury yield (monthly GS10)
     out["cred_spread"] = a["BAA"] - a["AAA"]         # Moody's BAA - AAA
     out["gdp_growth"] = a["GDPC1"].pct_change() * 100
-    out["ffr_change"] = out["ffr"].diff(); out.index.name = "year"
+    out["ffr_change"] = out["ffr"].diff()
+    # the rate at the end of the year: the annual average lags (it rose in 2019, after the 2018 hikes, although the
+    # Fed cut in 2019, and barely moved in 2004, when the hikes began in June)
+    dec = wide["FEDFUNDS"].resample("YE").last(); dec.index = dec.index.year
+    out["ffr_dec"] = dec                             # December value (the latest month of a partial year)
+    out["ffr_change_dec"] = out["ffr_dec"].diff(); out.index.name = "year"
     return out.reset_index()
 
 
