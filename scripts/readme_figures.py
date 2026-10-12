@@ -203,7 +203,10 @@ def h3(t, panel, outputs, path):
     c.plot([p for _, p in steps], ys, color=t["dim"], lw=1.2, zorder=1)
     for (lab, p), y in zip(steps, ys):
         dot(c, p, y, t["s1"] if p < 0.05 else t["dim"], t, size=46)
-        c.text(p + 0.008, y + 0.16, f"{p + 1e-9:.3f}", fontsize=9, color=t["ink"], va="bottom")
+        lab = f"{p + 1e-9:.3f}"
+        if lab == "0.050" and p != 0.05:          # 0.0496 would print as 0.050 beside a dot coloured p < 0.05
+            lab = f"{p:.4f}"
+        c.text(p + 0.008, y + 0.16, lab, fontsize=9, color=t["ink"], va="bottom")
     c.set_yticks(ys); c.set_yticklabels([s[0] for s in steps])
     c.grid(axis="y", visible=False)
     c.set_xlim(0, max(0.22, max(p for _, p in steps) * 1.25)); c.set_ylim(-0.6, len(steps) - 0.3)
