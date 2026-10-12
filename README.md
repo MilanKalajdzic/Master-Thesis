@@ -2,7 +2,7 @@
 
 [![tests](https://github.com/MilanKalajdzic/Master-Thesis/actions/workflows/tests.yml/badge.svg)](https://github.com/MilanKalajdzic/Master-Thesis/actions/workflows/tests.yml)
 [![python](https://img.shields.io/badge/python-3.10%20%E2%80%93%203.14-3776ab)](pyproject.toml)
-[![license: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-2a78d6)](LICENSE)
+[![license: MIT](https://img.shields.io/badge/license-MIT-2a78d6)](LICENSE)
 
 **When interest rates rise, do more indebted industries cut their payouts harder?**
 
@@ -491,7 +491,7 @@ docs/img/                    README figures
 pyproject.toml               the package, its dependencies and the dev/fred extras
 requirements.txt             the same install, for pip install -r
 requirements-lock.txt        exact versions behind the committed outputs
-LICENSE                      Apache-2.0
+LICENSE                      MIT
 ```
 
 ## Limitations
@@ -511,5 +511,5 @@ LICENSE                      Apache-2.0
 
 ## License and data
 
-Code: Apache-2.0 (see `LICENSE`). Data belong to their providers: Aswath Damodaran (NYU Stern, industry
+Code: MIT (see `LICENSE`). Data belong to their providers: Aswath Damodaran (NYU Stern, industry
 datasets) and the Federal Reserve Bank of St. Louis (FRED).
