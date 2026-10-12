@@ -5,6 +5,7 @@ Smoothing x high-rate,Dl_x_high_rate,0.030433,0.039326,0.439134,1623
 Earnings x high-rate,E_x_high_rate,-0.003169,0.013117,0.809146,1623
 H1 change form: high-rate,lev_l1_x_high_rate,0.001183,0.003968,0.765627,1623
 H1 change form: hiking year,lev_l1_x_hike,0.001455,0.002305,0.527973,1623
+H1 change form: hiking year from the December rate,lev_l1_x_hike_dec,5.7e-05,0.002837,0.98389,1623
 H1 change form: change in FFR,lev_l1_x_ffr_change,0.000758,0.001065,0.476943,1623
 "H1 change form: high-rate, stable core",lev_l1_x_high_rate,0.003103,0.002902,0.2852,941
 "Lintner, two-way FE, excl. 2002 and 2005",Dl,-0.3823,0.030544,0.0,1463

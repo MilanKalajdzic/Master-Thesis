@@ -1,6 +1,7 @@
 H1     change form, lev(t-1) x hiking year = +0.0015 (p=0.528) -> NOT supported at 5%
         (H1 expects a NEGATIVE term: more levered industries cut dividends more when rates rise)
         other regimes: high-rate year +0.0012 (p=0.766), change in fed funds +0.0008 (p=0.477)
+        hiking years from the December rate: +0.0001 (p=0.984)
         95% CI [-0.0031, +0.0060]: per 1-SD lagged leverage, a hiking-year change in dividends of -2.9% to +5.7% of last year's dividends
 
 H2     beta2 = -0.0951 (p=0.535) -> NOT supported at 5%
@@ -13,3 +14,4 @@ H3     triple = -1.1830 (p=0.031) -> NOT supported: significant with the opposit
         high-rate change in the leverage slope: low tangibility (p10) +0.452 (p=0.044) | high tangibility (p90) -0.500 (p=0.098)
         fragility: negative without any single industry (p < 0.05 in 135 of 138); without 2023-2025: -0.628 (p=0.123)
         cluster bootstrap p 0.0496; adjusted: Holm 0.099, Romano-Wolf 0.071 (H2 + H3); Romano-Wolf 0.171 (five tangibility measures)
+        placebo timing (969 placements of the high-rate episodes): |t| at least as large in 2.9% (H3) and 59.3% (H2) of them
