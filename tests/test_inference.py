@@ -2,7 +2,8 @@ import numpy as np
 import pytest
 
 from paylev.estimation import fit_arrays, spec_arrays
-from paylev.inference import bootstrap_p, cluster_bootstrap_t, holm, romano_wolf
+from paylev.inference import (bootstrap_p, cluster_bootstrap_t, episode_placements, holm, placebo_timing,
+                             romano_wolf)
 from tests.test_estimation import make_panel
 
 
@@ -39,3 +40,24 @@ def test_cluster_bootstrap_is_reproducible_and_centred():
     t2 = cluster_bootstrap_t(specs, est, 200, seed=7, clusters=sorted(set(df["industry"])))
     assert np.array_equal(t1["a"], t2["a"]) and np.array_equal(t1["a"], t1["b"])
     assert abs(np.mean(t1["a"])) < 0.3 and 0.6 < np.std(t1["a"]) < 1.6
+
+
+def test_episode_placements_enumerate_every_separated_placement():
+    from itertools import combinations
+    years = list(range(2000, 2012))
+    got = episode_placements(years, [2, 3], min_gap=1)
+    want = {frozenset(years[a:a + 2] + years[b:b + 3]) for a, b in combinations(range(len(years)), 2)
+            if a + 2 + 1 <= b and b + 3 <= len(years)}
+    assert len(got) == len(set(got)) == len(want) and set(got) == want
+    assert len(episode_placements(range(1999, 2026), [3, 3, 3])) == 969        # C(19, 3): the thesis setting
+    assert all(len(p) == 9 for p in episode_placements(range(1999, 2026), [3, 3, 3]))
+
+
+def test_placebo_timing_share_counts_the_actual_placement():
+    years, episodes = list(range(2000, 2010)), [[2001, 2002], [2006, 2007]]
+    actual = {2001, 2002, 2006, 2007}
+    t_obs, t, p = placebo_timing(lambda hy: 4.0 if set(hy) == actual else 1.0, years, episodes)
+    assert t_obs == 4.0 and p == pytest.approx(1 / len(t)) and len(t) == len(episode_placements(years, [2, 2]))
+    assert placebo_timing(lambda hy: -2.0, years, episodes)[2] == 1.0          # nothing special: p = 1
+    t_obs, t, p = placebo_timing(lambda hy: 1.0, years, [[2000, 2001, 2002, 2003, 2004, 2005]], min_gap=3)
+    assert len(t) == 5 and p == 1.0

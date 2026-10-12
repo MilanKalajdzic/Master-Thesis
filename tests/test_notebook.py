@@ -90,3 +90,18 @@ def test_readme_figures_are_drawn_from_the_outputs(run, fake_dir, tmp_path):
     made = {p.name for p in tmp_path.iterdir()}
     for name in ["hero", "h2_bounds", "h3_tangibility", "data_alignment"]:
         assert {f"{name}.png", f"{name}-dark.png"} <= made, name
+
+
+def test_placebo_timing_and_the_new_robustness_rows(run):
+    pl = pd.read_csv(run / "outputs" / "tab_placebo_timing.csv").set_index("test")
+    assert (pl["placements"] == 969).all()                                # three 3-year episodes in 1999-2025
+    assert pl.loc["H2", "share_abs_t_at_least_actual"] < 0.05             # the planted regime effect stands out
+    assert pl.loc["H2", "rank_abs_t"] <= 0.05 * 969
+    mt = pd.read_csv(run / "outputs" / "tab_multiple_testing.csv")
+    assert mt["p_bootstrap_mc_se"].notna().all()
+    stress = pd.read_csv(run / "outputs" / "tab_stress_leverage.csv").set_index("specification")
+    assert "Lagged leverage (t-1)" in stress.index
+    lint = pd.read_csv(run / "outputs" / "tab_lintner.csv")
+    assert "lev_l1_x_hike_dec" in set(lint["term"])
+    verdicts = (run / "outputs" / "hypothesis_verdicts.txt").read_text()
+    assert "placebo timing" in verdicts and "December rate" in verdicts

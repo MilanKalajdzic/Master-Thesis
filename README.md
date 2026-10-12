@@ -56,7 +56,7 @@ so every number can be reproduced from scratch, and the pipeline is tested on fa
   PP&E (2013, 2016) and capital spending (2013); total payout switches to a net figure in 2014–2015. Each is handled
   in code.
 - **Tested.** On fake files with a planted effect and planted defects, the pipeline recovers the effect and
-  catches the defects; 49 tests run on every push, on Python 3.10–3.14.
+  catches the defects; 54 tests run on every push, on Python 3.10–3.14.
 
 ## Research question and hypotheses
 
@@ -227,13 +227,15 @@ With tangibility measured as PP&E / total assets, the triple interaction is −1
 0.45 (p = 0.04) for the least tangible industries (10th percentile) and *falls* by 0.50
 (p = 0.10) for the most tangible (90th percentile): the regime effect is about as large at both ends, with
 opposite signs, so tangible industries are not the stable ones H3 expected. The sign is negative in every variation
-below, and the term stays significant at 5% with Driscoll–Kraay and two-way clustered errors, dropping 2020–2021,
+below, and the term stays significant at 5% with Driscoll–Kraay and two-way clustered errors (Driscoll–Kraay
+errors are built for long panels and tend to be too small with 27 years, so they are weak support), dropping 2020–2021,
 weighting by firms, the continuous rate and two of the three capex-based proxies (Net Cap Ex/Sales
 p = 0.022, Invested capital/Sales p = 0.036; Cap Ex/Depreciation
 −0.19, p = 0.27); a time-invariant tangibility gives
 −1.17 (p = 0.043). These are regression
-p-values; the cluster bootstrap, run for the five tangibility measures, keeps only the main one below 5%, and
-barely (p = 0.0496). PP&E and capital spending are correlated, but the term is −1.16 (p = 0.031)
+p-values; the cluster bootstrap, run for the five tangibility measures, puts only the main one near 5%
+(p = 0.0496, with a Monte Carlo error of about 0.002 from the 9,999 draws, so it is not settled on which side of
+0.05 it lies). PP&E and capital spending are correlated, but the term is −1.16 (p = 0.031)
 with capital spending as a control and −1.82
 (p = 0.014) when capital spending gets the same interactions as tangibility, so
 it is not capital spending in disguise. It weakens to −1.07
@@ -252,7 +254,7 @@ Is it fragile? ([leave-one-out](outputs/tab_H3_leave_one_out.csv), [multiple tes
   (p = 0.12). Of the single years, only dropping 2023 (−0.72, p = 0.14) or 2009 (−1.06, p = 0.052) takes p above
   0.05.
 - *It does not survive the multiple-testing adjustment.* The industry-cluster bootstrap (9,999 draws) gives
-  p = 0.0496 unadjusted. Adjusted for testing H2 and H3 together, p = 0.099 (Holm, on the
+  p = 0.0496 unadjusted (Monte Carlo error about 0.002). Adjusted for testing H2 and H3 together, p = 0.099 (Holm, on the
   bootstrap p-values) and 0.071 (Romano–Wolf, which accounts for the correlation between the
   tests); adjusted across the five tangibility measures, p = 0.17 (Romano–Wolf). Both families
   are small, so even these adjustments understate how many specifications were tried.
@@ -397,7 +399,9 @@ new download with a new problem shows up in the tables but is not fixed automati
 3. **Two-way fixed effects with industry-clustered errors.** Industry effects remove permanent differences
    between sectors, year effects remove everything common to a year (including the regime itself, which then
    enters only through interactions). Driscoll–Kraay errors, two-way clustering and a cluster bootstrap check
-   the inference.
+   the inference; Driscoll–Kraay errors are built for long panels and tend to be too small with 27 years, so they
+   are the weakest of the three. The bootstrap resamples industries, not years, so a placebo-timing check moves
+   the high-rate episodes to every other placement and asks how unusual the actual ones are.
 4. **Undefined ratios are missing, not small.** A payout ratio with negative earnings, Dividends/FCFE with
    negative FCFE, book leverage with negative book equity, or an ROE that contradicts net income carry no
    information about the concept.
@@ -460,7 +464,8 @@ README figures are drawn from its outputs. So the null results on the real data 
 same code finds a planted effect of the same kind (whether the real data could detect a real effect is what the
 bounds above answer). Unit tests cover the file readers across layouts, the alignment and cross-file checks, the
 sample construction, the estimators (the fast estimator used for the refits must equal PanelOLS, standard errors
-included), Holm and Romano–Wolf, the figure style and the download script against a fake server. GitHub Actions
+included), Holm and Romano–Wolf, the placebo-timing placements, the December fed funds rate, the figure style and
+the download script against a fake server. GitHub Actions
 runs them on every push, on Python 3.10, 3.12, 3.13 and 3.14, and on 3.11 with the pinned versions.
 
 ## Repository layout
@@ -472,7 +477,7 @@ src/paylev/
   sample.py                  reconciliation, exclusions, row-alignment and cross-file checks, winsorising
   macro.py                   FRED: pinned snapshot or live download, annual averages, the rate regime
   estimation.py              two-way FE panel regressions (PanelOLS) and a fast numpy version for refits
-  inference.py               Holm, Romano-Wolf and the industry-cluster bootstrap
+  inference.py               Holm, Romano-Wolf, the industry-cluster bootstrap and placebo regime timing
   synthetic.py               fake Damodaran files with planted effects and defects, for the tests
   plotting.py                figure style shared by the thesis and README figures (colours, themes, PNG export)
 tests/                       pytest suite (no downloads needed)
@@ -501,7 +506,8 @@ LICENSE                      MIT
 - The regime changes only from year to year, and there are three high-rate episodes, so the evidence on the
   interactions rests on few regime switches; the H3 pattern rests mostly on the last one.
 - The regime is built from annual averages of the fed funds rate. So 2019 counts as a hiking year (the average
-  rose after the 2018 hikes, although the Fed cut in 2019), and 2004 does not (the hikes began in June).
+  rose after the 2018 hikes, although the Fed cut in 2019), and 2004 does not (the hikes began in June). The H1
+  test is therefore also run with hiking years from the December-to-December change.
 - Tangibility (PP&E / assets) and capital spending change definition over time, so only their within-year
   ranking is used.
 - Payout ratios are noisy when earnings are near zero (winsorised at 1%/99%).

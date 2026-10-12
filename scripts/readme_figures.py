@@ -36,8 +36,11 @@ H3_REGS = ["lev", "tangibility", "lev_x_high", "lev_x_tang", "high_x_tang", "lev
 EQUIV_MARGIN = 0.05
 
 # ---------------------------------------------------------------------------------------------------------------
-def hero(t, panel, path):
-    """Fed funds rate with the three high-rate episodes, and the payout-on-leverage slope for every year."""
+def hero(t, panel, path, lim=None):
+    """Fed funds rate with the three high-rate episodes, and the payout-on-leverage slope for every year.
+
+    The slope axis runs to +-lim (default: the 90th percentile of the interval ends, at least 1.6); an interval that
+    runs past it ends in an arrowhead at the edge."""
     years = sorted(panel["year"].unique())
     d = panel.copy()
     for y in years:
@@ -70,9 +73,16 @@ def hero(t, panel, path):
     a1.set_ylim(0, rate["ffr"].max() * 1.25)
 
     a2.axhline(0, color=t["base"], lw=1, zorder=1)
+    if lim is None:
+        lim = max(1.6, float(np.nanpercentile(np.abs(b) + 1.96 * se, 90)))
+    cut = False
     for x, bb, ss, h in zip(years, b, se, hi):
         c = t["s2"] if h else t["s1"]
         a2.plot([x, x], [bb - 1.96 * ss, bb + 1.96 * ss], color=c, lw=1.4, alpha=t["whisker"], zorder=2)
+        for end, edge, mk in [(bb + 1.96 * ss, lim, "^"), (bb - 1.96 * ss, -lim, "v")]:
+            if (end - edge) * edge > 0:                     # the interval runs past this edge of the axis
+                a2.plot(x, edge * 0.985, marker=mk, ms=6, color=c, alpha=t["whisker"], mew=0, zorder=2)
+                cut = True
         dot(a2, x, bb, c, t)
     for val, c, lab in [(low, t["s1"], "low-rate years"), (high, t["s2"], "high-rate years")]:
         a2.axhline(val, color=c, lw=1.2, alpha=.9, zorder=1)
@@ -82,13 +92,16 @@ def hero(t, panel, path):
                 va="bottom" if v_ == top_v else "top")
     a2.plot([years[-1] + .45, years[-1] + .8], [low, low], color=t["s1"], lw=2, clip_on=False)
     a2.plot([years[-1] + .45, years[-1] + .8], [high, high], color=t["s2"], lw=2, clip_on=False)
-    lim = max(1.6, float(np.nanpercentile(np.abs(b) + 1.96 * se, 90)))
     a2.set_ylim(-lim, lim)
     a2.set_ylabel("Payout ratio per unit of D/(D+E)")
     a2.set_xlim(years[0] - .8, years[-1] + .8)
     h1 = a2.scatter([], [], s=46, color=t["s1"]); h2 = a2.scatter([], [], s=46, color=t["s2"])
-    a2.legend([h1, h2], ["low-rate year", "high-rate year"], loc="upper center", bbox_to_anchor=(0.5, -0.09),
-              fontsize=9.5, ncol=2, labelcolor=t["ink2"])
+    handles, labels = [h1, h2], ["low-rate year", "high-rate year"]
+    if cut:
+        handles.append(a2.scatter([], [], s=30, marker="^", color=t["muted"]))
+        labels.append("interval continues off the chart")
+    a2.legend(handles, labels, loc="upper center", bbox_to_anchor=(0.5, -0.09), fontsize=9.5, ncol=len(handles),
+              labelcolor=t["ink2"])
     save(fig, path)
 
 
