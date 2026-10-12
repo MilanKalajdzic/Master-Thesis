@@ -37,9 +37,11 @@ so every number can be reproduced from scratch, and the pipeline is tested on fa
 - **Leverage and payout move together.** In years when an industry's leverage is above its own average, it pays
   out more (+0.34, p = 0.022): the complementarity view, not the substitution (free-cash-flow) view.
   The link survives robust standard errors, firm weights, dropping the financial crisis and holding capital
-  spending fixed; in first differences it is about as large but imprecise.
+  spending fixed; in first differences and with last year's leverage it is about as large but less precise
+  (p = 0.14 and 0.07).
 - **H1: no.** More levered industries do not cut dividends more in hiking years
-  (lev(t−1) × hiking year +0.0015, p = 0.53), nor in high-rate years or as the fed funds rate rises.
+  (lev(t−1) × hiking year +0.0015, p = 0.53), nor in high-rate years, as the fed funds rate rises, or with hiking
+  years dated by the December rate.
 - **H2: no detectable regime effect.** β₂ = −0.095 (p = 0.53). The 95% interval rules out regime
   effects larger than 0.052 in the payout ratio per SD of leverage
   (14% of the mean payout). None of 19 payout specifications finds an
@@ -47,7 +49,8 @@ so every number can be reproduced from scratch, and the pipeline is tested on fa
   proxy for interest burden.
 - **H3: not supported.** The estimate points the other way (−1.18, p = 0.031), but it
   leans on the 2023–2025 cycle and does not survive the multiple-testing adjustment (Romano–Wolf
-  p = 0.071): an exploratory pattern.
+  p = 0.071): an exploratory pattern. It is tied to the actual high-rate years, though: moved to any of 969
+  other placements, the episodes give as large a |t| only 2.9% of the time.
 - **Dividends are smoothed** (Lintner speed of adjustment 0.09–0.36 a year), with no detectable
   difference between rate regimes.
 - **Damodaran's files needed fixing.** The pipeline's checks find a block of shifted rows in `wacc99`, doubled
@@ -120,7 +123,10 @@ managers, and in line with the complementarity view. The estimate survives stand
 shocks, weighting by the number of firms and dropping the financial crisis. Holding capital spending fixed lowers
 it to +0.31 (p = 0.048): part of the association is shared with how much industries invest. In first
 differences, which use only year-to-year changes, it is about as large (+0.36) but imprecise (SE 0.24,
-p = 0.14) ([stress test](outputs/tab_stress_leverage.csv)):
+p = 0.14). A bad industry-year could also produce the link mechanically: lower net income raises the payout ratio
+when dividends are sticky, and a lower share price raises market leverage. Last year's leverage is set before this
+year's shocks, and with it the coefficient is +0.33 (SE 0.185, p = 0.073): about as large, less precise
+([stress test](outputs/tab_stress_leverage.csv)):
 
 | Stress test | Leverage coef. | SE | p | β₂ (lev × high) | p | N |
 |---|---:|---:|---:|---:|---:|---:|
@@ -131,6 +137,7 @@ p = 0.14) ([stress test](outputs/tab_stress_leverage.csv)):
 | Weighted by number of firms | +0.369 | 0.169 | 0.029 | −0.087 | 0.570 | 1879 |
 | Excluding 2008–2009 | +0.388 | 0.165 | 0.018 | −0.116 | 0.476 | 1732 |
 | Capital spending as a control | +0.311 | 0.157 | 0.048 | −0.113 | 0.461 | 1879 |
+| Lagged leverage, lev(t−1) | +0.332 | 0.185 | 0.073 | −0.079 | 0.636 | 1703 |
 
 ### H2: a bounded null
 
@@ -155,6 +162,10 @@ payout-ratio specifications the bound is 0.042–0.069, except the 2022–2025 d
 (about 14% of the mean payout), equivalence holds in 11 of the 16 payout-ratio
 specifications with a regime dummy, including the main one: the data rule out large regime effects, but cannot show everywhere that
 the effect is below 0.05 ([table](outputs/tab_power_bounds.csv)).
+
+The actual high-rate years are also unremarkable for H2. Moving the three episodes to every other placement of
+three 3-year episodes in 1999–2025 (969 placements) gives a |t| at least as large as the actual 0.62 in 59% of
+them ([placebo timing](outputs/tab_placebo_timing.csv)).
 
 One regression points the other way. With the log dividend yield as the dependent variable, the interaction is
 +0.93 (p = 0.024): a *stronger* leverage link in high-rate years. The yield is not a payout ratio,
@@ -258,10 +269,16 @@ Is it fragile? ([leave-one-out](outputs/tab_H3_leave_one_out.csv), [multiple tes
   bootstrap p-values) and 0.071 (Romano–Wolf, which accounts for the correlation between the
   tests); adjusted across the five tangibility measures, p = 0.17 (Romano–Wolf). Both families
   are small, so even these adjustments understate how many specifications were tried.
+- *But it is tied to the actual high-rate years.* The bootstrap resamples industries, not years. Moving the three
+  high-rate episodes to every other placement (969 placements of three 3-year episodes) gives a |t| at least as
+  large as the actual 2.16 in only 2.9% of them (28 placements). The 95th percentile of the placebo |t| is 1.93
+  for H3 and 2.18 for H2, close to the usual 1.96, so the industry-clustered errors do not look far off despite
+  the few regime switches ([placebo timing](outputs/tab_placebo_timing.csv)).
 
 So H3 is not supported, and the opposite pattern (the payout–leverage link weakening in high-rate years for
-asset-heavy industries and strengthening for asset-light ones) is exploratory: it comes mostly from the 2023–2025
-cycle and is not established once the number of tests is accounted for. It is still a reason not to read the H2
+asset-heavy industries and strengthening for asset-light ones) is exploratory: it is tied to the actual high-rate
+years, but it comes mostly from the 2023–2025 cycle and is not established once the number of tests is accounted
+for. It is still a reason not to read the H2
 null as "no effect anywhere": opposite responses may average out.
 
 ### Other findings
@@ -301,6 +318,7 @@ last year's value ([table](outputs/tab_lintner.csv)):
 | lev(t−1) × change in fed funds rate | +0.0008 | 0.0011 | 0.477 | 1623 |
 | lev(t−1) × high-rate year, stable core | +0.0031 | 0.0029 | 0.285 | 941 |
 | lev(t−1) × hiking year, without 2002 and 2005 | +0.0015 | 0.0026 | 0.570 | 1463 |
+| lev(t−1) × hiking year from the December rate (adds 2004, drops 2019) | +0.0001 | 0.0028 | 0.984 | 1623 |
 
 The thesis figures and every table are in [`outputs/`](outputs).
 
@@ -524,7 +542,7 @@ LICENSE                      MIT
   interactions rests on few regime switches; the H3 pattern rests mostly on the last one.
 - The regime is built from annual averages of the fed funds rate. So 2019 counts as a hiking year (the average
   rose after the 2018 hikes, although the Fed cut in 2019), and 2004 does not (the hikes began in June). The H1
-  test is therefore also run with hiking years from the December-to-December change.
+  test is therefore also run with hiking years from the December-to-December change (+0.0001, p = 0.98).
 - Tangibility (PP&E / assets) and capital spending change definition over time, so only their within-year
   ranking is used.
 - Payout ratios are noisy when earnings are near zero (winsorised at 1%/99%).
