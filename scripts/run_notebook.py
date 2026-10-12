@@ -57,7 +57,9 @@ def main():
         import nbclient  # noqa: F401
         import nbformat  # noqa: F401
     except ImportError:
-        sys.exit('needs nbclient, nbformat and ipykernel: pip install -e ".[dev]"')
+        sys.exit(f"{sys.executable} does not have nbclient, nbformat and ipykernel.\n"
+                 "Run this script with the repo's virtual environment, e.g. .venv/bin/python (Linux, macOS) or\n"
+                 ".\\.venv\\Scripts\\python.exe (Windows), after: pip install -e \".[dev]\" (see the README).")
     run(args.notebook, args.output, args.timeout)
 
 

@@ -420,7 +420,7 @@ new download with a new problem shows up in the tables but is not fixed automati
 
 ## Setup and reproduce
 
-Linux or macOS (on Windows, use `.venv\Scripts\python` in place of `.venv/bin/python`):
+Linux or macOS:
 
 ```bash
 git clone https://github.com/MilanKalajdzic/Master-Thesis.git
@@ -432,6 +432,23 @@ python3 -m venv .venv
 .venv/bin/python scripts/run_notebook.py           # reruns the notebook in place; tables and figures -> outputs/
 .venv/bin/python scripts/readme_figures.py         # redraws the README figures -> docs/img/
 ```
+
+Windows (PowerShell), with Python from [python.org](https://www.python.org/downloads/) or
+`winget install -e --id Python.Python.3.11`. The Python of MSYS2 or Cygwin does not work: it cannot install
+numpy, scipy and pandas from PyPI's Windows packages, and pip ends up trying to compile them.
+
+```powershell
+git clone https://github.com/MilanKalajdzic/Master-Thesis.git
+cd Master-Thesis
+py -3.11 -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -e ".[dev]"
+.\.venv\Scripts\python.exe -m pytest
+.\.venv\Scripts\python.exe scripts\download_damodaran.py
+.\.venv\Scripts\python.exe scripts\run_notebook.py
+.\.venv\Scripts\python.exe scripts\readme_figures.py
+```
+
+Run the commands from the repository folder: the download script saves to `data\raw` under the current folder.
 
 For the exact package versions behind the committed outputs, run
 `.venv/bin/python -m pip install -r requirements-lock.txt` before the `-e ".[dev]"` step.
