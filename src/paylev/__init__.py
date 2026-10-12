@@ -7,8 +7,8 @@ reconciliation, specifications); this package holds the machinery it calls, so t
     sample      reconcile industries, exclude financials, check that files line up, winsorise
     macro       FRED series: pinned snapshot or live download, annual averages, the rate regime
     estimation  two-way fixed-effects panel regressions (linearmodels, plus a fast numpy version for refits)
-    inference   multiple-testing adjustments (Holm, Romano-Wolf) and the industry-cluster bootstrap
+    inference   multiple-testing adjustments (Holm, Romano-Wolf), the industry-cluster bootstrap, placebo timing
     synthetic   fake Damodaran files with known effects, for the tests
     plotting    the figure style shared by the thesis and README figures
 """
-__version__ = "1.1.0"
+__version__ = "1.2.0"
