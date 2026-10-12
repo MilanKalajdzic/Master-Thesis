@@ -32,7 +32,7 @@ def run(notebook=NOTEBOOK, output=None, timeout=1800):
         spec.mkdir(parents=True)
         (spec / "kernel.json").write_text(json.dumps({
             "argv": [sys.executable, "-m", "ipykernel_launcher", "-f", "{connection_file}"],
-            "display_name": "paylev", "language": "python"}))
+            "display_name": "paylev", "language": "python"}), encoding="utf-8")
         os.environ["JUPYTER_PATH"] = tmp + os.pathsep + os.environ.get("JUPYTER_PATH", "")
         os.environ.pop("MPLBACKEND", None)   # a forced backend (e.g. Agg) would keep figures out of the notebook
 

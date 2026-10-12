@@ -1,0 +1,4 @@
+# Text files are stored with LF line endings whatever the platform (a rerun on Windows writes CRLF; git converts it
+# back on commit), so the notebook and outputs/ do not show every line as changed.
+* text=auto
+*.png binary
